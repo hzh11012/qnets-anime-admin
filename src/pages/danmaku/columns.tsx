@@ -11,10 +11,6 @@ export const getColumns = (t: TFunction<'translation', undefined>) => {
             header: t('danmaku.table.content')
         },
         {
-            accessorKey: 'type',
-            header: t('danmaku.table.type')
-        },
-        {
             accessorKey: 'color',
             header: t('danmaku.table.color')
         },
@@ -29,10 +25,6 @@ export const getColumns = (t: TFunction<'translation', undefined>) => {
         {
             accessorKey: 'createTime',
             header: t('danmaku.table.createTime')
-        },
-        {
-            accessorKey: 'source',
-            header: t('danmaku.table.source')
         },
         {
             id: 'actions',

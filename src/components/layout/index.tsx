@@ -38,7 +38,7 @@ const LayoutBody = React.forwardRef<HTMLDivElement, LayoutBodyProps>(
         <div
             ref={ref}
             className={cn(
-                'flex-1 overflow-hidden px-4 py-4 md:px-4',
+                'flex-1 overflow-auto px-4 py-4 md:px-4',
                 className
             )}
             {...props}

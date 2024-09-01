@@ -4,7 +4,7 @@ import { DataTable } from '@/pages/danmaku/data-table';
 import { getColumns } from '@/pages/danmaku/columns';
 import { useRequest } from 'ahooks';
 import { DanmakuList } from '@/apis/danmaku';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
 
 const Dashboard = () => {
@@ -13,36 +13,54 @@ const Dashboard = () => {
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
-    const listRes = useRequest(DanmakuList, {
-        manual: true
-    });
+    const [total, setTotal] = useState(0);
+    const [data, setData] = useState([]);
 
-    useEffect(() => {
-        const options = {
-            ac: 'list',
-            page,
-            limit
-        };
-        if (true) {
-            // todo search
+    const { run, loading } = useRequest(DanmakuList, {
+        defaultParams: [
+            {
+                ac: 'list',
+                page,
+                limit
+            }
+        ],
+        onSuccess(data: any) {
+            const { count, data: _data } = data;
+            const res = _data.map((item: any) => {
+                return {
+                    id: item[0],
+                    content: item[5],
+                    color: item[3],
+                    videoTime: item[1],
+                    ip: item[6],
+                    createTime: item[7],
+                    source: item[9]
+                };
+            });
+            setTotal(count);
+            setData(res);
+        },
+        refreshDeps: [page, limit],
+        refreshDepsAction: () => {
+            run({
+                ac: 'list',
+                page,
+                limit
+            });
         }
-        listRes.run(options);
-    }, [page, limit]);
+    });
 
     return (
         <Layout>
             <DataTable
                 pagination={pagination}
+                pageCount={Math.ceil(total / limit)}
                 onPaginationChange={onPaginationChange}
                 columns={columns}
-                data={[
-                    {
-                        id: '728ed52f',
-                        amount: 100,
-                        status: 'pending',
-                        email: 'm@example.com'
-                    }
-                ]}
+                loading={loading}
+                total={total}
+                data={data}
+                sizes={[10, 20, 50, 100]}
             />
         </Layout>
     );
