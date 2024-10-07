@@ -9,6 +9,7 @@ import { Loading } from '@/components/custom/loading';
 import router from '@/routes';
 import '@/style/index.css';
 import '@/style/global.css';
+import { Toaster } from '@/components/ui/toaster';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
                         router={router}
                         fallbackElement={<Loading />}
                     />
+                    <Toaster />
                 </TooltipProvider>
             </ThemeProvider>
         </I18nextProvider>

@@ -88,6 +88,10 @@ module.exports = {
                         opacity: 1
                     }
                 }
+            },
+            boxShadow: {
+                fixedShadow: 'inset -10px 0 8px -8px rgba(5, 5, 5, 0.06)',
+                fixedShadowDark:'inset -10px 0 8px -8px rgba(253, 253, 253, 0.12)'
             }
         }
     },

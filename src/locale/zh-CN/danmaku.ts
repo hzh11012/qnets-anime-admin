@@ -7,7 +7,5 @@ export default {
     'danmaku.table.ip': 'IP地址',
     'danmaku.table.createTime': '创建时间',
     'danmaku.table.source': '来源',
-    'danmaku.table.actions': '操作',
-    'danmaku.table.edit': '编辑',
-    'danmaku.table.delete': '删除'
+    'danmaku.table.actions': '操作'
 };

@@ -12,6 +12,13 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-html, body, #root {
+html,
+body,
+#root {
     height: 100%;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: unset;
 }

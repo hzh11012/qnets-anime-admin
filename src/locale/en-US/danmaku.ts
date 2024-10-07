@@ -7,7 +7,5 @@ export default {
     'danmaku.table.ip': 'IP Address',
     'danmaku.table.createTime': 'Create Time',
     'danmaku.table.source': 'Source',
-    'danmaku.table.actions': 'Actions',
-    'danmaku.table.edit': 'Edit',
-    'danmaku.table.delete': 'Delete'
+    'danmaku.table.actions': 'Actions'
 };

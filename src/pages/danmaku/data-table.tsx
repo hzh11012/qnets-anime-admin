@@ -7,7 +7,6 @@ import {
     PaginationState,
     useReactTable
 } from '@tanstack/react-table';
-
 import {
     Table,
     TableBody,
@@ -18,10 +17,12 @@ import {
 } from '@/components/ui/table';
 import DataTablePagination from '@/components/custom/data-table/data-table-pagination';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { Loading } from '@/components/custom/loading';
 import { useTranslation } from 'react-i18next';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { LoaderCircle } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -31,8 +32,30 @@ interface DataTableProps<TData, TValue> {
     loading: boolean;
     sizes: number[];
     onPaginationChange: OnChangeFn<PaginationState>;
+    onSearch: (val: string) => void;
+    onReload: () => void;
     pagination: PaginationState;
 }
+
+const getCommonPinningStyles = (column: any) => {
+    const isPinned = column.getIsPinned();
+
+    return {
+        left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
+        right:
+            isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
+        position: isPinned ? 'sticky' : 'relative'
+    } as any;
+};
+
+const getCommonPinningClassName = (column: any) => {
+    const isPinned = column.getIsPinned();
+    const isFirstRightPinnedColumn =
+        isPinned === 'right' && column.getIsFirstColumn('right');
+    return isFirstRightPinnedColumn
+        ? 'after:shadow-fixedShadow dark:after:shadow-fixedShadowDark after:absolute after:w-8 after:inset-0 after:-translate-x-full'
+        : '';
+};
 
 export function DataTable<TData, TValue>({
     columns,
@@ -42,6 +65,8 @@ export function DataTable<TData, TValue>({
     loading,
     sizes,
     pagination,
+    onSearch,
+    onReload,
     onPaginationChange
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
@@ -49,7 +74,11 @@ export function DataTable<TData, TValue>({
         columns,
         pageCount,
         state: {
-            pagination
+            pagination,
+            columnPinning: {
+                left: [],
+                right: ['actions']
+            }
         },
         manualPagination: true,
         onPaginationChange: onPaginationChange,
@@ -61,9 +90,23 @@ export function DataTable<TData, TValue>({
 
     return (
         <Card className="border-none shadow-none">
-            <CardHeader>TODO</CardHeader>
+            <CardHeader className="flex flex-row justify-end items-center">
+                <Input
+                    type="text"
+                    placeholder={t('table.search.placeholder')}
+                    className="max-w-72"
+                    onKeyDown={(e: any) => {
+                        if (e.key === 'Enter') {
+                            onSearch && onSearch(e.target.value);
+                        }
+                    }}
+                />
+                <Button variant="outline" className="px-3" onClick={onReload}>
+                    <LoaderCircle className={cn('h-4 w-4')} />
+                </Button>
+            </CardHeader>
             <CardContent>
-                <ScrollArea className={cn('rounded-md border')}>
+                <div className={cn('rounded-md border')}>
                     <Table key={'table'}>
                         <TableHeader className="bg-gray-100 dark:bg-neutral-800">
                             {table.getHeaderGroups().map(headerGroup => (
@@ -72,7 +115,17 @@ export function DataTable<TData, TValue>({
                                         return (
                                             <TableHead
                                                 key={header.id}
-                                                className="text-nowrap"
+                                                className={cn(
+                                                    'text-nowrap bg-gray-100 dark:bg-neutral-800',
+                                                    getCommonPinningClassName(
+                                                        header.column
+                                                    )
+                                                )}
+                                                style={{
+                                                    ...getCommonPinningStyles(
+                                                        header.column
+                                                    )
+                                                }}
                                             >
                                                 {header.isPlaceholder
                                                     ? null
@@ -99,7 +152,17 @@ export function DataTable<TData, TValue>({
                                         {row.getVisibleCells().map(cell => (
                                             <TableCell
                                                 key={cell.id}
-                                                className="text-nowrap"
+                                                className={cn(
+                                                    'text-nowrap bg-white dark:bg-black',
+                                                    getCommonPinningClassName(
+                                                        cell.column
+                                                    )
+                                                )}
+                                                style={{
+                                                    ...getCommonPinningStyles(
+                                                        cell.column
+                                                    )
+                                                }}
                                             >
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
@@ -125,9 +188,7 @@ export function DataTable<TData, TValue>({
                             )}
                         </TableBody>
                     </Table>
-                    <ScrollBar orientation="vertical" />
-                    <ScrollBar orientation="horizontal" />
-                </ScrollArea>
+                </div>
                 <div className="pt-6">
                     <DataTablePagination
                         {...{
