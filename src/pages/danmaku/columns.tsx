@@ -45,7 +45,7 @@ const Actions = ({ row, onRefresh }: any) => {
                     {t('dialog.delete')}
                 </DialogTitle>
                 <DialogDescription>
-                    <div>{t('dialog.delete.content')}</div>
+                    {t('dialog.delete.content')}
                 </DialogDescription>
                 <DialogFooter>
                     <Button
