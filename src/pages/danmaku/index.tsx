@@ -15,7 +15,7 @@ const Dashboard = () => {
     const [total, setTotal] = useState(0);
     const [data, setData] = useState([]);
 
-    const { run, loading } = useRequest(DanmakuList, {
+    const { run, loading, refresh } = useRequest(DanmakuList, {
         defaultParams: [
             {
                 ac: 'list',
@@ -57,6 +57,8 @@ const Dashboard = () => {
                 page: page > 1 ? page - 1 : 1,
                 limit
             });
+        } else {
+            refresh();
         }
     });
 
