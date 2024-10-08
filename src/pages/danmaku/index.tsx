@@ -15,7 +15,7 @@ const Dashboard = () => {
     const [total, setTotal] = useState(0);
     const [data, setData] = useState([]);
 
-    const { run, loading, refresh } = useRequest(DanmakuList, {
+    const { run, loading } = useRequest(DanmakuList, {
         defaultParams: [
             {
                 ac: 'list',
@@ -50,7 +50,15 @@ const Dashboard = () => {
         }
     });
 
-    const columns = getColumns(t, refresh);
+    const columns = getColumns(t, () => {
+        if (data.length === 1) {
+            run({
+                ac: 'list',
+                page: page > 1 ? page - 1 : 1,
+                limit
+            });
+        }
+    });
 
     const onSearch = (val: string) => {
         if (val) {
