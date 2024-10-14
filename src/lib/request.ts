@@ -5,6 +5,8 @@ import axios, {
     CreateAxiosDefaults,
     InternalAxiosRequestConfig
 } from 'axios';
+import { userStore } from '@/store/user';
+import { toast } from '@/hooks/use-toast';
 
 interface ApiRequest<T = any> {
     data: T;
@@ -25,9 +27,9 @@ class Request {
         // 请求拦截器
         this.instance.interceptors.request.use(
             (config: InternalAxiosRequestConfig) => {
-                if (config.url !== '/login') {
-                    // todo
-                }
+                const token = userStore.getState().token;
+                if (token && config.headers)
+                    config.headers['Authorization'] = token;
 
                 const controller = new AbortController();
                 const url = config.url || '';
@@ -44,22 +46,31 @@ class Request {
             (response: AxiosResponse) => {
                 const url = response.config.url || '';
                 this.abortControllerMap.delete(url);
-                if (response.data.code !== 0) {
+
+                if (response.data.code !== 200) {
+                    toast({
+                        description: response.data.msg || 'failed',
+                        duration: 1500
+                    });
                     return Promise.reject(response.data);
                 }
 
                 return response.data;
             },
             err => {
+                toast({
+                    description: err.response.data.msg || 'failed',
+                    duration: 1500
+                });
+
+                // 权限不够，直接重定向到登录页
                 if (
                     err.response?.status === 401 ||
                     err.response?.status === 403
                 ) {
-                    // todo redirect login
-                }
-
-                if (err.response?.status > 400) {
-                    // todo toast
+                    window.localStorage.clear();
+                    window.location.reload();
+                    window.location.href = `${window.location.origin}/login`;
                 }
 
                 return Promise.reject(err);

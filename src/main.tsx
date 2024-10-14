@@ -6,10 +6,10 @@ import i18next from '@/locale';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { ThemeProvider } from '@/components/custom/theme-provider';
 import { Loading } from '@/components/custom/loading';
+import { Toaster } from '@/components/ui/toaster';
 import router from '@/routes';
 import '@/style/index.css';
 import '@/style/global.css';
-import { Toaster } from '@/components/ui/toaster';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
