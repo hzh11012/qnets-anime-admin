@@ -47,7 +47,11 @@ class Request {
                 const url = response.config.url || '';
                 this.abortControllerMap.delete(url);
 
-                if (response.data.code !== 200) {
+                // 特殊处理damaku的接口
+                if (
+                    response.data.code !== 200 &&
+                    !response.config.url?.includes('danmaku')
+                ) {
                     toast({
                         description: response.data.msg || 'failed',
                         duration: 1500

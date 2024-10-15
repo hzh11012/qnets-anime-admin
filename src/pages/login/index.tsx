@@ -28,15 +28,14 @@ const Login = () => {
 
     const loginForm = z.object({
         phone: z
-            .string()
-            .min(1, {
-                message: t('login.phone.empty')
+            .string({
+                required_error: t('login.phone.empty')
             })
             .regex(/^1[3456789]\d{9}$/, {
                 message: t('login.phone.rule')
             }),
-        password: z.string().min(1, {
-            message: t('login.password.empty')
+        password: z.string({
+            required_error: t('login.password.empty')
         })
     });
 
