@@ -1,7 +1,6 @@
 import useIsCollapsed from '@/hooks/use-is-collapsed';
 import { Sidebar } from '@/components/layout/sidebar';
 import { cn } from '@/lib/utils';
-// import { useTranslation } from 'react-i18next';
 import { LayoutBody, LayoutHeader } from '@/components/layout';
 import Language from '@/components/layout/language';
 import { ThemeToggle } from '@/components/layout/theme-switch';
@@ -9,7 +8,6 @@ import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
     const [isCollapsed, setIsCollapsed] = useIsCollapsed();
-    // const { t } = useTranslation();
 
     return (
         <div
@@ -35,7 +33,7 @@ const Layout = () => {
                     </LayoutHeader>
                 </div>
 
-                <LayoutBody className="flex flex-col">
+                <LayoutBody className="flex flex-col p-0 md:px-0">
                     <div className="flex-1 space-y-5">
                         <Outlet />
                     </div>

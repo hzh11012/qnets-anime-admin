@@ -5,7 +5,8 @@ import axios, {
     CreateAxiosDefaults,
     InternalAxiosRequestConfig
 } from 'axios';
-import { userStore } from '@/store/user';
+import { getToken } from '@/lib/token';
+import { LOGIN_URL } from '@/lib/config';
 import { toast } from '@/hooks/use-toast';
 
 interface ApiRequest<T = any> {
@@ -27,7 +28,7 @@ class Request {
         // 请求拦截器
         this.instance.interceptors.request.use(
             (config: InternalAxiosRequestConfig) => {
-                const token = userStore.getState().token;
+                const token = getToken('access_token');
                 if (token && config.headers)
                     config.headers['Authorization'] = token;
 
@@ -67,14 +68,11 @@ class Request {
                     duration: 1500
                 });
 
-                // 权限不够，直接重定向到登录页
-                if (
-                    err.response?.status === 401 ||
-                    err.response?.status === 403
-                ) {
+                // 认证失败，直接重定向到登录页
+                if (err.response?.status === 401) {
                     window.localStorage.clear();
                     window.location.reload();
-                    window.location.href = `${window.location.origin}/login`;
+                    window.location.href = `${LOGIN_URL}?redirect_uri=${window.location.href}`;
                 }
 
                 return Promise.reject(err);

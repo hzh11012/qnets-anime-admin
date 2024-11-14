@@ -1,13 +1,11 @@
 import { Base64 } from 'js-base64';
+import { Cookies } from 'react-cookie';
 
-const localStorageKey = 'user-store';
-
-const getToken = () => {
-    const store = window.localStorage.getItem(localStorageKey)!;
-    if (store) {
-        const { state } = JSON.parse(store);
-        const token = state?.token;
-        return token;
+const getToken = (name: string) => {
+    const cookies = new Cookies(null, { path: '/' });
+    const token = cookies.get(name);
+    if (token) {
+        return encodeToken(token);
     }
     return null;
 };
