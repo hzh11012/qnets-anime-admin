@@ -39,7 +39,6 @@ class RefresherAxiosRequest {
             async error => {
                 if (error.response?.status) {
                     this.temporaryQueue = [];
-                    window.localStorage.clear();
                     window.location.reload();
                     window.location.href = `${LOGIN_URL}?redirect=${encodeURIComponent(window.location.href)}`;
                 }

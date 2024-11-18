@@ -58,12 +58,14 @@ class AxiosRequest {
                 // 当状态码为401时，调用刷新token的方法
                 if (error.response?.status === 401) {
                     if (!(await RefresherHttpClient.refresh())) {
-                        window.localStorage.clear();
                         window.location.reload();
                         window.location.href = `${LOGIN_URL}?redirect=${encodeURIComponent(window.location.href)}`;
                     }
 
-                    return Promise.reject(error);
+                    return Promise.reject({
+                        ...error,
+                        isRefresh: true
+                    });
                 }
 
                 toast({
@@ -71,17 +73,20 @@ class AxiosRequest {
                     duration: 1500
                 });
 
-                return Promise.reject(error);
+                return Promise.reject({
+                    ...error,
+                    isRefresh: false
+                });
             }
         );
     }
 
     async request<T>(
-        axiosRequestConfig: AxiosRequestConfig
+        axiosRequestConfig: AxiosRequestConfig,
+        retryCount: number = 0 // 添加重试计数器参数
     ): Promise<ApiRequest<T>> {
         // 当正在刷新token,将当前请求放入暂存队列中
         if (RefresherHttpClient.isRefreshing) {
-            console.log('当前请求正在刷新token, 暂存请求');
             return new Promise((resolve, reject) => {
                 RefresherHttpClient.temporaryQueue.push(
                     this.axiosInstance(axiosRequestConfig)
@@ -92,9 +97,11 @@ class AxiosRequest {
         }
         return new Promise(resolve => {
             this.axiosInstance(axiosRequestConfig)
-                .catch(() => {
-                    // 出现非200状态的错误,就重新发请求
-                    return this.request(axiosRequestConfig);
+                .catch((error) => {
+                    // 出现非200状态的错误，就重新发请求，最多重试一次
+                    if (retryCount < 1 && error.isRefresh) {
+                        return this.request(axiosRequestConfig, retryCount + 1);
+                    }
                 })
                 .then((res: any) => resolve(res));
         });

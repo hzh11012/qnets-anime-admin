@@ -9,7 +9,7 @@ import {
 import { Moon, Sun, Tv2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-export function ThemeToggle() {
+const ThemeToggle = () => {
     const { theme, setTheme } = useTheme();
     const { t } = useTranslation();
 
@@ -54,4 +54,6 @@ export function ThemeToggle() {
             </DropdownMenuContent>
         </DropdownMenu>
     );
-}
+};
+
+export default ThemeToggle;

@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface State {
     userInfo: {
-        nickName: string;
+        nickname: string;
         phone: string;
         scope: number;
         avatar: string;
@@ -19,7 +19,7 @@ const userStore = create(
     persist<State & Action>(
         set => ({
             userInfo: {
-                nickName: '',
+                nickname: '',
                 phone: '',
                 scope: -1,
                 avatar: '',

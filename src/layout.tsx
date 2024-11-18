@@ -3,7 +3,8 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { cn } from '@/lib/utils';
 import { LayoutBody, LayoutHeader } from '@/components/layout';
 import Language from '@/components/layout/language';
-import { ThemeToggle } from '@/components/layout/theme-switch';
+import UserCenter from '@/components/layout/user-center';
+import ThemeToggle from '@/components/layout/theme-switch';
 import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
@@ -29,6 +30,7 @@ const Layout = () => {
                         <div className="ml-auto flex items-center space-x-4">
                             <Language />
                             <ThemeToggle />
+                            <UserCenter />
                         </div>
                     </LayoutHeader>
                 </div>

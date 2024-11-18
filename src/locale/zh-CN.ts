@@ -4,7 +4,7 @@ import danmaku from '@/locale/zh-CN/danmaku';
 import pagination from '@/locale/zh-CN/pagination';
 import table from '@/locale/zh-CN/table';
 import dialog from '@/locale/zh-CN/dialog';
-import login from '@/locale/zh-CN/login';
+import userCenter from '@/locale/zh-CN/user-center';
 
 export default {
     ...menu,
@@ -13,5 +13,5 @@ export default {
     ...pagination,
     ...table,
     ...dialog,
-    ...login
+    ...userCenter
 };
