@@ -13,6 +13,9 @@ export default defineConfig({
         target: 'ESNext'
     },
     server: {
+        // 这里配置了代理，需要配合后端的set-cookie的domain
+        host: '0.0.0.0',
+        port: 5173,
         proxy: {
             '/danmaku': {
                 target: 'https://danmaku.qnets.cn',
@@ -25,6 +28,12 @@ export default defineConfig({
                 changeOrigin: true,
                 ws: true,
                 rewrite: (path: string) => path.replace(/^\/v1/, '')
+            },
+            '/auth': {
+                target: 'http://localhost:4800',
+                changeOrigin: true,
+                ws: true,
+                rewrite: (path: string) => path.replace(/^\/auth/, '')
             }
         }
     }

@@ -2,12 +2,12 @@ import axios, {
     AxiosInstance,
     AxiosRequestConfig,
     AxiosResponse,
-    CreateAxiosDefaults,
-    InternalAxiosRequestConfig
+    CreateAxiosDefaults
 } from 'axios';
 import { getToken } from '@/lib/token';
-import { LOGIN_URL } from '@/lib/config';
 import { toast } from '@/hooks/use-toast';
+import { RefresherHttpClient } from '@/lib/refresherRequest';
+import { LOGIN_URL } from '@/lib/config';
 
 interface ApiRequest<T = any> {
     data: T;
@@ -15,39 +15,31 @@ interface ApiRequest<T = any> {
     code: number;
 }
 
-class Request {
-    public instance: AxiosInstance;
-
-    private readonly abortControllerMap: Map<string, AbortController>;
+class AxiosRequest {
+    private axiosInstance: AxiosInstance;
 
     constructor(config: CreateAxiosDefaults) {
-        this.instance = axios.create(config);
+        this.axiosInstance = axios.create(config);
 
-        this.abortControllerMap = new Map();
+        this.interceptorsRequest();
+        this.interceptorsResponse();
+    }
 
-        // 请求拦截器
-        this.instance.interceptors.request.use(
-            (config: InternalAxiosRequestConfig) => {
-                const token = getToken('access_token');
-                if (token && config.headers)
-                    config.headers['Authorization'] = token;
+    // 请求拦截器
+    private interceptorsRequest() {
+        this.axiosInstance.interceptors.request.use(config => {
+            const token = getToken('access_token');
+            if (token && config.headers)
+                config.headers['Authorization'] = token;
 
-                const controller = new AbortController();
-                const url = config.url || '';
-                config.signal = controller.signal;
-                this.abortControllerMap.set(url, controller);
+            return config;
+        }, Promise.reject);
+    }
 
-                return config;
-            },
-            Promise.reject
-        );
-
-        // 响应拦截器
-        this.instance.interceptors.response.use(
+    // 响应拦截器
+    private interceptorsResponse() {
+        this.axiosInstance.interceptors.response.use(
             (response: AxiosResponse) => {
-                const url = response.config.url || '';
-                this.abortControllerMap.delete(url);
-
                 // 特殊处理damaku的接口
                 if (
                     response.data.code !== 200 &&
@@ -62,40 +54,79 @@ class Request {
 
                 return response.data;
             },
-            err => {
+            async error => {
+                // 当状态码为401时，调用刷新token的方法
+                if (error.response?.status === 401) {
+                    if (!(await RefresherHttpClient.refresh())) {
+                        window.localStorage.clear();
+                        window.location.reload();
+                        window.location.href = `${LOGIN_URL}?redirect=${encodeURIComponent(window.location.href)}`;
+                    }
+
+                    return Promise.reject(error);
+                }
+
                 toast({
-                    description: err.response.data.msg || 'failed',
+                    description: error.response.data.msg || 'failed',
                     duration: 1500
                 });
 
-                // 认证失败，直接重定向到登录页
-                if (err.response?.status === 401) {
-                    window.localStorage.clear();
-                    window.location.reload();
-                    window.location.href = `${LOGIN_URL}?redirect_uri=${window.location.href}`;
-                }
-
-                return Promise.reject(err);
+                return Promise.reject(error);
             }
         );
     }
 
-    get<T = any>(
-        url: string,
-        config?: AxiosRequestConfig
+    async request<T>(
+        axiosRequestConfig: AxiosRequestConfig
     ): Promise<ApiRequest<T>> {
-        return this, this.instance.get(url, config);
+        // 当正在刷新token,将当前请求放入暂存队列中
+        if (RefresherHttpClient.isRefreshing) {
+            console.log('当前请求正在刷新token, 暂存请求');
+            return new Promise((resolve, reject) => {
+                RefresherHttpClient.temporaryQueue.push(
+                    this.axiosInstance(axiosRequestConfig)
+                        .then((res: any) => resolve(res))
+                        .catch(reject)
+                ); // 最后会在promise.allSettled处执行
+            });
+        }
+        return new Promise(resolve => {
+            this.axiosInstance(axiosRequestConfig)
+                .catch(() => {
+                    // 出现非200状态的错误,就重新发请求
+                    return this.request(axiosRequestConfig);
+                })
+                .then((res: any) => resolve(res));
+        });
     }
 
-    post<T = any>(
+    async get<T>(
         url: string,
-        data?: any,
+        config: AxiosRequestConfig = {}
+    ): Promise<ApiRequest<T>> {
+        const res = await this.request<T>({
+            ...config,
+            url,
+            method: 'get'
+        });
+        return res;
+    }
+
+    async post<T>(
+        url: string,
+        body?: object,
         config?: AxiosRequestConfig
     ): Promise<ApiRequest<T>> {
-        return this, this.instance.post(url, data, config);
+        const res = await this.request<T>({
+            ...config,
+            url,
+            method: 'post',
+            data: body
+        });
+        return res;
     }
 }
 
-export const HttpClient = new Request({
+export const HttpClient = new AxiosRequest({
     timeout: 30 * 1000
 });
