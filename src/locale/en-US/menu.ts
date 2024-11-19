@@ -16,7 +16,6 @@ export default {
 
     'menu.system.permission': 'Permissions',
     'menu.system.permission.user': 'User List',
-    'menu.system.permission.role': 'Role List',
 
     'menu.system.settings': 'Settings'
 };

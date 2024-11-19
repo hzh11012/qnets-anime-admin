@@ -6,6 +6,5 @@ export default {
     'danmaku.table.videoTime': '时间点',
     'danmaku.table.ip': 'IP地址',
     'danmaku.table.createTime': '创建时间',
-    'danmaku.table.source': '来源',
-    'danmaku.table.actions': '操作'
+    'danmaku.table.source': '来源'
 };

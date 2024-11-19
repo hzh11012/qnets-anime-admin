@@ -16,7 +16,6 @@ export default {
 
     'menu.system.permission': '权限',
     'menu.system.permission.user': '用户管理',
-    'menu.system.permission.role': '角色管理',
 
     'menu.system.settings': '设置'
 };

@@ -73,12 +73,6 @@ export const links: SideLink[] = [
                 label: '',
                 href: '/users',
                 icon: <LayoutDashboard size={18} />
-            },
-            {
-                title: 'menu.system.permission.role',
-                label: '',
-                href: '/roles',
-                icon: <LayoutDashboard size={18} />
             }
         ]
     },

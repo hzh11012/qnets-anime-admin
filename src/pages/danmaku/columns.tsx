@@ -118,7 +118,7 @@ export const getColumns = (
         },
         {
             id: 'actions',
-            header: t('danmaku.table.actions'),
+            header: t('table.actions'),
             cell: ({ row }: any) => <Actions row={row} onRefresh={refresh} />
         }
     ];

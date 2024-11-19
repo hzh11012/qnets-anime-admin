@@ -3,5 +3,13 @@ export default {
     'table.empty': 'Empty',
     'table.edit': 'Edit',
     'table.delete': 'Delete',
-    'table.search.placeholder': 'Please enter'
+    'table.actions': 'Actions',
+    'table.search.placeholder': 'Please enter',
+    'table.toolbar.toggle_columns': 'Toggle Columns',
+    'table.toolbar.result_empty': 'No Results Found',
+    'table.toolbar.selected': 'Selected',
+    'table.toolbar.clear_filters': 'Clear Filters',
+    'table.toolbar.reset': 'Reset',
+    'table.toolbar.asc': 'Asc',
+    'table.toolbar.desc': 'Desc'
 };

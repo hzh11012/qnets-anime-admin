@@ -5,6 +5,7 @@ import pagination from '@/locale/zh-CN/pagination';
 import table from '@/locale/zh-CN/table';
 import dialog from '@/locale/zh-CN/dialog';
 import userCenter from '@/locale/zh-CN/user-center';
+import user from '@/locale/zh-CN/user';
 
 export default {
     ...menu,
@@ -13,5 +14,6 @@ export default {
     ...pagination,
     ...table,
     ...dialog,
-    ...userCenter
+    ...userCenter,
+    ...user
 };
