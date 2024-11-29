@@ -11,8 +11,10 @@ import { LOGIN_URL } from '@/lib/config';
 
 interface ApiRequest<T = any> {
     data: T;
-    message: string;
-    code: number;
+    message?: string;
+    msg?: string;
+    code?: number;
+    errorCode?: number;
 }
 
 class AxiosRequest {
@@ -97,10 +99,12 @@ class AxiosRequest {
         }
         return new Promise(resolve => {
             this.axiosInstance(axiosRequestConfig)
-                .catch((error) => {
+                .catch(error => {
                     // 出现非200状态的错误，就重新发请求，最多重试一次
                     if (retryCount < 1 && error.isRefresh) {
                         return this.request(axiosRequestConfig, retryCount + 1);
+                    } else {
+                        resolve(error.response.data);
                     }
                 })
                 .then((res: any) => resolve(res));

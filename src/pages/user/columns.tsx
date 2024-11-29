@@ -4,8 +4,12 @@ import { cn } from '@/lib/utils';
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
+import { DataTableRowActions } from '@/pages/user/data-table-row-actions';
 
-export const getColumns = (t: TFunction<'translation', undefined>) => {
+export const getColumns = (
+    t: TFunction<'translation', undefined>,
+    onRefresh: () => void
+) => {
     const columns = [
         {
             accessorKey: 'id',
@@ -34,9 +38,9 @@ export const getColumns = (t: TFunction<'translation', undefined>) => {
             title: t('user.table.nickname'),
             header: () => {
                 return (
-                    <div className="flex items-center space-x-1">
+                    <div className={cn('flex items-center space-x-1')}>
                         <span>{t('user.table.nickname')}</span>
-                        <Search className="w-3.5 h-3.5" />
+                        <Search className={cn('w-3.5 h-3.5')} />
                     </div>
                 );
             }
@@ -51,8 +55,9 @@ export const getColumns = (t: TFunction<'translation', undefined>) => {
             title: t('user.table.scope'),
             header: t('user.table.scope'),
             cell: ({ row }: any) => {
-                // 0-游客 1-正式会员 2-管理员
+                // -1-封禁 0-游客 1-正式会员 2-管理员
                 const RoleMap: { [key: number]: string } = {
+                    '-1': t('user.role.ban'),
                     0: t('user.role.visitor'),
                     1: t('user.role.member'),
                     2: t('user.role.admin')
@@ -73,7 +78,9 @@ export const getColumns = (t: TFunction<'translation', undefined>) => {
         {
             id: 'actions',
             header: t('table.actions'),
-            cell: ({ row }: any) => <>actions todo</>
+            cell: ({ row }: any) => (
+                <DataTableRowActions row={row} onRefresh={onRefresh} />
+            )
         }
     ];
 
@@ -86,6 +93,10 @@ export const getFilterColumns = (t: TFunction<'translation', undefined>) => {
             column: 'scope',
             title: t('user.table.scope'),
             options: [
+                {
+                    label: t('user.role.ban'),
+                    value: -1
+                },
                 {
                     label: t('user.role.visitor'),
                     value: 0

@@ -27,7 +27,7 @@ function DataTablePagination<TData>({
         <div className="flex items-center justify-between">
             <div className="flex items-center">
                 <div className="items-center space-x-2 hidden sm:flex">
-                    {total && (
+                    {!!total && (
                         <>
                             <div className="text-sm font-medium">
                                 {t('pagination.total')}

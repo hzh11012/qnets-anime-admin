@@ -6,6 +6,8 @@ import table from '@/locale/zh-CN/table';
 import dialog from '@/locale/zh-CN/dialog';
 import userCenter from '@/locale/zh-CN/user-center';
 import user from '@/locale/zh-CN/user';
+import validator from '@/locale/zh-CN/validator';
+import correction from '@/locale/zh-CN/correction';
 
 export default {
     ...menu,
@@ -15,5 +17,7 @@ export default {
     ...table,
     ...dialog,
     ...userCenter,
-    ...user
+    ...user,
+    ...validator,
+    ...correction
 };

@@ -1,10 +1,10 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getUserList } from '@/apis/user';
+import { getCorrectionList } from '@/apis/correction';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import { getColumns, getFilterColumns } from '@/pages/user/columns';
+import { getColumns, getFilterColumns } from '@/pages/correction/columns';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { validFilter, validSort } from '@/lib/utils';
@@ -21,7 +21,7 @@ const User = () => {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
 
-    const { run, loading, refresh } = useRequest(getUserList, {
+    const { run, loading, refresh } = useRequest(getCorrectionList, {
         defaultParams: [
             {
                 page,
@@ -35,13 +35,13 @@ const User = () => {
         },
         refreshDeps: [page, limit, columnFilters, keyword, sorting],
         refreshDepsAction: () => {
-            const scope = validFilter('scope', columnFilters);
+            const status = validFilter('status', columnFilters);
             const order = validSort('created_at', sorting);
             run({
                 page,
                 keyword,
                 pageSize: limit,
-                scope,
+                status,
                 order
             });
         }

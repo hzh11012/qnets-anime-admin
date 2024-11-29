@@ -21,7 +21,7 @@ const userStore = create(
             userInfo: {
                 nickname: '',
                 phone: '',
-                scope: -1,
+                scope: -999,
                 avatar: '',
                 created_at: ''
             },

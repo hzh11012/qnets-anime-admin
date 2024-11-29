@@ -6,7 +6,11 @@ import { getUserInfo } from '@/apis/auth';
 import { userStore } from '@/store/user';
 
 const tokenLoader = async () => {
-    const { data } = await getUserInfo();
+    const { data, code, errorCode } = await getUserInfo();
+    if (!code && errorCode === 10005) {
+        // 禁止访问
+        return redirect('/404');
+    }
     userStore.setState({
         userInfo: data
     });
@@ -36,6 +40,14 @@ const staticRoutes: RouteObject[] = [
                 path: 'video/danmaku',
                 lazy: async () => ({
                     Component: (await import('@/pages/danmaku/index')).default
+                })
+            },
+            {
+                index: true,
+                path: 'video/correction',
+                lazy: async () => ({
+                    Component: (await import('@/pages/correction/index'))
+                        .default
                 })
             },
             {

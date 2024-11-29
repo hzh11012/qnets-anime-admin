@@ -6,3 +6,13 @@ export interface UserListReq {
     orderBy?: string;
     keyword?: string;
 }
+
+export interface UserDeleteReq {
+    id: number;
+}
+
+export interface UserEditReq extends UserDeleteReq {
+    nickname: string;
+    avatar?: string | null;
+    scope: number;
+}

@@ -1,4 +1,4 @@
-import { userDelete, userEdit } from '@/apis/user';
+import { correctionDelete, correctionEdit } from '@/apis/correction';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -23,6 +23,7 @@ import {
     FormLabel,
     FormMessage
 } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -32,7 +33,6 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { z } from 'zod';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface DataTableRowActionsProps {
     row: any;
@@ -43,49 +43,50 @@ export function DataTableRowActions({
     row,
     onRefresh
 }: DataTableRowActionsProps) {
-    const { id, avatar, nickname, scope } = row.original;
+    const { id, nickname, message, status } = row.original;
     const { t } = useTranslation();
     const [editOpen, setEditOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
 
     const editFormSchema = z.object({
         id: z.number({
-            required_error: `${t('user.table.id')} ${t('validator.empty')}`,
-            invalid_type_error: `${t('user.table.id')} ${t('validator.type')}`
+            required_error: `${t('correct.table.id')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('correct.table.id')} ${t('validator.type')}`
         }),
         nickname: z
             .string({
-                required_error: `${t('user.table.nickname')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('user.table.nickname')} ${t('validator.type')}`
+                required_error: `${t('correct.table.nickname')} ${t('validator.empty')}`,
+                invalid_type_error: `${t('correct.table.nickname')} ${t('validator.type')}`
             })
-            .min(1, `${t('user.table.nickname')} ${t('validator.empty')}`),
-        avatar: z
+            .min(1, `${t('correct.table.nickname')} ${t('validator.empty')}`),
+        message: z
             .string({
-                invalid_type_error: `${t('user.table.avatar')} ${t('validator.type')}`
+                required_error: `${t('correct.table.message')} ${t('validator.empty')}`,
+                invalid_type_error: `${t('correct.table.message')} ${t('validator.type')}`
             })
-            .nullish(),
-        scope: z
+            .min(1, `${t('correct.table.message')} ${t('validator.empty')}`),
+        status: z
             .number({
-                required_error: `${t('user.table.scope')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('user.table.scope')} ${t('validator.type')}`
+                required_error: `${t('correct.table.status')} ${t('validator.empty')}`,
+                invalid_type_error: `${t('correct.table.status')} ${t('validator.type')}`
             })
-            .int(`${t('user.table.scope')} ${t('validator.int')}`)
-            .min(-1, `${t('user.table.scope')} ${t('validator.min')} -1`)
-            .max(2, `${t('user.table.scope')} ${t('validator.max')} 2`)
+            .int(`${t('correct.table.status')} ${t('validator.int')}`)
+            .min(0, `${t('correct.table.status')} ${t('validator.min')} 0`)
+            .max(1, `${t('correct.table.status')} ${t('validator.max')} 1`)
     });
 
     const editForm = useForm<z.infer<typeof editFormSchema>>({
         resolver: zodResolver(editFormSchema),
         defaultValues: {
             id,
-            avatar,
             nickname,
-            scope
+            message,
+            status
         }
     });
 
     const handleEdit = async (values: z.infer<typeof editFormSchema>) => {
-        const { code, msg } = await userEdit(values);
+        const { code, msg } = await correctionEdit(values);
         if (code === 200) {
             onRefresh && onRefresh();
             toast({
@@ -97,7 +98,7 @@ export function DataTableRowActions({
     };
 
     const handleDelete = async () => {
-        const { code, msg } = await userDelete({ id });
+        const { code, msg } = await correctionDelete({ id });
         if (code === 200) {
             onRefresh && onRefresh();
             toast({
@@ -162,67 +163,33 @@ export function DataTableRowActions({
                                 />
                                 <FormField
                                     control={editForm.control}
-                                    name="avatar"
-                                    render={() => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('user.table.avatar')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Avatar
-                                                    className={cn(
-                                                        'w-16 h-16 rounded-lg'
-                                                    )}
-                                                >
-                                                    <AvatarImage
-                                                        src={avatar}
-                                                        className={cn(
-                                                            'rounded-lg'
-                                                        )}
-                                                    />
-                                                    <AvatarFallback
-                                                        className={cn(
-                                                            'rounded-lg'
-                                                        )}
-                                                    >
-                                                        {nickname?.slice(0, 1)}
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={editForm.control}
-                                    name="nickname"
+                                    name="message"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>
-                                                {t('user.table.nickname')}
+                                                {t('correct.table.message')}
                                             </FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
+                                                <Textarea
+                                                    className="resize-none"
                                                     {...field}
                                                 />
                                             </FormControl>
-                                            <FormMessage />
                                         </FormItem>
                                     )}
                                 />
                                 <FormField
                                     control={editForm.control}
-                                    name="scope"
+                                    name="status"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>
-                                                {t('user.table.scope')}
+                                                {t('correct.table.status')}
                                             </FormLabel>
                                             <Select
                                                 onValueChange={val =>
                                                     editForm.setValue(
-                                                        'scope',
+                                                        'status',
                                                         parseInt(val)
                                                     )
                                                 }
@@ -234,17 +201,15 @@ export function DataTableRowActions({
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value="-1">
-                                                        {t('user.role.ban')}
-                                                    </SelectItem>
                                                     <SelectItem value="0">
-                                                        {t('user.role.visitor')}
+                                                        {t(
+                                                            'correct.status.pending'
+                                                        )}
                                                     </SelectItem>
                                                     <SelectItem value="1">
-                                                        {t('user.role.member')}
-                                                    </SelectItem>
-                                                    <SelectItem value="2">
-                                                        {t('user.role.admin')}
+                                                        {t(
+                                                            'correct.status.done'
+                                                        )}
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
