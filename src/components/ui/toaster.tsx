@@ -7,6 +7,7 @@ import {
     ToastTitle,
     ToastViewport
 } from '@/components/ui/toast';
+import { cn } from '@/lib/utils';
 
 export function Toaster() {
     const { toasts } = useToast();
@@ -22,7 +23,7 @@ export function Toaster() {
             }) {
                 return (
                     <Toast key={id} {...props}>
-                        <div className="grid gap-1">
+                        <div className={cn('grid gap-1')}>
                             {title && <ToastTitle>{title}</ToastTitle>}
                             {description && (
                                 <ToastDescription>

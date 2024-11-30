@@ -7,6 +7,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 import { Table } from '@tanstack/react-table';
 import { Settings2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -26,12 +27,12 @@ export function DataTableViewOptions<TData>({
                 <Button
                     variant="outline"
                     size="sm"
-                    className="ml-auto hidden h-9 w-9 px-0 lg:flex"
+                    className={cn('ml-auto hidden h-9 w-9 px-0 lg:flex')}
                 >
                     <Settings2 width={18} height={18} />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[150px]">
+            <DropdownMenuContent align="end" className={cn('w-[150px]')}>
                 <DropdownMenuLabel>
                     {t('table.toolbar.toggle_columns')}
                 </DropdownMenuLabel>
@@ -47,7 +48,7 @@ export function DataTableViewOptions<TData>({
                         return (
                             <DropdownMenuCheckboxItem
                                 key={column.id}
-                                className="capitalize"
+                                className={cn('capitalize')}
                                 checked={column.getIsVisible()}
                                 onCheckedChange={value =>
                                     column.toggleVisibility(!!value)
@@ -60,7 +61,7 @@ export function DataTableViewOptions<TData>({
                 <DropdownMenuSeparator />
                 <DropdownMenuCheckboxItem
                     key={'clear_all'}
-                    className="capitalize px-2 justify-center"
+                    className={cn('capitalize px-2 justify-center')}
                     onCheckedChange={() => table.resetColumnVisibility()}
                 >
                     {t('table.toolbar.reset')}

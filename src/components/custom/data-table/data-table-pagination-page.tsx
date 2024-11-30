@@ -6,6 +6,7 @@ import {
     PaginationItem,
     PaginationLink
 } from '@/components/ui/pagination';
+import { cn } from '@/lib/utils';
 import { Table } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -58,14 +59,14 @@ function PaginationPage<TData>({ table }: DataTablePaginationProps<TData>) {
                     <Button
                         variant="outline"
                         size="icon"
-                        className="w-9 h-9"
+                        className={cn('w-9 h-9')}
                         onClick={e => {
                             e.preventDefault();
                             table.previousPage();
                         }}
                         disabled={!table.getCanPreviousPage()}
                     >
-                        <ChevronLeft className="h-4 w-4" />
+                        <ChevronLeft className={cn('h-4 w-4')} />
                     </Button>
                 </PaginationItem>
                 {pageList.map(page => {
@@ -75,7 +76,7 @@ function PaginationPage<TData>({ table }: DataTablePaginationProps<TData>) {
                                 <PaginationEllipsis />
                             ) : (
                                 <PaginationLink
-                                    className="cursor-pointer w-9 h-9"
+                                    className={cn('cursor-pointer w-9 h-9')}
                                     onClick={e => {
                                         e.preventDefault();
                                         table.setPageIndex(Number(page) - 1);
@@ -96,14 +97,14 @@ function PaginationPage<TData>({ table }: DataTablePaginationProps<TData>) {
                     <Button
                         variant="outline"
                         size="icon"
-                        className="w-9 h-9"
+                        className={cn('w-9 h-9')}
                         onClick={e => {
                             e.preventDefault();
                             table.nextPage();
                         }}
                         disabled={!table.getCanNextPage()}
                     >
-                        <ChevronRight className="h-4 w-4" />
+                        <ChevronRight className={cn('h-4 w-4')} />
                     </Button>
                 </PaginationItem>
             </PaginationContent>

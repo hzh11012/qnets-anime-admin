@@ -123,7 +123,7 @@ export function DataTableRowActions({
                 }}
             >
                 <DialogTrigger asChild>
-                    <Button variant="link" className="h-8 p-0">
+                    <Button variant="link" className={cn('h-8 p-0')}>
                         {t('table.edit')}
                     </Button>
                 </DialogTrigger>
@@ -139,7 +139,7 @@ export function DataTableRowActions({
                         <Form {...editForm}>
                             <form
                                 onSubmit={editForm.handleSubmit(handleEdit)}
-                                className="space-y-6"
+                                className={cn('space-y-6')}
                             >
                                 <FormField
                                     control={editForm.control}
@@ -273,17 +273,19 @@ export function DataTableRowActions({
 
             <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                 <DialogTrigger asChild>
-                    <Button variant="link" className="h-8 p-0">
+                    <Button variant="link" className={cn('h-8 p-0')}>
                         {t('table.delete')}
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle className="text-base">
+                        <DialogTitle className={cn('text-base')}>
                             {t('table.delete')}
                         </DialogTitle>
                     </DialogHeader>
-                    <div className="text-sm">{t('dialog.delete.content')}</div>
+                    <div className={cn('text-sm')}>
+                        {t('dialog.delete.content')}
+                    </div>
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button

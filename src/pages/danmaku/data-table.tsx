@@ -89,26 +89,34 @@ export function DataTable<TData, TValue>({
     const { t } = useTranslation();
 
     return (
-        <Card className="border-none shadow-none">
-            <CardHeader className="flex flex-row justify-end items-center">
+        <Card className={cn('border-none shadow-none')}>
+            <CardHeader
+                className={cn('flex flex-row justify-end items-center')}
+            >
                 <Input
                     type="text"
                     placeholder={t('table.search.placeholder')}
-                    className="max-w-72"
+                    className={cn('max-w-72')}
                     onKeyDown={(e: any) => {
                         if (e.key === 'Enter') {
                             onSearch && onSearch(e.target.value);
                         }
                     }}
                 />
-                <Button variant="outline" className="px-3" onClick={onReload}>
+                <Button
+                    variant="outline"
+                    className={cn('px-3')}
+                    onClick={onReload}
+                >
                     <LoaderCircle className={cn('h-4 w-4')} />
                 </Button>
             </CardHeader>
             <CardContent>
                 <div className={cn('rounded-md border')}>
                     <Table key={'table'}>
-                        <TableHeader className="bg-gray-100 dark:bg-neutral-800">
+                        <TableHeader
+                            className={cn('bg-gray-100 dark:bg-neutral-800')}
+                        >
                             {table.getHeaderGroups().map(headerGroup => (
                                 <TableRow key={headerGroup.id}>
                                     {headerGroup.headers.map(header => {
@@ -176,10 +184,12 @@ export function DataTable<TData, TValue>({
                                 <TableRow>
                                     <TableCell
                                         colSpan={columns.length}
-                                        className="h-96 text-center"
+                                        className={cn('h-96 text-center')}
                                     >
                                         {loading ? (
-                                            <Loading className="flex relative" />
+                                            <Loading
+                                                className={cn('flex relative')}
+                                            />
                                         ) : (
                                             <>{t('table.empty')}</>
                                         )}
@@ -189,7 +199,7 @@ export function DataTable<TData, TValue>({
                         </TableBody>
                     </Table>
                 </div>
-                <div className="pt-6">
+                <div className={cn('pt-6')}>
                     <DataTablePagination
                         {...{
                             table: table,

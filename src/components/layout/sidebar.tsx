@@ -56,20 +56,28 @@ const Sidebar = ({ className, isCollapsed, setIsCollapsed }: SidebarProps) => {
                     )}
                 >
                     <div
-                        className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}
+                        className={cn(
+                            `flex items-center ${!isCollapsed ? 'gap-2' : ''}`
+                        )}
                     >
                         <Sprout
-                            className={`${isCollapsed ? 'h-6 w-6' : 'h-8 w-8'}`}
+                            className={cn(
+                                `${isCollapsed ? 'h-6 w-6' : 'h-8 w-8'}`
+                            )}
                         />
                         <div
-                            className={`flex flex-col justify-end truncate ${
-                                isCollapsed ? 'invisible w-0' : 'visible w-auto'
-                            }`}
+                            className={cn(
+                                `flex flex-col justify-end truncate ${
+                                    isCollapsed
+                                        ? 'invisible w-0'
+                                        : 'visible w-auto'
+                                }`
+                            )}
                         >
-                            <span className="font-medium">
+                            <span className={cn('font-medium')}>
                                 {t('menu.title')}
                             </span>
-                            <span className="text-xs">
+                            <span className={cn('text-xs')}>
                                 {t('menu.subtitle')}
                             </span>
                         </div>
@@ -79,7 +87,7 @@ const Sidebar = ({ className, isCollapsed, setIsCollapsed }: SidebarProps) => {
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="md:hidden"
+                        className={cn('md:hidden')}
                         aria-label="Toggle Navigation"
                         aria-controls="sidebar-menu"
                         aria-expanded={navOpened}
@@ -91,11 +99,13 @@ const Sidebar = ({ className, isCollapsed, setIsCollapsed }: SidebarProps) => {
 
                 <Nav
                     id="sidebar-menu"
-                    className={`h-full flex-1 overflow-auto scrollbar-hide ${
-                        navOpened
-                            ? 'max-h-nav'
-                            : 'max-h-0 py-0 md:max-h-nav md:py-2'
-                    }`}
+                    className={cn(
+                        `h-full flex-1 overflow-auto scrollbar-hide ${
+                            navOpened
+                                ? 'max-h-nav'
+                                : 'max-h-0 py-0 md:max-h-nav md:py-2'
+                        }`
+                    )}
                     closeNav={() => setNavOpened(false)}
                     isCollapsed={isCollapsed}
                     links={links}
@@ -105,10 +115,14 @@ const Sidebar = ({ className, isCollapsed, setIsCollapsed }: SidebarProps) => {
                     onClick={() => setIsCollapsed(prev => !prev)}
                     size="icon"
                     variant="outline"
-                    className="absolute -right-3 top-16 -translate-y-3 hidden rounded-full md:inline-flex h-6 w-6"
+                    className={cn(
+                        'absolute -right-3 top-16 -translate-y-3 hidden rounded-full md:inline-flex h-6 w-6'
+                    )}
                 >
                     <ChevronsLeft
-                        className={`h-4 w-4 ${isCollapsed ? 'rotate-180' : ''}`}
+                        className={cn(
+                            `h-4 w-4 ${isCollapsed ? 'rotate-180' : ''}`
+                        )}
                     />
                 </Button>
             </Layout>

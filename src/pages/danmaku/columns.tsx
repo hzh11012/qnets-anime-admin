@@ -14,6 +14,7 @@ import { TFunction } from 'i18next';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 const Actions = ({ row, onRefresh }: any) => {
     const { toast } = useToast();
@@ -41,7 +42,7 @@ const Actions = ({ row, onRefresh }: any) => {
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <DialogTitle className="text-base">
+                <DialogTitle className={cn('text-base')}>
                     {t('dialog.delete')}
                 </DialogTitle>
                 <DialogDescription>
@@ -51,7 +52,7 @@ const Actions = ({ row, onRefresh }: any) => {
                     <Button
                         size="sm"
                         variant="outline"
-                        className="mr-2"
+                        className={cn('mr-2')}
                         onClick={() => setDeleteOpen(false)}
                     >
                         {t('dialog.cancel')}

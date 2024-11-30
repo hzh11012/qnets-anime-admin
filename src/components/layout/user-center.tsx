@@ -41,7 +41,7 @@ const UserCenter = () => {
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40" align="end" forceMount>
+            <DropdownMenuContent className={cn('w-40')} align="end" forceMount>
                 <DropdownMenuLabel className={cn('font-normal')}>
                     <div className={cn('flex flex-col space-y-1')}>
                         <p

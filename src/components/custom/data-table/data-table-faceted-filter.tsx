@@ -48,27 +48,31 @@ export function DataTableFacetedFilter<TData, TValue>({
                 <Button
                     variant="outline"
                     size="sm"
-                    className="h-9 border-dashed"
+                    className={cn('h-9 border-dashed')}
                 >
-                    <PlusCircle width={18} height={18} className="mr-2" />
+                    <PlusCircle width={18} height={18} className={cn('mr-2')} />
                     {title}
                     {selectedValues?.size > 0 && (
                         <>
                             <Separator
                                 orientation="vertical"
-                                className="mx-2 h-4"
+                                className={cn('mx-2 h-4')}
                             />
                             <Badge
                                 variant="secondary"
-                                className="rounded-sm px-1 font-normal lg:hidden"
+                                className={cn(
+                                    'rounded-sm px-1 font-normal lg:hidden'
+                                )}
                             >
                                 {selectedValues.size}
                             </Badge>
-                            <div className="hidden space-x-1 lg:flex">
+                            <div className={cn('hidden space-x-1 lg:flex')}>
                                 {selectedValues.size > 2 ? (
                                     <Badge
                                         variant="secondary"
-                                        className="rounded-sm px-1 font-normal"
+                                        className={cn(
+                                            'rounded-sm px-1 font-normal'
+                                        )}
                                     >
                                         {selectedValues.size +
                                             ' ' +
@@ -83,7 +87,9 @@ export function DataTableFacetedFilter<TData, TValue>({
                                             <Badge
                                                 variant="secondary"
                                                 key={option.value}
-                                                className="rounded-sm px-1 font-normal"
+                                                className={cn(
+                                                    'rounded-sm px-1 font-normal'
+                                                )}
                                             >
                                                 {option.label}
                                             </Badge>
@@ -94,7 +100,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     )}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0" align="start">
+            <PopoverContent className={cn('w-[200px] p-0')} align="start">
                 <Command>
                     <CommandInput placeholder={title} />
                     <CommandList>
@@ -139,11 +145,19 @@ export function DataTableFacetedFilter<TData, TValue>({
                                             <Check />
                                         </div>
                                         {option.icon && (
-                                            <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                                            <option.icon
+                                                className={cn(
+                                                    'mr-2 h-4 w-4 text-muted-foreground'
+                                                )}
+                                            />
                                         )}
                                         <span>{option.label}</span>
                                         {facets?.get(option.value) && (
-                                            <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                                            <span
+                                                className={cn(
+                                                    'ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs'
+                                                )}
+                                            >
                                                 {facets.get(option.value)}
                                             </span>
                                         )}
@@ -159,7 +173,9 @@ export function DataTableFacetedFilter<TData, TValue>({
                                         onSelect={() =>
                                             column?.setFilterValue(undefined)
                                         }
-                                        className="justify-center text-center"
+                                        className={cn(
+                                            'justify-center text-center'
+                                        )}
                                     >
                                         {t('table.toolbar.clear_filters')}
                                     </CommandItem>

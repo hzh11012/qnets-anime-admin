@@ -9,6 +9,7 @@ import {
 import { Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useStorage } from '@/hooks/use-local-storage';
+import { cn } from '@/lib/utils';
 
 export default function Language() {
     const [lang, setLang] = useStorage({
@@ -25,7 +26,11 @@ export default function Language() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button size="icon" variant="ghost" className="rounded-full">
+                <Button
+                    size="icon"
+                    variant="ghost"
+                    className={cn('rounded-full')}
+                >
                     <Languages size={20} />
                 </Button>
             </DropdownMenuTrigger>

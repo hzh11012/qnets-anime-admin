@@ -6,6 +6,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 import { Moon, Sun, Tv2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,40 +17,56 @@ const ThemeToggle = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className={cn('rounded-full')}
+                >
                     {theme === 'light' && (
-                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100" />
+                        <Sun
+                            className={cn(
+                                'h-[1.2rem] w-[1.2rem] rotate-0 scale-100'
+                            )}
+                        />
                     )}
                     {theme === 'dark' && (
-                        <Moon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100" />
+                        <Moon
+                            className={cn(
+                                'h-[1.2rem] w-[1.2rem] rotate-0 scale-100'
+                            )}
+                        />
                     )}
                     {theme === 'system' && (
-                        <Tv2 className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100" />
+                        <Tv2
+                            className={cn(
+                                'h-[1.2rem] w-[1.2rem] rotate-0 scale-100'
+                            )}
+                        />
                     )}
-                    <span className="sr-only">Toggle theme</span>
+                    <span className={cn('sr-only')}>Toggle theme</span>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center">
                 <DropdownMenuItem
-                    className={'cursor-pointer'}
+                    className={cn('cursor-pointer')}
                     onClick={() => setTheme('light')}
                 >
                     <Sun size={16} />
-                    <span className={'pl-2'}>{t('theme.light')}</span>
+                    <span className={cn('pl-2')}>{t('theme.light')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    className={'cursor-pointer'}
+                    className={cn('cursor-pointer')}
                     onClick={() => setTheme('dark')}
                 >
                     <Moon size={16} />
-                    <span className={'pl-2'}>{t('theme.dark')}</span>
+                    <span className={cn('pl-2')}>{t('theme.dark')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    className={'cursor-pointer'}
+                    className={cn('cursor-pointer')}
                     onClick={() => setTheme('system')}
                 >
                     <Tv2 size={16} />
-                    <span className={'pl-2'}>{t('theme.system')}</span>
+                    <span className={cn('pl-2')}>{t('theme.system')}</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

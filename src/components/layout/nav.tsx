@@ -64,10 +64,14 @@ function NavLink({
             )}
             aria-current={checkIsActive(href) ? 'page' : undefined}
         >
-            {!closeIcon && <div className="mr-2">{icon}</div>}
+            {!closeIcon && <div className={cn('mr-2')}>{icon}</div>}
             {t(title)}
             {label && (
-                <div className="ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground">
+                <div
+                    className={cn(
+                        'ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'
+                    )}
+                >
                     {label}
                 </div>
             )}
@@ -99,10 +103,14 @@ function NavLinkDropdown({
                     'group h-12 w-full text-wrap justify-start secondary shadow-none pl-6'
                 )}
             >
-                <div className="mr-2">{icon}</div>
+                <div className={cn('mr-2')}>{icon}</div>
                 {t(title)}
                 {label && (
-                    <div className="ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground">
+                    <div
+                        className={cn(
+                            'ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'
+                        )}
+                    >
                         {label}
                     </div>
                 )}
@@ -114,12 +122,12 @@ function NavLinkDropdown({
                     <ChevronRight size={18} />
                 </span>
             </CollapsibleTrigger>
-            <CollapsibleContent className="collapsibleDropdown" asChild>
+            <CollapsibleContent className={cn('collapsibleDropdown')} asChild>
                 <ul>
                     {sub!.map(sublink => {
                         const childLink = href + sublink.href;
                         return (
-                            <li key={sublink.title} className="my-1">
+                            <li key={sublink.title} className={cn('my-1')}>
                                 <NavLink
                                     {...sublink}
                                     href={childLink}
@@ -157,13 +165,16 @@ function NavLinkIcon({ title, icon, label, href }: NavLinkProps) {
                     )}
                 >
                     {icon}
-                    <span className="sr-only">{t(title)}12312</span>
+                    <span className={cn('sr-only')}>{t(title)}12312</span>
                 </Link>
             </TooltipTrigger>
-            <TooltipContent side="right" className="flex items-center gap-4">
+            <TooltipContent
+                side="right"
+                className={cn('flex items-center gap-4')}
+            >
                 {t(title)}
                 {label && (
-                    <span className="ml-auto text-muted-foreground">
+                    <span className={cn('ml-auto text-muted-foreground')}>
                         {label}
                     </span>
                 )}
@@ -186,7 +197,7 @@ function NavLinkIconDropdown({ title, href, icon, label, sub }: NavLinkProps) {
                         <Button
                             variant={isChildActive ? 'secondary' : 'ghost'}
                             size="icon"
-                            className="h-10 w-10"
+                            className={cn('h-10 w-10')}
                         >
                             {icon}
                         </Button>
@@ -195,11 +206,11 @@ function NavLinkIconDropdown({ title, href, icon, label, sub }: NavLinkProps) {
                 <TooltipContent
                     side="right"
                     sideOffset={12}
-                    className="flex items-center gap-4"
+                    className={cn('flex items-center gap-4')}
                 >
                     {t(title)}{' '}
                     {label && (
-                        <span className="ml-auto text-muted-foreground">
+                        <span className={cn('ml-auto text-muted-foreground')}>
                             {label}
                         </span>
                     )}
@@ -220,18 +231,20 @@ function NavLinkIconDropdown({ title, href, icon, label, sub }: NavLinkProps) {
                         >
                             <Link
                                 to={childLink}
-                                className={`${
-                                    checkIsActive(childLink)
-                                        ? 'bg-secondary'
-                                        : 'cursor-pointer h-10'
-                                }`}
+                                className={cn(
+                                    `${
+                                        checkIsActive(childLink)
+                                            ? 'bg-secondary'
+                                            : 'cursor-pointer h-10'
+                                    }`
+                                )}
                             >
-                                {sublink.icon}{' '}
-                                <span className="ml-2 max-w-52 text-wrap">
+                                {sublink.icon}
+                                <span className={cn('ml-2 max-w-52 text-wrap')}>
                                     {t(sublink.title)}
                                 </span>
                                 {sublink.label && (
-                                    <span className="ml-auto text-xs">
+                                    <span className={cn('ml-auto text-xs')}>
                                         {sublink.label}
                                     </span>
                                 )}
@@ -293,7 +306,11 @@ export default function Nav({
             )}
         >
             <TooltipProvider delayDuration={0}>
-                <nav className="grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+                <nav
+                    className={cn(
+                        'grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'
+                    )}
+                >
                     {links.map(renderLink)}
                 </nav>
             </TooltipProvider>

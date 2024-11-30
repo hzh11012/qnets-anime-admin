@@ -35,15 +35,15 @@ export function DataTableColumnHeader<TData, TValue>({
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="-ml-3 h-8 data-[state=open]:bg-accent"
+                        className={cn('-ml-3 h-8 data-[state=open]:bg-accent')}
                     >
                         <span>{title}</span>
                         {column.getIsSorted() === 'desc' ? (
-                            <ArrowDown className="h-4 w-4" />
+                            <ArrowDown className={cn('h-4 w-4')} />
                         ) : column.getIsSorted() === 'asc' ? (
-                            <ArrowUp className="h-4 w-4" />
+                            <ArrowUp className={cn('h-4 w-4')} />
                         ) : (
-                            <ChevronsUpDown className="h-4 w-4" />
+                            <ChevronsUpDown className={cn('h-4 w-4')} />
                         )}
                     </Button>
                 </DropdownMenuTrigger>
@@ -51,18 +51,30 @@ export function DataTableColumnHeader<TData, TValue>({
                     <DropdownMenuItem
                         onClick={() => column.toggleSorting(false)}
                     >
-                        <ArrowUp className="h-4 w-4 text-muted-foreground/70 mr-1" />
+                        <ArrowUp
+                            className={cn(
+                                'h-4 w-4 text-muted-foreground/70 mr-1'
+                            )}
+                        />
                         {t('table.toolbar.asc')}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => column.toggleSorting(true)}
                     >
-                        <ArrowDown className="h-4 w-4 text-muted-foreground/70 mr-1" />
+                        <ArrowDown
+                            className={cn(
+                                'h-4 w-4 text-muted-foreground/70 mr-1'
+                            )}
+                        />
                         {t('table.toolbar.desc')}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => column.clearSorting()}>
-                        <ChevronsUpDown className="h-4 w-4 text-muted-foreground/70 mr-1" />
+                        <ChevronsUpDown
+                            className={cn(
+                                'h-4 w-4 text-muted-foreground/70 mr-1'
+                            )}
+                        />
                         {t('table.toolbar.reset')}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
