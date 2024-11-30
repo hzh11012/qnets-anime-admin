@@ -20,7 +20,7 @@ Qnets 轻动漫后台管理系统, 基于 React 实现
 -   [ ] 轮播图：管理前台首页的大屏轮播图
 -   [ ] 公告：管理前台的系统公告通知
 -   [ ] 视频：对前台视频、分类、弹幕、纠错的管理
--   [ ] 权限：管理用户信息
+-   [x] 权限：管理用户信息
 -   [ ] 设置：暂定
 
 ### 技术栈
@@ -65,13 +65,56 @@ Qnets 轻动漫后台管理系统, 基于 React 实现
 
 ## 配置
 
-### `lib/config.ts` 配置文件
-
 > 仅列举需要修改的部分
 
-```js
-// 登录地址
-const LOGIN_URL = '//localhost:4800';
+### `lib/config.ts` 文件
+
+```ts
+// 登录地址 需修改为部署/本地qnets-sso服务的地址
+const LOGIN_URL = '//localhost:5173';
+```
+
+### `vite.config.ts` 文件（开发环境）
+
+```ts
+...
+server: {
+   ...
+   // 这里配置了代理，需要配合后端的set-cookie的domain，例如localhost.qnets.cn
+   host: '0.0.0.0',
+   proxy： {
+      '/v1': {
+         // 登录地址 需修改为部署/本地qnets-anime-koa2服务的地址
+         target: 'http://localhost:5200'
+         ...
+      },
+      '/auth': {
+         // 认证接口地址 需修改为部署/本地qnets-sso-koa2服务的地址
+         target: 'http://localhost:4800'
+         ...
+      }
+   }
+   ...
+}
+...
+```
+
+### `lib/refresherRequest.ts` 文件（开发环境）
+
+这里需要
+
+```ts
+...
+await this.request({
+    url,
+    method: 'post',
+    headers: {
+        Authorization: token,
+        // headers需要添加 x-forwarded-for，ip地址需要与后端认证服务qnets-sso-koa2中获取的地址相同，否则7天免登录会失效
+        'x-forwarded-for': '0.0.0.0'
+    }
+});
+...
 ```
 
 ## 快速开始

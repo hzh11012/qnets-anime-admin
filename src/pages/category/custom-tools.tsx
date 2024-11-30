@@ -2,7 +2,6 @@ import { videoCategoryCreate } from '@/apis/category';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogFooter,
     DialogHeader,
