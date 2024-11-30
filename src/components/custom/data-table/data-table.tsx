@@ -81,7 +81,7 @@ export function DataTable<TData, TValue>({
 
     return (
         <Card className={cn('border-none shadow-none h-full')}>
-            <CardHeader>
+            <CardHeader className={cn('hidden sm:block')}>
                 <DataTableToolbar
                     table={table}
                     customTools={customTools}
@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
                     onSearch={onSearch}
                 />
             </CardHeader>
-            <CardContent>
+            <CardContent className={cn('pt-6 sm:pt-0')}>
                 <div className={cn('rounded-md border overflow-hidden')}>
                     <Table key={'table'}>
                         <TableHeader

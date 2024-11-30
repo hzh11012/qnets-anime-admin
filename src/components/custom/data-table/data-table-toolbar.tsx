@@ -36,7 +36,7 @@ export function DataTableToolbar<TData>({
 
     return (
         <div className={cn('flex items-center justify-between')}>
-            <div className={cn('flex flex-1 items-center space-x-2')}>
+            <div className={cn('flex flex-1 items-center space-x-6')}>
                 {customTools}
                 <Input
                     type="text"
