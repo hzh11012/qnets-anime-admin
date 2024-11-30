@@ -8,6 +8,7 @@ import userCenter from '@/locale/en-US/user-center';
 import user from '@/locale/en-US/user';
 import validator from '@/locale/en-US/validator';
 import correction from '@/locale/en-US/correction';
+import category from '@/locale/en-US/category';
 
 export default {
     ...menu,
@@ -19,5 +20,6 @@ export default {
     ...userCenter,
     ...user,
     ...validator,
-    ...correction
+    ...correction,
+    ...category
 };

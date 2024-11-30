@@ -26,6 +26,7 @@ import {
     DataTableFacetedFilterProps,
     DataTableToolbar
 } from '@/components/custom/data-table//data-table-toolbar';
+import { ReactNode } from 'react';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -37,10 +38,11 @@ interface DataTableProps<TData, TValue> {
     sizes: number[];
     pagination: PaginationState;
     sorting: SortingState;
-    columnFilters: ColumnFiltersState;
+    columnFilters?: ColumnFiltersState;
+    customTools?: ReactNode;
     onPaginationChange: OnChangeFn<PaginationState>;
     onSortingChange: OnChangeFn<SortingState>;
-    onColumnFiltersChange: OnChangeFn<ColumnFiltersState>;
+    onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
     onSearch: (val: string) => void;
 }
 
@@ -55,6 +57,7 @@ export function DataTable<TData, TValue>({
     pagination,
     sorting,
     columnFilters,
+    customTools,
     onSearch,
     onPaginationChange,
     onSortingChange,
@@ -67,9 +70,9 @@ export function DataTable<TData, TValue>({
         state: { pagination, sorting, columnFilters },
         manualPagination: true,
         manualFiltering: true,
-        onColumnFiltersChange: onColumnFiltersChange,
-        onPaginationChange: onPaginationChange,
-        onSortingChange: onSortingChange,
+        onColumnFiltersChange,
+        onPaginationChange,
+        onSortingChange,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel()
     });
@@ -81,14 +84,17 @@ export function DataTable<TData, TValue>({
             <CardHeader>
                 <DataTableToolbar
                     table={table}
+                    customTools={customTools}
                     filterColumns={filterColumns}
                     onSearch={onSearch}
                 />
             </CardHeader>
             <CardContent>
-                <div className={cn('rounded-md border')}>
+                <div className={cn('rounded-md border overflow-hidden')}>
                     <Table key={'table'}>
-                        <TableHeader className="bg-gray-100 dark:bg-neutral-800">
+                        <TableHeader
+                            className={cn('bg-gray-100 dark:bg-neutral-800')}
+                        >
                             {table.getHeaderGroups().map(headerGroup => (
                                 <TableRow key={headerGroup.id}>
                                     {headerGroup.headers.map(header => {
@@ -140,10 +146,12 @@ export function DataTable<TData, TValue>({
                                 <TableRow>
                                     <TableCell
                                         colSpan={columns.length}
-                                        className="h-96 text-center"
+                                        className={cn('h-96 text-center')}
                                     >
                                         {loading ? (
-                                            <Loading className="flex relative" />
+                                            <Loading
+                                                className={cn('flex relative')}
+                                            />
                                         ) : (
                                             <>{t('table.empty')}</>
                                         )}

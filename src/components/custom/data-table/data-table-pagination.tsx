@@ -48,7 +48,7 @@ function DataTablePagination<TData>({
                             table.setPageSize(Number(value));
                         }}
                     >
-                        <SelectTrigger className="h-8 w-auto">
+                        <SelectTrigger className="w-auto">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>

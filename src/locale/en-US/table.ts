@@ -1,6 +1,7 @@
 export default {
     loading: 'Loading',
     'table.empty': 'Empty',
+    'table.create': 'Create',
     'table.edit': 'Edit',
     'table.delete': 'Delete',
     'table.actions': 'Actions',

@@ -1,15 +1,16 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getCorrectionList } from '@/apis/correction';
+import { getVideoCategoryList } from '@/apis/category';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import { getColumns, getFilterColumns } from '@/pages/correction/columns';
-import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import CustomTools from '@/pages/category/custom-tools';
+import { getColumns } from '@/pages/category/columns';
+import { SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
-import { validFilter, validSort } from '@/lib/utils';
+import { validSort } from '@/lib/utils';
 
-const Correction = () => {
+const Category = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
@@ -17,11 +18,10 @@ const Correction = () => {
     const [total, setTotal] = useState(0);
     const [data, setData] = useState([]);
 
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
 
-    const { run, loading, refresh } = useRequest(getCorrectionList, {
+    const { run, loading, refresh } = useRequest(getVideoCategoryList, {
         defaultParams: [
             {
                 page,
@@ -33,15 +33,13 @@ const Correction = () => {
             setTotal(count);
             setData(rows);
         },
-        refreshDeps: [page, limit, columnFilters, keyword, sorting],
+        refreshDeps: [page, limit, keyword, sorting],
         refreshDepsAction: () => {
-            const status = validFilter('status', columnFilters);
             const order = validSort('created_at', sorting);
             run({
                 page,
                 keyword,
                 pageSize: limit,
-                status,
                 order
             });
         }
@@ -49,14 +47,11 @@ const Correction = () => {
 
     const columns = getColumns(t, refresh);
 
-    const filterColumns = getFilterColumns(t);
-
     return (
         <Layout>
             <DataTable
                 data={data}
                 columns={columns}
-                filterColumns={filterColumns}
                 loading={loading}
                 pagination={pagination}
                 pageCount={Math.ceil(total / limit)}
@@ -66,11 +61,10 @@ const Correction = () => {
                 onSearch={setKeyword}
                 sorting={sorting}
                 onSortingChange={setSorting}
-                columnFilters={columnFilters}
-                onColumnFiltersChange={setColumnFilters}
+                customTools={<CustomTools onRefresh={refresh} />}
             />
         </Layout>
     );
 };
 
-export default Correction;
+export default Category;

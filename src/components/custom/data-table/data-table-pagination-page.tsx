@@ -58,7 +58,7 @@ function PaginationPage<TData>({ table }: DataTablePaginationProps<TData>) {
                     <Button
                         variant="outline"
                         size="icon"
-                        className="w-8 h-8"
+                        className="w-9 h-9"
                         onClick={e => {
                             e.preventDefault();
                             table.previousPage();
@@ -75,7 +75,7 @@ function PaginationPage<TData>({ table }: DataTablePaginationProps<TData>) {
                                 <PaginationEllipsis />
                             ) : (
                                 <PaginationLink
-                                    className="cursor-pointer w-8 h-8"
+                                    className="cursor-pointer w-9 h-9"
                                     onClick={e => {
                                         e.preventDefault();
                                         table.setPageIndex(Number(page) - 1);
@@ -96,7 +96,7 @@ function PaginationPage<TData>({ table }: DataTablePaginationProps<TData>) {
                     <Button
                         variant="outline"
                         size="icon"
-                        className="w-8 h-8"
+                        className="w-9 h-9"
                         onClick={e => {
                             e.preventDefault();
                             table.nextPage();

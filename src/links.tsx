@@ -43,9 +43,9 @@ export const links: SideLink[] = [
                 icon: <LayoutDashboard size={18} />
             },
             {
-                title: 'menu.video.categorize',
+                title: 'menu.video.category',
                 label: '',
-                href: '/categorize',
+                href: '/category',
                 icon: <LayoutDashboard size={18} />
             },
             {

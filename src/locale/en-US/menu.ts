@@ -10,7 +10,7 @@ export default {
 
     'menu.video': 'Videos',
     'menu.video.list': 'Video List',
-    'menu.video.categorize': 'Categorize List',
+    'menu.video.category': 'Category List',
     'menu.video.danmaku': 'Danmaku List',
     'menu.video.correction': 'Correction List',
 

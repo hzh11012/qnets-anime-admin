@@ -1,6 +1,7 @@
 export default {
     loading: '加载中',
     'table.empty': '空',
+    'table.create': '新增',
     'table.edit': '编辑',
     'table.delete': '删除',
     'table.actions': '操作',

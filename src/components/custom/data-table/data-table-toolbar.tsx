@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Table } from '@tanstack/react-table';
 import { X } from 'lucide-react';
+import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export interface DataTableFacetedFilterProps {
@@ -20,20 +21,23 @@ export interface DataTableFacetedFilterProps {
 interface DataTableToolbarProps<TData> {
     table: Table<TData>;
     filterColumns?: DataTableFacetedFilterProps[];
+    customTools?: ReactNode;
     onSearch: (val: string) => void;
 }
 
 export function DataTableToolbar<TData>({
     table,
     filterColumns = [],
+    customTools,
     onSearch
 }: DataTableToolbarProps<TData>) {
     const { t } = useTranslation();
-    const isFiltered = table.getState().columnFilters.length > 0;
+    const isFiltered = table.getState().columnFilters?.length > 0;
 
     return (
         <div className={cn('flex items-center justify-between')}>
             <div className={cn('flex flex-1 items-center space-x-2')}>
+                {customTools}
                 <Input
                     type="text"
                     placeholder={t('table.search.placeholder')}
@@ -61,7 +65,7 @@ export function DataTableToolbar<TData>({
                         className={cn('h-9 px-2 pr-1 lg:px-3 lg:pr-2')}
                     >
                         {t('table.toolbar.reset')}
-                        <X width={18} height={18} className="ml-1" />
+                        <X width={18} height={18} className={cn('ml-1')} />
                     </Button>
                 )}
             </div>

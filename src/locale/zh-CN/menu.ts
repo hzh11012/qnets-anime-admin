@@ -10,7 +10,7 @@ export default {
 
     'menu.video': '视频',
     'menu.video.list': '视频管理',
-    'menu.video.categorize': '分类管理',
+    'menu.video.category': '分类管理',
     'menu.video.danmaku': '弹幕管理',
     'menu.video.correction': '纠错管理',
 

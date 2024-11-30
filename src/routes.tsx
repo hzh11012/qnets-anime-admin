@@ -37,6 +37,13 @@ const staticRoutes: RouteObject[] = [
             },
             {
                 index: true,
+                path: 'video/category',
+                lazy: async () => ({
+                    Component: (await import('@/pages/category/index')).default
+                })
+            },
+            {
+                index: true,
                 path: 'video/danmaku',
                 lazy: async () => ({
                     Component: (await import('@/pages/danmaku/index')).default
