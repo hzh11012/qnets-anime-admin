@@ -1,4 +1,9 @@
 export interface DanmakuListReq {
-    ac: string;
-    [propsName: string]: any;
+    page?: number;
+    pageSize?: number;
+    keyword?: string;
+}
+
+export interface DanmakuDeleteReq {
+    id: string;
 }

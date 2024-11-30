@@ -6,7 +6,7 @@ const Logo = ({ size }: { size: string }) => {
             height={size}
             viewBox="0 0 113.92000579833984 100"
         >
-            <g fill-rule="evenodd">
+            <g fillRule="evenodd">
                 <path
                     d="M57.21 88c12.71 6.9 23.09 10.57 30.17 10.61a1.85 1.85 0 0 1 .23 0s.06 0 .06-.08c.63-2.76.67-6.63.22-11.56a159.45 159.45 0 0 0-3.84-21.82A207 207 0 0 1 57.21 88z"
                     fill="#f1511b"

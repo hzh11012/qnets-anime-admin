@@ -37,11 +37,11 @@ interface DataTableProps<TData, TValue> {
     loading: boolean;
     sizes: number[];
     pagination: PaginationState;
-    sorting: SortingState;
+    sorting?: SortingState;
     columnFilters?: ColumnFiltersState;
     customTools?: ReactNode;
     onPaginationChange: OnChangeFn<PaginationState>;
-    onSortingChange: OnChangeFn<SortingState>;
+    onSortingChange?: OnChangeFn<SortingState>;
     onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
     onSearch: (val: string) => void;
 }

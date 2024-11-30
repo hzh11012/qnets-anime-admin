@@ -29,7 +29,6 @@ export const getColumns = (
             enableSorting: false,
             enableHiding: false
         },
-
         {
             accessorKey: 'nickname',
             title: t('correct.table.nickname'),
@@ -53,7 +52,7 @@ export const getColumns = (
                             <TooltipTrigger className={cn('block')}>
                                 <p
                                     className={cn(
-                                        'max-w-48 text-ellipsis overflow-hidden whitespace-nowrap'
+                                        'max-w-64 text-ellipsis overflow-hidden whitespace-nowrap'
                                     )}
                                 >
                                     {row.original.message}

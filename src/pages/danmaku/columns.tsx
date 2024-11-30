@@ -1,126 +1,69 @@
-import { DanmakuList } from '@/apis/danmaku';
-import Color from '@/components/custom/color';
-import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger
-} from '@/components/ui/dialog';
-import { useRequest } from 'ahooks';
-import { TFunction } from 'i18next';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-
-const Actions = ({ row, onRefresh }: any) => {
-    const { toast } = useToast();
-    const { _id } = row.original;
-    const { t } = useTranslation();
-    const [deleteOpen, setDeleteOpen] = useState(false);
-
-    const { runAsync, loading } = useRequest(DanmakuList, {
-        defaultParams: [
-            {
-                ac: 'del',
-                type: 'list',
-                id: _id
-            }
-        ],
-        manual: true,
-        loadingDelay: 300
-    });
-
-    return (
-        <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-            <DialogTrigger asChild>
-                <Button size="sm" variant="destructive">
-                    {t('table.delete')}
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogTitle className={cn('text-base')}>
-                    {t('dialog.delete')}
-                </DialogTitle>
-                <DialogDescription>
-                    {t('dialog.delete.content')}
-                </DialogDescription>
-                <DialogFooter>
-                    <Button
-                        size="sm"
-                        variant="outline"
-                        className={cn('mr-2')}
-                        onClick={() => setDeleteOpen(false)}
-                    >
-                        {t('dialog.cancel')}
-                    </Button>
-                    <Button
-                        disabled={loading}
-                        size="sm"
-                        type="submit"
-                        variant="destructive"
-                        onClick={() =>
-                            runAsync({
-                                ac: 'del',
-                                type: 'list',
-                                id: _id
-                            }).then(() => {
-                                onRefresh && onRefresh();
-                                toast({
-                                    description: '删除成功',
-                                    duration: 1500
-                                });
-                                setDeleteOpen(false);
-                            })
-                        }
-                    >
-                        {t('dialog.confirm')}
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
-};
+import { TFunction } from 'i18next';
+import { Search } from 'lucide-react';
+import { DataTableRowActions } from '@/pages/danmaku/data-table-row-actions';
+import Color from '@/components/custom/color';
 
 export const getColumns = (
     t: TFunction<'translation', undefined>,
-    refresh: () => void
+    onRefresh: () => void
 ) => {
     const columns = [
         {
             accessorKey: 'id',
-            header: t('danmaku.table.id')
+            title: t('danmaku.table.id'),
+            header: () => {
+                return (
+                    <div className={cn('flex items-center space-x-1')}>
+                        <span>{t('danmaku.table.id')}</span>
+                        <Search className={cn('w-3.5 h-3.5')} />
+                    </div>
+                );
+            },
+            enableSorting: false,
+            enableHiding: false
         },
         {
             accessorKey: 'content',
-            header: t('danmaku.table.content')
+            title: t('danmaku.table.content'),
+            header: () => {
+                return (
+                    <div className={cn('flex items-center space-x-1')}>
+                        <span>{t('danmaku.table.content')}</span>
+                        <Search className={cn('w-3.5 h-3.5')} />
+                    </div>
+                );
+            }
         },
         {
             accessorKey: 'color',
+            title: t('danmaku.table.color'),
             header: t('danmaku.table.color'),
             cell: ({ row }: any) => {
                 return <Color color={row.original.color} />;
             }
         },
         {
-            accessorKey: 'videoTime',
-            header: t('danmaku.table.videoTime')
+            accessorKey: 'time_dot',
+            title: t('danmaku.table.time_dot'),
+            header: t('danmaku.table.time_dot')
         },
         {
             accessorKey: 'ip',
+            title: t('danmaku.table.ip'),
             header: t('danmaku.table.ip')
         },
         {
-            accessorKey: 'createTime',
-            header: t('danmaku.table.createTime')
+            accessorKey: 'created_at',
+            title: t('danmaku.table.created_at'),
+            header: t('danmaku.table.created_at')
         },
         {
             id: 'actions',
             header: t('table.actions'),
-            cell: ({ row }: any) => <Actions row={row} onRefresh={refresh} />
+            cell: ({ row }: any) => (
+                <DataTableRowActions row={row} onRefresh={onRefresh} />
+            )
         }
     ];
 
