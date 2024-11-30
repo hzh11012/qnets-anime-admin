@@ -84,7 +84,7 @@ server: {
    host: '0.0.0.0',
    proxy： {
       '/v1': {
-         // 登录地址 需修改为部署/本地qnets-anime-koa2服务的地址
+         // 项目接口地址 需修改为部署/本地qnets-anime-koa2服务的地址
          target: 'http://localhost:5200'
          ...
       },

@@ -8,10 +8,11 @@ import {
 import { cn } from '@/lib/utils';
 import { Layout, LayoutHeader } from '@/components/layout';
 import { Button } from '@/components/ui/button';
-import { AlignJustify, ChevronsLeft, Sprout, X } from 'lucide-react';
+import { AlignJustify, ChevronsLeft, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Nav from '@/components/layout/nav';
 import { links } from '@/links';
+import Logo from '@/components/layout/logo';
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {
     isCollapsed: boolean;
@@ -60,11 +61,7 @@ const Sidebar = ({ className, isCollapsed, setIsCollapsed }: SidebarProps) => {
                             `flex items-center ${!isCollapsed ? 'gap-2' : ''}`
                         )}
                     >
-                        <Sprout
-                            className={cn(
-                                `${isCollapsed ? 'h-6 w-6' : 'h-8 w-8'}`
-                            )}
-                        />
+                        <Logo size={isCollapsed ? '1.5rem' : '2.5rem'} />
                         <div
                             className={cn(
                                 `flex flex-col justify-end truncate ${

@@ -1,4 +1,16 @@
-import { LayoutDashboard } from 'lucide-react';
+import {
+    LayoutDashboard,
+    Images,
+    Bell,
+    Tv2,
+    ChartColumnStacked,
+    Tv,
+    MailWarning,
+    Users2,
+    Bolt,
+    Shield,
+    ListVideo
+} from 'lucide-react';
 
 export interface NavLink {
     title: string;
@@ -22,43 +34,43 @@ export const links: SideLink[] = [
         title: 'menu.swiper',
         label: '',
         href: '/swiper',
-        icon: <LayoutDashboard size={18} />
+        icon: <Images size={18} />
     },
     {
         title: 'menu.notice',
         label: '',
         href: '/notice',
-        icon: <LayoutDashboard size={18} />
+        icon: <Bell size={18} />
     },
     {
         title: 'menu.video',
         label: '',
         href: '/video',
-        icon: <LayoutDashboard size={18} />,
+        icon: <Tv2 size={18} />,
         sub: [
             {
                 title: 'menu.video.list',
                 label: '',
                 href: '/index',
-                icon: <LayoutDashboard size={18} />
+                icon: <ListVideo size={18} />
             },
             {
                 title: 'menu.video.category',
                 label: '',
                 href: '/category',
-                icon: <LayoutDashboard size={18} />
+                icon: <ChartColumnStacked size={18} />
             },
             {
                 title: 'menu.video.danmaku',
                 label: '',
                 href: '/danmaku',
-                icon: <LayoutDashboard size={18} />
+                icon: <Tv size={18} />
             },
             {
                 title: 'menu.video.correction',
                 label: '',
                 href: '/correction',
-                icon: <LayoutDashboard size={18} />
+                icon: <MailWarning size={18} />
             }
         ]
     },
@@ -66,13 +78,13 @@ export const links: SideLink[] = [
         title: 'menu.system.permission',
         label: '',
         href: '/permissions',
-        icon: <LayoutDashboard size={18} />,
+        icon: <Shield size={18} />,
         sub: [
             {
                 title: 'menu.system.permission.user',
                 label: '',
                 href: '/users',
-                icon: <LayoutDashboard size={18} />
+                icon: <Users2 size={18} />
             }
         ]
     },
@@ -80,6 +92,6 @@ export const links: SideLink[] = [
         title: 'menu.system.settings',
         label: '',
         href: '/settings',
-        icon: <LayoutDashboard size={18} />
+        icon: <Bolt size={18} />
     }
 ];
