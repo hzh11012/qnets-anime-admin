@@ -17,12 +17,6 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 5173,
         proxy: {
-            '/danmaku': {
-                target: 'https://danmaku.qnets.cn',
-                changeOrigin: true,
-                ws: true,
-                rewrite: (path: string) => path.replace(/^\/danmaku/, '')
-            },
             '/v1': {
                 target: 'http://localhost:5200',
                 changeOrigin: true,
