@@ -58,11 +58,17 @@ export function DataTableRowActions({
                 required_error: `${t('correct.table.nickname')} ${t('validator.empty')}`,
                 invalid_type_error: `${t('correct.table.nickname')} ${t('validator.type')}`
             })
+            .max(25, {
+                message: `${t('correct.table.nickname')} ${t('validator.max.length')} 25`
+            })
             .min(1, `${t('correct.table.nickname')} ${t('validator.empty')}`),
         message: z
             .string({
                 required_error: `${t('correct.table.message')} ${t('validator.empty')}`,
                 invalid_type_error: `${t('correct.table.message')} ${t('validator.type')}`
+            })
+            .max(255, {
+                message: `${t('correct.table.message')} ${t('validator.max.length')} 255`
             })
             .min(1, `${t('correct.table.message')} ${t('validator.empty')}`),
         status: z
@@ -124,7 +130,7 @@ export function DataTableRowActions({
                 }}
             >
                 <DialogTrigger asChild>
-                    <Button variant="link" className="h-8 p-0">
+                    <Button variant="link" className={cn('h-8 p-0')}>
                         {t('table.edit')}
                     </Button>
                 </DialogTrigger>
@@ -136,116 +142,116 @@ export function DataTableRowActions({
                     <DialogHeader>
                         <DialogTitle>{t('table.edit')}</DialogTitle>
                     </DialogHeader>
-                    <div>
-                        <Form {...editForm}>
-                            <form
-                                onSubmit={editForm.handleSubmit(handleEdit)}
-                                className="space-y-6"
-                            >
-                                <FormField
-                                    control={editForm.control}
-                                    name="id"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('user.table.id')}
-                                            </FormLabel>
+                    <Form {...editForm}>
+                        <form
+                            onSubmit={editForm.handleSubmit(handleEdit)}
+                            className={cn('space-y-6')}
+                        >
+                            <FormField
+                                control={editForm.control}
+                                name="id"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            {t('user.table.id')}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                disabled
+                                                type="text"
+                                                autoComplete="off"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={editForm.control}
+                                name="message"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            {t('correct.table.message')}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                className={cn('resize-none')}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={editForm.control}
+                                name="status"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            {t('correct.table.status')}
+                                        </FormLabel>
+                                        <Select
+                                            onValueChange={val =>
+                                                editForm.setValue(
+                                                    'status',
+                                                    parseInt(val)
+                                                )
+                                            }
+                                            defaultValue={`${field.value}`}
+                                        >
                                             <FormControl>
-                                                <Input
-                                                    disabled
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
+                                                <SelectTrigger>
+                                                    <SelectValue />
+                                                </SelectTrigger>
                                             </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={editForm.control}
-                                    name="message"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('correct.table.message')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Textarea
-                                                    className="resize-none"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={editForm.control}
-                                    name="status"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('correct.table.status')}
-                                            </FormLabel>
-                                            <Select
-                                                onValueChange={val =>
-                                                    editForm.setValue(
-                                                        'status',
-                                                        parseInt(val)
-                                                    )
-                                                }
-                                                defaultValue={`${field.value}`}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="0">
-                                                        {t(
-                                                            'correct.status.pending'
-                                                        )}
-                                                    </SelectItem>
-                                                    <SelectItem value="1">
-                                                        {t(
-                                                            'correct.status.done'
-                                                        )}
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                            <SelectContent>
+                                                <SelectItem value="0">
+                                                    {t(
+                                                        'correct.status.pending'
+                                                    )}
+                                                </SelectItem>
+                                                <SelectItem value="1">
+                                                    {t('correct.status.done')}
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                                <DialogFooter>
-                                    <Button
-                                        size="sm"
-                                        type="submit"
-                                        variant="outline"
-                                    >
-                                        {t('dialog.confirm')}
-                                    </Button>
-                                </DialogFooter>
-                            </form>
-                        </Form>
-                    </div>
+                            <DialogFooter>
+                                <Button
+                                    size="sm"
+                                    type="submit"
+                                    variant="outline"
+                                >
+                                    {t('dialog.confirm')}
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </Form>
                 </DialogContent>
             </Dialog>
 
             <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                 <DialogTrigger asChild>
-                    <Button variant="link" className="h-8 p-0">
+                    <Button variant="link" className={cn('h-8 p-0')}>
                         {t('table.delete')}
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle className="text-base">
+                        <DialogTitle className={cn('text-base')}>
                             {t('table.delete')}
                         </DialogTitle>
                     </DialogHeader>
-                    <div className="text-sm">{t('dialog.delete.content')}</div>
+                    <div className={cn('text-sm')}>
+                        {t('dialog.delete.content')}
+                    </div>
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button
