@@ -6,7 +6,7 @@ import {
 } from '@/apis/models/user-model';
 
 export const getUserList = (params: UserListReq) => {
-    return HttpClient.post<any>('/v1/api/user/list', params);
+    return HttpClient.post<any>('/v1/api/user/admin_list', params);
 };
 
 export const userDelete = (params: UserDeleteReq) => {

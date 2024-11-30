@@ -71,7 +71,7 @@ export function DataTableRowActions({
             })
             .int(`${t('user.table.scope')} ${t('validator.int')}`)
             .min(-1, `${t('user.table.scope')} ${t('validator.min')} -1`)
-            .max(2, `${t('user.table.scope')} ${t('validator.max')} 2`)
+            .max(3, `${t('user.table.scope')} ${t('validator.max')} 3`)
     });
 
     const editForm = useForm<z.infer<typeof editFormSchema>>({
@@ -241,9 +241,12 @@ export function DataTableRowActions({
                                                         {t('user.role.visitor')}
                                                     </SelectItem>
                                                     <SelectItem value="1">
-                                                        {t('user.role.member')}
+                                                        {t('user.role.general')}
                                                     </SelectItem>
                                                     <SelectItem value="2">
+                                                        {t('user.role.member')}
+                                                    </SelectItem>
+                                                    <SelectItem value="3">
                                                         {t('user.role.admin')}
                                                     </SelectItem>
                                                 </SelectContent>

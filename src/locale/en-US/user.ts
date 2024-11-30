@@ -6,6 +6,7 @@ export default {
     'user.table.scope': 'User Role',
     'user.table.created_at': 'Create Time',
     'user.role.ban': 'Ban',
+    'user.role.general': 'General',
     'user.role.visitor': 'Visitor',
     'user.role.member': 'Member',
     'user.role.admin': 'Admin'

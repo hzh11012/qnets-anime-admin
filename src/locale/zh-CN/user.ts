@@ -7,6 +7,7 @@ export default {
     'user.table.created_at': '创建时间',
     'user.role.ban': '封禁',
     'user.role.visitor': '游客',
+    'user.role.general': '普通用户',
     'user.role.member': '正式会员',
     'user.role.admin': '管理员'
 };

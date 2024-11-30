@@ -55,12 +55,13 @@ export const getColumns = (
             title: t('user.table.scope'),
             header: t('user.table.scope'),
             cell: ({ row }: any) => {
-                // -1-封禁 0-游客 1-正式会员 2-管理员
+                // -1-封禁 0-游客 1-普通用户 2-正式会员 3-管理员
                 const RoleMap: { [key: number]: string } = {
                     '-1': t('user.role.ban'),
                     0: t('user.role.visitor'),
-                    1: t('user.role.member'),
-                    2: t('user.role.admin')
+                    1: t('user.role.general'),
+                    2: t('user.role.member'),
+                    3: t('user.role.admin')
                 };
                 return RoleMap[row.original?.scope || 0];
             }
@@ -102,12 +103,16 @@ export const getFilterColumns = (t: TFunction<'translation', undefined>) => {
                     value: 0
                 },
                 {
-                    label: t('user.role.member'),
+                    label: t('user.role.general'),
                     value: 1
                 },
                 {
-                    label: t('user.role.admin'),
+                    label: t('user.role.member'),
                     value: 2
+                },
+                {
+                    label: t('user.role.admin'),
+                    value: 3
                 }
             ]
         }
