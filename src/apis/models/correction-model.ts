@@ -7,6 +7,20 @@ export interface CorrectionListReq {
     keyword?: string;
 }
 
+export interface CorrectionItem {
+    id: number;
+    uid: number;
+    status: number;
+    nickname: string;
+    message: string;
+    created_at: string;
+}
+
+export interface CorrectionListRes {
+    count: number;
+    rows: CorrectionItem[];
+}
+
 export interface CorrectionDeleteReq {
     id: number;
 }

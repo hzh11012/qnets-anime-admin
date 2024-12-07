@@ -6,6 +6,7 @@ import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
 import { getColumns } from '@/pages/danmaku/columns';
 import { DataTable } from '@/components/custom/data-table/data-table';
+import { DanmakuItem } from '@/apis/models/danmaku-model';
 
 const Correction = () => {
     const { t } = useTranslation();
@@ -13,7 +14,7 @@ const Correction = () => {
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<DanmakuItem[]>([]);
 
     const [keyword, setKeyword] = useState('');
 
@@ -24,7 +25,7 @@ const Correction = () => {
                 pageSize: limit
             }
         ],
-        onSuccess(data: any) {
+        onSuccess(data) {
             const { rows, count } = data.data;
             setTotal(count);
             setData(rows);
@@ -39,7 +40,17 @@ const Correction = () => {
         }
     });
 
-    const columns = getColumns(t, refresh);
+    const columns = getColumns(t, () => {
+        if (data.length === 1) {
+            const pageIndex = (page > 1 ? page - 1 : 1) - 1;
+            onPaginationChange({
+                pageIndex,
+                pageSize: limit
+            });
+        } else {
+            refresh();
+        }
+    });
 
     return (
         <Layout>

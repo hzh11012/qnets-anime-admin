@@ -6,7 +6,7 @@ interface State {
         nickname: string;
         phone: string;
         scope: number;
-        avatar: string;
+        avatar?: string;
         created_at: string;
     };
 }

@@ -8,6 +8,7 @@ import { getColumns, getFilterColumns } from '@/pages/correction/columns';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { validFilter, validSort } from '@/lib/utils';
+import { CorrectionItem } from '@/apis/models/correction-model';
 
 const Correction = () => {
     const { t } = useTranslation();
@@ -15,11 +16,13 @@ const Correction = () => {
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<CorrectionItem[]>([]);
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
+    const status = validFilter('status', columnFilters);
+    const order = validSort('created_at', sorting);
 
     const { run, loading, refresh } = useRequest(getCorrectionList, {
         defaultParams: [
@@ -28,15 +31,13 @@ const Correction = () => {
                 pageSize: limit
             }
         ],
-        onSuccess(data: any) {
+        onSuccess(data) {
             const { rows, count } = data.data;
             setTotal(count);
             setData(rows);
         },
         refreshDeps: [page, limit, columnFilters, keyword, sorting],
         refreshDepsAction: () => {
-            const status = validFilter('status', columnFilters);
-            const order = validSort('created_at', sorting);
             run({
                 page,
                 keyword,
@@ -47,7 +48,17 @@ const Correction = () => {
         }
     });
 
-    const columns = getColumns(t, refresh);
+    const columns = getColumns(t, () => {
+        if (data.length === 1) {
+            const pageIndex = (page > 1 ? page - 1 : 1) - 1;
+            onPaginationChange({
+                pageIndex,
+                pageSize: limit
+            });
+        } else {
+            refresh();
+        }
+    });
 
     const filterColumns = getFilterColumns(t);
 

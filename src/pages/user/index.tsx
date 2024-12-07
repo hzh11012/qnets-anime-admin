@@ -8,6 +8,7 @@ import { getColumns, getFilterColumns } from '@/pages/user/columns';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { validFilter, validSort } from '@/lib/utils';
+import { UserItem } from '@/apis/models/user-model';
 
 const User = () => {
     const { t } = useTranslation();
@@ -15,7 +16,7 @@ const User = () => {
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<UserItem[]>([]);
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -28,7 +29,7 @@ const User = () => {
                 pageSize: limit
             }
         ],
-        onSuccess(data: any) {
+        onSuccess(data) {
             const { rows, count } = data.data;
             setTotal(count);
             setData(rows);
@@ -47,7 +48,17 @@ const User = () => {
         }
     });
 
-    const columns = getColumns(t, refresh);
+    const columns = getColumns(t, () => {
+        if (data.length === 1) {
+            const pageIndex = (page > 1 ? page - 1 : 1) - 1;
+            onPaginationChange({
+                pageIndex,
+                pageSize: limit
+            });
+        } else {
+            refresh();
+        }
+    });
 
     const filterColumns = getFilterColumns(t);
 

@@ -29,11 +29,6 @@ export const getColumns = (
             }
         },
         {
-            accessorKey: 'created_by',
-            title: t('category.table.created_by'),
-            header: t('category.table.created_by')
-        },
-        {
             accessorKey: 'created_at',
             title: t('category.table.created_at'),
             header: ({ column }: any) => (

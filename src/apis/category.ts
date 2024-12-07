@@ -1,18 +1,24 @@
 import { HttpClient } from '@/lib/request';
 import {
     VideoCategoryListReq,
+    VideoCategoryListRes,
     VideoCategoryDeleteReq,
     VideoCategoryCreateReq
 } from '@/apis/models/category-model';
 
+const prefix = '/v1/api/category';
+
 export const getVideoCategoryList = (params: VideoCategoryListReq) => {
-    return HttpClient.post<any>('/v1/api/video_category/admin_list', params);
+    return HttpClient.post<VideoCategoryListRes>(
+        `${prefix}/admin_list`,
+        params
+    );
 };
 
 export const videoCategoryDelete = (params: VideoCategoryDeleteReq) => {
-    return HttpClient.post<any>('/v1/api/video_category/admin_delete', params);
+    return HttpClient.post(`${prefix}/admin_delete`, params);
 };
 
 export const videoCategoryCreate = (params: VideoCategoryCreateReq) => {
-    return HttpClient.post<any>('/v1/api/video_category/admin_create', params);
+    return HttpClient.post(`${prefix}/admin_create`, params);
 };
