@@ -14,16 +14,23 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { logout } from '@/apis/auth';
 import { LOGIN_URL } from '@/lib/config';
+import { useRequest } from 'ahooks';
 
 const UserCenter = () => {
     const userInfo = userStore(state => state.userInfo);
     const { t } = useTranslation();
 
-    const handleLogout = async () => {
-        // 调用后端接口退出登录
-        await logout();
-        window.location.reload();
-        window.location.href = `${LOGIN_URL}/?redirect=${encodeURIComponent(window.location.href)}`;
+    const { run: runLogout } = useRequest(logout, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess() {
+            window.location.reload();
+            window.location.href = `${LOGIN_URL}/?redirect=${encodeURIComponent(window.location.href)}`;
+        }
+    });
+
+    const handleLogout = () => {
+        runLogout();
     };
 
     return (

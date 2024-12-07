@@ -33,6 +33,7 @@ import {
 } from '@/components/ui/select';
 import { z } from 'zod';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useRequest } from 'ahooks';
 
 interface DataTableRowActionsProps {
     row: any;
@@ -84,28 +85,42 @@ export function DataTableRowActions({
         }
     });
 
-    const handleEdit = async (values: z.infer<typeof editFormSchema>) => {
-        const { code, msg } = await userEdit(values);
-        if (code === 200) {
-            onRefresh && onRefresh();
-            toast({
-                description: msg,
-                duration: 1500
-            });
-            setEditOpen(false);
+    const { run: runEdit } = useRequest(userEdit, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess({ code, msg }) {
+            if (code === 200) {
+                onRefresh && onRefresh();
+                toast({
+                    description: msg,
+                    duration: 1500
+                });
+                setEditOpen(false);
+            }
         }
+    });
+
+    const { run: runDelete } = useRequest(userDelete, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess({ code, msg }) {
+            if (code === 200) {
+                onRefresh && onRefresh();
+                toast({
+                    description: msg,
+                    duration: 1500
+                });
+                setDeleteOpen(false);
+            }
+        }
+    });
+
+    const handleEdit = (values: z.infer<typeof editFormSchema>) => {
+        runEdit(values);
     };
 
-    const handleDelete = async () => {
-        const { code, msg } = await userDelete({ id });
-        if (code === 200) {
-            onRefresh && onRefresh();
-            toast({
-                description: msg,
-                duration: 1500
-            });
-            setDeleteOpen(false);
-        }
+    const handleDelete = () => {
+        runDelete({ id });
     };
 
     return (

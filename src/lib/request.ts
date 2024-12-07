@@ -104,7 +104,7 @@ class AxiosRequest {
                     if (retryCount < 1 && error.isRefresh) {
                         return this.request(axiosRequestConfig, retryCount + 1);
                     } else {
-                        resolve(error.response.data);
+                        resolve(error);
                     }
                 })
                 .then((res: any) => resolve(res));

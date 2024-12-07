@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { z } from 'zod';
+import { useRequest } from 'ahooks';
 
 interface CustomToolsProps {
     onRefresh: () => void;
@@ -49,17 +50,24 @@ const CustomTools = ({ onRefresh }: CustomToolsProps) => {
         resolver: zodResolver(createFormSchema)
     });
 
-    const handleCreate = async (values: z.infer<typeof createFormSchema>) => {
-        const { code, msg } = await videoCategoryCreate(values);
-        if (code === 200) {
-            onRefresh && onRefresh();
-            toast({
-                description: msg,
-                duration: 1500
-            });
-            setCreateOpen(false);
-            createForm.reset();
+    const { run: runCreate } = useRequest(videoCategoryCreate, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess({ code, msg }) {
+            if (code === 200) {
+                onRefresh && onRefresh();
+                toast({
+                    description: msg,
+                    duration: 1500
+                });
+                setCreateOpen(false);
+                createForm.reset();
+            }
         }
+    });
+
+    const handleCreate = (values: z.infer<typeof createFormSchema>) => {
+        runCreate(values);
     };
 
     return (

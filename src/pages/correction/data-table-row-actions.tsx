@@ -33,6 +33,7 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { z } from 'zod';
+import { useRequest } from 'ahooks';
 
 interface DataTableRowActionsProps {
     row: any;
@@ -91,28 +92,42 @@ export function DataTableRowActions({
         }
     });
 
-    const handleEdit = async (values: z.infer<typeof editFormSchema>) => {
-        const { code, msg } = await correctionEdit(values);
-        if (code === 200) {
-            onRefresh && onRefresh();
-            toast({
-                description: msg,
-                duration: 1500
-            });
-            setEditOpen(false);
+    const { run: runEdit } = useRequest(correctionEdit, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess({ code, msg }) {
+            if (code === 200) {
+                onRefresh && onRefresh();
+                toast({
+                    description: msg,
+                    duration: 1500
+                });
+                setEditOpen(false);
+            }
         }
+    });
+
+    const { run: runDelete } = useRequest(correctionDelete, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess({ code, msg }) {
+            if (code === 200) {
+                onRefresh && onRefresh();
+                toast({
+                    description: msg,
+                    duration: 1500
+                });
+                setDeleteOpen(false);
+            }
+        }
+    });
+
+    const handleEdit = (values: z.infer<typeof editFormSchema>) => {
+        runEdit(values);
     };
 
-    const handleDelete = async () => {
-        const { code, msg } = await correctionDelete({ id });
-        if (code === 200) {
-            onRefresh && onRefresh();
-            toast({
-                description: msg,
-                duration: 1500
-            });
-            setDeleteOpen(false);
-        }
+    const handleDelete = () => {
+        runDelete({ id });
     };
 
     return (

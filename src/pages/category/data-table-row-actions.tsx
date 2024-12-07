@@ -13,6 +13,7 @@ import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRequest } from 'ahooks';
 
 interface DataTableRowActionsProps {
     row: any;
@@ -27,16 +28,23 @@ export function DataTableRowActions({
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
 
-    const handleDelete = async () => {
-        const { code, msg } = await videoCategoryDelete({ id });
-        if (code === 200) {
-            onRefresh && onRefresh();
-            toast({
-                description: msg,
-                duration: 1500
-            });
-            setDeleteOpen(false);
+    const { run: runDelete } = useRequest(videoCategoryDelete, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess({ code, msg }) {
+            if (code === 200) {
+                onRefresh && onRefresh();
+                toast({
+                    description: msg,
+                    duration: 1500
+                });
+                setDeleteOpen(false);
+            }
         }
+    });
+
+    const handleDelete = () => {
+        runDelete({ id });
     };
 
     return (
