@@ -1,10 +1,11 @@
-import { DataTableColumnHeader } from '@/components/custom/data-table/data-table-column-header';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
 import { DataTableRowActions } from '@/pages/user/data-table-row-actions';
+import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
+import { DataTableColumnFilter } from '@/components/custom/data-table/data-table-column-filter';
 
 export const getColumns = (
     t: TFunction<'translation', undefined>,
@@ -53,7 +54,36 @@ export const getColumns = (
         {
             accessorKey: 'scope',
             title: t('user.table.scope'),
-            header: t('user.table.scope'),
+            header: ({ column }: any) => (
+                <div className="flex items-center space-x-1">
+                    <span>{t('user.table.scope')}</span>
+                    <DataTableColumnFilter
+                        column={column}
+                        options={[
+                            {
+                                label: t('user.role.ban'),
+                                value: -1
+                            },
+                            {
+                                label: t('user.role.visitor'),
+                                value: 0
+                            },
+                            {
+                                label: t('user.role.general'),
+                                value: 1
+                            },
+                            {
+                                label: t('user.role.member'),
+                                value: 2
+                            },
+                            {
+                                label: t('user.role.admin'),
+                                value: 3
+                            }
+                        ]}
+                    />
+                </div>
+            ),
             cell: ({ row }: any) => {
                 // -1-封禁 0-游客 1-普通用户 2-正式会员 3-管理员
                 const RoleMap: { [key: number]: string } = {
@@ -70,10 +100,10 @@ export const getColumns = (
             accessorKey: 'created_at',
             title: t('user.table.created_at'),
             header: ({ column }: any) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title={t('user.table.created_at')}
-                />
+                <div className={cn('flex items-center space-x-1')}>
+                    <span>{t('user.table.created_at')}</span>
+                    <DataTableColumnSort column={column} />
+                </div>
             )
         },
         {
@@ -86,37 +116,4 @@ export const getColumns = (
     ];
 
     return columns;
-};
-
-export const getFilterColumns = (t: TFunction<'translation', undefined>) => {
-    const filterColumns = [
-        {
-            column: 'scope',
-            title: t('user.table.scope'),
-            options: [
-                {
-                    label: t('user.role.ban'),
-                    value: -1
-                },
-                {
-                    label: t('user.role.visitor'),
-                    value: 0
-                },
-                {
-                    label: t('user.role.general'),
-                    value: 1
-                },
-                {
-                    label: t('user.role.member'),
-                    value: 2
-                },
-                {
-                    label: t('user.role.admin'),
-                    value: 3
-                }
-            ]
-        }
-    ];
-
-    return filterColumns;
 };

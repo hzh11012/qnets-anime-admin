@@ -22,15 +22,11 @@ import {
     useReactTable
 } from '@tanstack/react-table';
 import { useTranslation } from 'react-i18next';
-import {
-    DataTableFacetedFilterProps,
-    DataTableToolbar
-} from '@/components/custom/data-table//data-table-toolbar';
+import { DataTableToolbar } from '@/components/custom/data-table//data-table-toolbar';
 import { ReactNode } from 'react';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
-    filterColumns?: DataTableFacetedFilterProps[];
     data: TData[];
     pageCount?: number;
     total?: number;
@@ -48,7 +44,6 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({
     columns,
-    filterColumns,
     data,
     pageCount,
     total,
@@ -81,15 +76,14 @@ export function DataTable<TData, TValue>({
 
     return (
         <Card className={cn('border-none shadow-none h-full')}>
-            <CardHeader className={cn('hidden sm:block')}>
+            <CardHeader>
                 <DataTableToolbar
                     table={table}
                     customTools={customTools}
-                    filterColumns={filterColumns}
                     onSearch={onSearch}
                 />
             </CardHeader>
-            <CardContent className={cn('pt-6 sm:pt-0')}>
+            <CardContent>
                 <div className={cn('rounded-md border overflow-hidden')}>
                     <Table key={'table'}>
                         <TableHeader

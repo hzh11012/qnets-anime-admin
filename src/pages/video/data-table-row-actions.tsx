@@ -1,4 +1,3 @@
-import { videoCategoryDelete } from '@/apis/category';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -14,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
+import { videoDelete } from '@/apis/video';
 
 interface DataTableRowActionsProps {
     row: any;
@@ -28,7 +28,7 @@ export function DataTableRowActions({
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
 
-    const { run: runDelete } = useRequest(videoCategoryDelete, {
+    const { run: runDelete } = useRequest(videoDelete, {
         manual: true,
         debounceWait: 300,
         onSuccess({ code, msg }) {

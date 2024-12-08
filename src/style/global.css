@@ -22,3 +22,12 @@ body,
     scrollbar-width: thin;
     scrollbar-color: unset;
 }
+
+.required::after {
+    display: inline-block;
+    margin-inline-start: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    line-height: 1;
+    content: '*';
+}

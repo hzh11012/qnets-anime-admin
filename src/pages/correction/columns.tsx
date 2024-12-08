@@ -1,8 +1,9 @@
-import { DataTableColumnHeader } from '@/components/custom/data-table/data-table-column-header';
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
 import { DataTableRowActions } from '@/pages/correction/data-table-row-actions';
+import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
+import { DataTableColumnFilter } from '@/components/custom/data-table/data-table-column-filter';
 import {
     Tooltip,
     TooltipContent,
@@ -75,7 +76,24 @@ export const getColumns = (
         {
             accessorKey: 'status',
             title: t('correct.table.status'),
-            header: t('correct.table.status'),
+            header: ({ column }: any) => (
+                <div className="flex items-center space-x-1">
+                    <span>{t('correct.table.status')}</span>
+                    <DataTableColumnFilter
+                        column={column}
+                        options={[
+                            {
+                                label: t('correct.status.pending'),
+                                value: 0
+                            },
+                            {
+                                label: t('correct.status.done'),
+                                value: 1
+                            }
+                        ]}
+                    />
+                </div>
+            ),
             cell: ({ row }: any) => {
                 // 0-待处理 1-已完成
                 const StatusMap: { [key: number]: string } = {
@@ -89,10 +107,10 @@ export const getColumns = (
             accessorKey: 'created_at',
             title: t('correct.table.created_at'),
             header: ({ column }: any) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title={t('correct.table.created_at')}
-                />
+                <div className={cn('flex items-center space-x-1')}>
+                    <span>{t('correct.table.created_at')}</span>
+                    <DataTableColumnSort column={column} />
+                </div>
             )
         },
         {
@@ -105,25 +123,4 @@ export const getColumns = (
     ];
 
     return columns;
-};
-
-export const getFilterColumns = (t: TFunction<'translation', undefined>) => {
-    const filterColumns = [
-        {
-            column: 'status',
-            title: t('correct.table.status'),
-            options: [
-                {
-                    label: t('correct.status.pending'),
-                    value: 0
-                },
-                {
-                    label: t('correct.status.done'),
-                    value: 1
-                }
-            ]
-        }
-    ];
-
-    return filterColumns;
 };

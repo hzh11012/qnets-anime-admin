@@ -54,7 +54,7 @@ export function DataTableRowActions({
                     {t('table.delete')}
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent aria-describedby={undefined}>
                 <DialogHeader>
                     <DialogTitle className={cn('text-base')}>
                         {t('table.delete')}

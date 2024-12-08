@@ -1,30 +1,40 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getCorrectionList } from '@/apis/correction';
+import { getVideoList } from '@/apis/video';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import { getColumns } from '@/pages/correction/columns';
+import CustomTools from '@/pages/video/custom-tools';
+import { getColumns } from '@/pages/video/columns';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { validFilter, validSort } from '@/lib/utils';
-import { CorrectionItem } from '@/apis/models/correction-model';
+import { VideoItem } from '@/apis/models/video-model';
+import { getVideoCategoryList } from '@/apis/category';
 
-const Correction = () => {
+const Video = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState<CorrectionItem[]>([]);
+    const [data, setData] = useState<VideoItem[]>([]);
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
     const status = validFilter('status', columnFilters);
+    const type = validFilter('type', columnFilters);
+    const year = validFilter('year', columnFilters);
+    const month = validFilter('month', columnFilters);
     const order = validSort('created_at', sorting);
+    const category = validFilter('categories', columnFilters);
 
-    const { run, loading, refresh } = useRequest(getCorrectionList, {
+    const [categories, setCategories] = useState<
+        { label: string; value: number }[]
+    >([]);
+
+    const { run, loading, refresh } = useRequest(getVideoList, {
         defaultParams: [
             {
                 page,
@@ -43,22 +53,51 @@ const Correction = () => {
                 keyword,
                 pageSize: limit,
                 status,
+                type,
+                year,
+                month,
+                category,
                 order
             });
         }
     });
 
-    const columns = getColumns(t, () => {
-        if (data.length === 1) {
-            const pageIndex = (page > 1 ? page - 1 : 1) - 1;
-            onPaginationChange({
-                pageIndex,
-                pageSize: limit
+    useRequest(getVideoCategoryList, {
+        defaultParams: [
+            {
+                page: 1,
+                pageSize: 999
+            }
+        ],
+        onSuccess(data) {
+            const { rows } = data.data;
+            const res = rows.map(item => {
+                return {
+                    label: item.category,
+                    value: item.id
+                };
             });
-        } else {
-            refresh();
+            setCategories(res);
         }
     });
+
+    const columns = getColumns(
+        t,
+        () => {
+            if (data.length === 1) {
+                const pageIndex = (page > 1 ? page - 1 : 1) - 1;
+                onPaginationChange({
+                    pageIndex,
+                    pageSize: limit
+                });
+            } else {
+                refresh();
+            }
+        },
+        {
+            categories
+        }
+    );
 
     return (
         <Layout>
@@ -76,9 +115,12 @@ const Correction = () => {
                 onSortingChange={setSorting}
                 columnFilters={columnFilters}
                 onColumnFiltersChange={setColumnFilters}
+                customTools={
+                    <CustomTools categories={categories} onRefresh={refresh} />
+                }
             />
         </Layout>
     );
 };
 
-export default Correction;
+export default Video;

@@ -64,7 +64,7 @@ export function DataTableRowActions({
             .string({
                 invalid_type_error: `${t('user.table.avatar')} ${t('validator.type')}`
             })
-            .nullish(),
+            .optional(),
         scope: z
             .number({
                 required_error: `${t('user.table.scope')} ${t('validator.empty')}`,
@@ -143,6 +143,7 @@ export function DataTableRowActions({
                     </Button>
                 </DialogTrigger>
                 <DialogContent
+                    aria-describedby={undefined}
                     onOpenAutoFocus={e => {
                         e.preventDefault();
                     }}
@@ -156,25 +157,6 @@ export function DataTableRowActions({
                                 onSubmit={editForm.handleSubmit(handleEdit)}
                                 className={cn('space-y-6')}
                             >
-                                <FormField
-                                    control={editForm.control}
-                                    name="id"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('user.table.id')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    disabled
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
                                 <FormField
                                     control={editForm.control}
                                     name="avatar"
@@ -212,7 +194,9 @@ export function DataTableRowActions({
                                     name="nickname"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>
+                                            <FormLabel
+                                                className={cn('required')}
+                                            >
                                                 {t('user.table.nickname')}
                                             </FormLabel>
                                             <FormControl>
@@ -231,13 +215,14 @@ export function DataTableRowActions({
                                     name="scope"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>
+                                            <FormLabel
+                                                className={cn('required')}
+                                            >
                                                 {t('user.table.scope')}
                                             </FormLabel>
                                             <Select
                                                 onValueChange={val =>
-                                                    editForm.setValue(
-                                                        'scope',
+                                                    field.onChange(
                                                         parseInt(val)
                                                     )
                                                 }
@@ -292,7 +277,7 @@ export function DataTableRowActions({
                         {t('table.delete')}
                     </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle className={cn('text-base')}>
                             {t('table.delete')}

@@ -150,6 +150,7 @@ export function DataTableRowActions({
                     </Button>
                 </DialogTrigger>
                 <DialogContent
+                    aria-describedby={undefined}
                     onOpenAutoFocus={e => {
                         e.preventDefault();
                     }}
@@ -164,30 +165,10 @@ export function DataTableRowActions({
                         >
                             <FormField
                                 control={editForm.control}
-                                name="id"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>
-                                            {t('user.table.id')}
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                disabled
-                                                type="text"
-                                                autoComplete="off"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={editForm.control}
                                 name="message"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>
+                                        <FormLabel className={cn('required')}>
                                             {t('correct.table.message')}
                                         </FormLabel>
                                         <FormControl>
@@ -205,15 +186,12 @@ export function DataTableRowActions({
                                 name="status"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>
+                                        <FormLabel className={cn('required')}>
                                             {t('correct.table.status')}
                                         </FormLabel>
                                         <Select
                                             onValueChange={val =>
-                                                editForm.setValue(
-                                                    'status',
-                                                    parseInt(val)
-                                                )
+                                                field.onChange(parseInt(val))
                                             }
                                             defaultValue={`${field.value}`}
                                         >
@@ -258,7 +236,7 @@ export function DataTableRowActions({
                         {t('table.delete')}
                     </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle className={cn('text-base')}>
                             {t('table.delete')}

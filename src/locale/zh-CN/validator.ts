@@ -4,5 +4,6 @@ export default {
     'validator.int': '必须为整数',
     'validator.min': '最小为',
     'validator.max': '最大为',
-    'validator.max.length': '长度不能超过'
+    'validator.max.length': '长度不能超过',
+    'validator.format': '格式不正确'
 };

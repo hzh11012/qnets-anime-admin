@@ -9,6 +9,7 @@ import user from '@/locale/en-US/user';
 import validator from '@/locale/en-US/validator';
 import correction from '@/locale/en-US/correction';
 import category from '@/locale/en-US/category';
+import video from '@/locale/en-US/video';
 
 export default {
     ...menu,
@@ -21,5 +22,6 @@ export default {
     ...user,
     ...validator,
     ...correction,
-    ...category
+    ...category,
+    ...video
 };

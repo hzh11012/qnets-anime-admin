@@ -4,7 +4,7 @@ import { useRequest } from 'ahooks';
 import { getUserList } from '@/apis/user';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import { getColumns, getFilterColumns } from '@/pages/user/columns';
+import { getColumns } from '@/pages/user/columns';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { validFilter, validSort } from '@/lib/utils';
@@ -60,14 +60,11 @@ const User = () => {
         }
     });
 
-    const filterColumns = getFilterColumns(t);
-
     return (
         <Layout>
             <DataTable
                 data={data}
                 columns={columns}
-                filterColumns={filterColumns}
                 loading={loading}
                 pagination={pagination}
                 pageCount={Math.ceil(total / limit)}

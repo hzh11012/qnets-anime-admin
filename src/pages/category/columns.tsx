@@ -1,8 +1,8 @@
-import { DataTableColumnHeader } from '@/components/custom/data-table/data-table-column-header';
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
 import { DataTableRowActions } from '@/pages/category/data-table-row-actions';
+import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
 
 export const getColumns = (
     t: TFunction<'translation', undefined>,
@@ -32,10 +32,10 @@ export const getColumns = (
             accessorKey: 'created_at',
             title: t('category.table.created_at'),
             header: ({ column }: any) => (
-                <DataTableColumnHeader
-                    column={column}
-                    title={t('category.table.created_at')}
-                />
+                <div className={cn('flex items-center space-x-1')}>
+                    <span>{t('category.table.created_at')}</span>
+                    <DataTableColumnSort column={column} />
+                </div>
             )
         },
         {

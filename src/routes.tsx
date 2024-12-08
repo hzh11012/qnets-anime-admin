@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouteObject, redirect } from 'react-router-dom';
-import Layout from '@/layout';
-import Exception404 from '@/pages/404';
 import { ADMIN_SCOPE, LOGIN_URL } from '@/lib/config';
 import { getUserInfo } from '@/apis/auth';
 import { userStore } from '@/store/user';
+import Layout from '@/layout';
+import Exception404 from '@/pages/404';
 
 const tokenLoader = async () => {
     const { data, code, errorCode } = await getUserInfo();
@@ -36,26 +36,42 @@ const staticRoutes: RouteObject[] = [
                 })
             },
             {
-                index: true,
-                path: 'video/category',
-                lazy: async () => ({
-                    Component: (await import('@/pages/category/index')).default
-                })
-            },
-            {
-                index: true,
-                path: 'video/danmaku',
-                lazy: async () => ({
-                    Component: (await import('@/pages/danmaku/index')).default
-                })
-            },
-            {
-                index: true,
-                path: 'video/correction',
-                lazy: async () => ({
-                    Component: (await import('@/pages/correction/index'))
-                        .default
-                })
+                path: 'video/',
+                children: [
+                    {
+                        index: true,
+                        path: 'index',
+                        lazy: async () => ({
+                            Component: (await import('@/pages/video/index'))
+                                .default
+                        })
+                    },
+                    {
+                        index: true,
+                        path: 'category',
+                        lazy: async () => ({
+                            Component: (await import('@/pages/category/index'))
+                                .default
+                        })
+                    },
+                    {
+                        index: true,
+                        path: 'danmaku',
+                        lazy: async () => ({
+                            Component: (await import('@/pages/danmaku/index'))
+                                .default
+                        })
+                    },
+                    {
+                        index: true,
+                        path: 'correction',
+                        lazy: async () => ({
+                            Component: (
+                                await import('@/pages/correction/index')
+                            ).default
+                        })
+                    }
+                ]
             },
             {
                 index: true,

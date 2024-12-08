@@ -89,6 +89,7 @@ const CustomTools = ({ onRefresh }: CustomToolsProps) => {
                 </Button>
             </DialogTrigger>
             <DialogContent
+                aria-describedby={undefined}
                 onOpenAutoFocus={e => {
                     e.preventDefault();
                 }}
@@ -106,7 +107,7 @@ const CustomTools = ({ onRefresh }: CustomToolsProps) => {
                             name="category"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>
+                                    <FormLabel className={cn('required')}>
                                         {t('category.table.category')}
                                     </FormLabel>
                                     <FormControl>
