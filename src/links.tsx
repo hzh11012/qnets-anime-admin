@@ -8,8 +8,10 @@ import {
     MailWarning,
     Users2,
     Bolt,
-    Shield,
-    ListVideo
+    Tags,
+    ListVideo,
+    ContactRound,
+    Star
 } from 'lucide-react';
 
 export interface NavLink {
@@ -58,7 +60,7 @@ export const links: SideLink[] = [
                 title: 'menu.video.category',
                 label: '',
                 href: '/category',
-                icon: <ChartColumnStacked size={18} />
+                icon: <Tags size={18} />
             },
             {
                 title: 'menu.video.danmaku',
@@ -75,16 +77,28 @@ export const links: SideLink[] = [
         ]
     },
     {
-        title: 'menu.system.permission',
+        title: 'menu.user',
         label: '',
-        href: '/permissions',
-        icon: <Shield size={18} />,
+        href: '/user',
+        icon: <Users2 size={18} />,
         sub: [
             {
-                title: 'menu.system.permission.user',
+                title: 'menu.user.list',
                 label: '',
-                href: '/users',
-                icon: <Users2 size={18} />
+                href: '/index',
+                icon: <ContactRound size={18} />
+            },
+            {
+                title: 'menu.user.collection',
+                label: '',
+                href: '/collection',
+                icon: <ChartColumnStacked size={18} />
+            },
+            {
+                title: 'menu.user.score',
+                label: '',
+                href: '/score',
+                icon: <Star size={18} />
             }
         ]
     },

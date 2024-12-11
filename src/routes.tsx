@@ -74,11 +74,31 @@ const staticRoutes: RouteObject[] = [
                 ]
             },
             {
-                index: true,
-                path: 'permissions/users',
-                lazy: async () => ({
-                    Component: (await import('@/pages/user/index')).default
-                })
+                path: 'user/',
+                children: [
+                    {
+                        index: true,
+                        path: 'index',
+                        lazy: async () => ({
+                            Component: (await import('@/pages/user/index'))
+                                .default
+                        })
+                    }
+                ]
+            },
+            {
+                path: 'user/',
+                children: [
+                    {
+                        index: true,
+                        path: 'collection',
+                        lazy: async () => ({
+                            Component: (
+                                await import('@/pages/collection/index')
+                            ).default
+                        })
+                    }
+                ]
             }
         ]
     },

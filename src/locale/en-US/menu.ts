@@ -14,8 +14,10 @@ export default {
     'menu.video.danmaku': 'Danmaku List',
     'menu.video.correction': 'Correction List',
 
-    'menu.system.permission': 'Permissions',
-    'menu.system.permission.user': 'User List',
+    'menu.user': 'Users',
+    'menu.user.list': 'User List',
+    'menu.user.collection': 'Collection List',
+    'menu.user.score': 'Score List',
 
     'menu.system.settings': 'Settings'
 };

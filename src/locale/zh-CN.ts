@@ -10,6 +10,7 @@ import validator from '@/locale/zh-CN/validator';
 import correction from '@/locale/zh-CN/correction';
 import category from '@/locale/zh-CN/category';
 import video from '@/locale/zh-CN/video';
+import collection from '@/locale/zh-CN/collection';
 
 export default {
     ...menu,
@@ -23,5 +24,6 @@ export default {
     ...validator,
     ...correction,
     ...category,
-    ...video
+    ...video,
+    ...collection
 };
