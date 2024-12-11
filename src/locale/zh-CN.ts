@@ -11,6 +11,7 @@ import correction from '@/locale/zh-CN/correction';
 import category from '@/locale/zh-CN/category';
 import video from '@/locale/zh-CN/video';
 import collection from '@/locale/zh-CN/collection';
+import rating from '@/locale/zh-CN/rating';
 
 export default {
     ...menu,
@@ -25,5 +26,6 @@ export default {
     ...correction,
     ...category,
     ...video,
-    ...collection
+    ...collection,
+    ...rating
 };

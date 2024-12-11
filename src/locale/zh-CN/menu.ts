@@ -17,7 +17,7 @@ export default {
     'menu.user': '用户',
     'menu.user.list': '用户管理',
     'menu.user.collection': '收藏管理',
-    'menu.user.score': '评分管理',
+    'menu.user.rating': '评分管理',
 
     'menu.system.settings': '设置'
 };

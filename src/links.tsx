@@ -95,9 +95,9 @@ export const links: SideLink[] = [
                 icon: <ChartColumnStacked size={18} />
             },
             {
-                title: 'menu.user.score',
+                title: 'menu.user.rating',
                 label: '',
-                href: '/score',
+                href: '/rating',
                 icon: <Star size={18} />
             }
         ]

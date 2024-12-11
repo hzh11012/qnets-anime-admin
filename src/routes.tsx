@@ -83,12 +83,7 @@ const staticRoutes: RouteObject[] = [
                             Component: (await import('@/pages/user/index'))
                                 .default
                         })
-                    }
-                ]
-            },
-            {
-                path: 'user/',
-                children: [
+                    },
                     {
                         index: true,
                         path: 'collection',
@@ -96,6 +91,14 @@ const staticRoutes: RouteObject[] = [
                             Component: (
                                 await import('@/pages/collection/index')
                             ).default
+                        })
+                    },
+                    {
+                        index: true,
+                        path: 'rating',
+                        lazy: async () => ({
+                            Component: (await import('@/pages/rating/index'))
+                                .default
                         })
                     }
                 ]

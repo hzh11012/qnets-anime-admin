@@ -12,5 +12,5 @@ export const getCollectionList = (params: CollectionListReq) => {
 };
 
 export const collectionDelete = (params: CollectionDeleteReq) => {
-    return HttpClient.post(`${prefix}/admin_cancel`, params);
+    return HttpClient.post(`${prefix}/admin_delete`, params);
 };

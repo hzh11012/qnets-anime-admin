@@ -17,7 +17,7 @@ export default {
     'menu.user': 'Users',
     'menu.user.list': 'User List',
     'menu.user.collection': 'Collection List',
-    'menu.user.score': 'Score List',
+    'menu.user.rating': 'Rating List',
 
     'menu.system.settings': 'Settings'
 };
