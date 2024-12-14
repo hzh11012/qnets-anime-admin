@@ -73,6 +73,11 @@ export const getColumns = (
             }
         },
         {
+            accessorKey: 'count',
+            title: t('notice.table.count'),
+            header: t('notice.table.count')
+        },
+        {
             accessorKey: 'created_at',
             title: t('notice.table.created_at'),
             header: ({ column }: any) => (
