@@ -211,11 +211,12 @@ const MultiSelectTrigger = React.forwardRef<
     return (
         <PopoverPrimitive.Trigger ref={forwardedRef as any} asChild>
             <div
+                tabIndex={0}
                 aria-disabled={disabled}
                 data-disabled={disabled}
                 {...props}
                 className={cn(
-                    'flex h-full min-h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-1.5 text-sm ring-offset-background focus:outline-none focus:ring-1 focus:ring-ring [&>span]:line-clamp-1',
+                    'flex h-full min-h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-1.5 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>span]:line-clamp-1',
                     disabled
                         ? 'cursor-not-allowed opacity-50'
                         : 'cursor-pointer',

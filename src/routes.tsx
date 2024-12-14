@@ -36,7 +36,6 @@ const staticRoutes: RouteObject[] = [
                 })
             },
             {
-                index: true,
                 path: 'notice',
                 lazy: async () => ({
                     Component: (await import('@/pages/notice/index')).default
@@ -47,14 +46,21 @@ const staticRoutes: RouteObject[] = [
                 children: [
                     {
                         index: true,
-                        path: 'index',
+                        path: '',
                         lazy: async () => ({
                             Component: (await import('@/pages/video/index'))
                                 .default
                         })
                     },
                     {
-                        index: true,
+                        path: 'detail/:id',
+                        lazy: async () => ({
+                            Component: (
+                                await import('@/pages/video/detail/index')
+                            ).default
+                        })
+                    },
+                    {
                         path: 'category',
                         lazy: async () => ({
                             Component: (await import('@/pages/category/index'))
@@ -62,7 +68,6 @@ const staticRoutes: RouteObject[] = [
                         })
                     },
                     {
-                        index: true,
                         path: 'danmaku',
                         lazy: async () => ({
                             Component: (await import('@/pages/danmaku/index'))
@@ -70,7 +75,6 @@ const staticRoutes: RouteObject[] = [
                         })
                     },
                     {
-                        index: true,
                         path: 'correction',
                         lazy: async () => ({
                             Component: (
@@ -85,14 +89,13 @@ const staticRoutes: RouteObject[] = [
                 children: [
                     {
                         index: true,
-                        path: 'index',
+                        path: '',
                         lazy: async () => ({
                             Component: (await import('@/pages/user/index'))
                                 .default
                         })
                     },
                     {
-                        index: true,
                         path: 'collection',
                         lazy: async () => ({
                             Component: (
@@ -101,7 +104,6 @@ const staticRoutes: RouteObject[] = [
                         })
                     },
                     {
-                        index: true,
                         path: 'rating',
                         lazy: async () => ({
                             Component: (await import('@/pages/rating/index'))
@@ -109,7 +111,6 @@ const staticRoutes: RouteObject[] = [
                         })
                     },
                     {
-                        index: true,
                         path: 'notice-record',
                         lazy: async () => ({
                             Component: (

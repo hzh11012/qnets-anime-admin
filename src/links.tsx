@@ -29,49 +29,41 @@ export interface SideLink extends NavLink {
 export const links: SideLink[] = [
     {
         title: 'menu.dashboard',
-        label: '',
         href: '/',
         icon: <LayoutDashboard size={18} />
     },
     {
         title: 'menu.swiper',
-        label: '',
         href: '/swiper',
         icon: <Images size={18} />
     },
     {
         title: 'menu.notice',
-        label: '',
         href: '/notice',
         icon: <Bell size={18} />
     },
     {
         title: 'menu.video',
-        label: '',
         href: '/video',
         icon: <Tv2 size={18} />,
         sub: [
             {
                 title: 'menu.video.list',
-                label: '',
-                href: '/index',
+                href: '',
                 icon: <ListVideo size={18} />
             },
             {
                 title: 'menu.video.category',
-                label: '',
                 href: '/category',
                 icon: <Tags size={18} />
             },
             {
                 title: 'menu.video.danmaku',
-                label: '',
                 href: '/danmaku',
                 icon: <Tv size={18} />
             },
             {
                 title: 'menu.video.correction',
-                label: '',
                 href: '/correction',
                 icon: <MailWarning size={18} />
             }
@@ -79,34 +71,29 @@ export const links: SideLink[] = [
     },
     {
         title: 'menu.user',
-        label: '',
         href: '/user',
         icon: <Users2 size={18} />,
         sub: [
             {
                 title: 'menu.user.list',
-                label: '',
-                href: '/index',
+                href: '',
                 icon: <ContactRound size={18} />
             },
             {
                 title: 'menu.user.collection',
-                label: '',
                 href: '/collection',
                 icon: <ChartColumnStacked size={18} />
             },
             {
                 title: 'menu.user.rating',
-                label: '',
                 href: '/rating',
                 icon: <Star size={18} />
             },
             {
                 title: 'menu.user.notice-record',
-                label: '',
                 href: '/notice-record',
                 icon: <Mail size={18} />
-            },
+            }
         ]
     },
     {
