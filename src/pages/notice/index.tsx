@@ -1,28 +1,29 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getVideoCategoryList } from '@/apis/category';
+import { getNoticeList } from '@/apis/notice';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import CustomTools from '@/pages/category/custom-tools';
-import { getColumns } from '@/pages/category/columns';
+import { getColumns } from '@/pages/notice/columns';
 import { SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { validSort } from '@/lib/utils';
-import { VideoCategoryItem } from '@/apis/models/category-model';
+import { NoticeItem } from '@/apis/models/notice-model';
+import CustomTools from '@/pages/notice/custom-tools';
 
-const Category = () => {
+const Rating = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState<VideoCategoryItem[]>([]);
+    const [data, setData] = useState<NoticeItem[]>([]);
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
+    const order = validSort('created_at', sorting);
 
-    const { run, loading, refresh } = useRequest(getVideoCategoryList, {
+    const { run, loading, refresh } = useRequest(getNoticeList, {
         defaultParams: [
             {
                 page,
@@ -36,7 +37,6 @@ const Category = () => {
         },
         refreshDeps: [page, limit, keyword, sorting],
         refreshDepsAction: () => {
-            const order = validSort('created_at', sorting);
             run({
                 page,
                 keyword,
@@ -77,4 +77,4 @@ const Category = () => {
     );
 };
 
-export default Category;
+export default Rating;

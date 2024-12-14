@@ -1,28 +1,30 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getVideoCategoryList } from '@/apis/category';
+import { getNoticeRecordList } from '@/apis/notice-record';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import CustomTools from '@/pages/category/custom-tools';
-import { getColumns } from '@/pages/category/columns';
-import { SortingState } from '@tanstack/react-table';
+import { getColumns } from '@/pages/notice-record/columns';
+import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
-import { validSort } from '@/lib/utils';
-import { VideoCategoryItem } from '@/apis/models/category-model';
+import { validFilter, validSort } from '@/lib/utils';
+import { NoticeRecordItem } from '@/apis/models/notice-record-model';
 
-const Category = () => {
+const Rating = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState<VideoCategoryItem[]>([]);
+    const [data, setData] = useState<NoticeRecordItem[]>([]);
 
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
+    const status = validFilter('status', columnFilters);
+    const order = validSort('created_at', sorting);
 
-    const { run, loading, refresh } = useRequest(getVideoCategoryList, {
+    const { run, loading, refresh } = useRequest(getNoticeRecordList, {
         defaultParams: [
             {
                 page,
@@ -34,13 +36,13 @@ const Category = () => {
             setTotal(count);
             setData(rows);
         },
-        refreshDeps: [page, limit, keyword, sorting],
+        refreshDeps: [page, limit, columnFilters, keyword, sorting],
         refreshDepsAction: () => {
-            const order = validSort('created_at', sorting);
             run({
                 page,
                 keyword,
                 pageSize: limit,
+                status,
                 order
             });
         }
@@ -71,10 +73,11 @@ const Category = () => {
                 onSearch={setKeyword}
                 sorting={sorting}
                 onSortingChange={setSorting}
-                customTools={<CustomTools onRefresh={refresh} />}
+                columnFilters={columnFilters}
+                onColumnFiltersChange={setColumnFilters}
             />
         </Layout>
     );
 };
 
-export default Category;
+export default Rating;

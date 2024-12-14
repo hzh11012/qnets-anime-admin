@@ -11,7 +11,8 @@ import {
     Tags,
     ListVideo,
     ContactRound,
-    Star
+    Star,
+    Mail
 } from 'lucide-react';
 
 export interface NavLink {
@@ -99,7 +100,13 @@ export const links: SideLink[] = [
                 label: '',
                 href: '/rating',
                 icon: <Star size={18} />
-            }
+            },
+            {
+                title: 'menu.user.notice-record',
+                label: '',
+                href: '/notice-record',
+                icon: <Mail size={18} />
+            },
         ]
     },
     {

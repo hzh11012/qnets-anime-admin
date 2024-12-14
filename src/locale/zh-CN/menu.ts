@@ -18,6 +18,7 @@ export default {
     'menu.user.list': '用户管理',
     'menu.user.collection': '收藏管理',
     'menu.user.rating': '评分管理',
+    'menu.user.notice-record': '公告记录管理',
 
     'menu.system.settings': '设置'
 };

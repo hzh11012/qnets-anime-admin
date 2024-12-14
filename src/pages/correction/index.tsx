@@ -49,10 +49,9 @@ const Correction = () => {
     });
 
     const columns = getColumns(t, () => {
-        if (data.length === 1) {
-            const pageIndex = (page > 1 ? page - 1 : 1) - 1;
+        if (data.length === 1 && page > 1) {
             onPaginationChange({
-                pageIndex,
+                pageIndex: page - 2,
                 pageSize: limit
             });
         } else {

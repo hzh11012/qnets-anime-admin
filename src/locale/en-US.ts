@@ -12,6 +12,8 @@ import category from '@/locale/en-US/category';
 import video from '@/locale/en-US/video';
 import collection from '@/locale/en-US/collection';
 import rating from '@/locale/en-US/rating';
+import notice from '@/locale/en-US/notice';
+import noticeRecord from '@/locale/en-US/notice-record';
 
 export default {
     ...menu,
@@ -27,5 +29,7 @@ export default {
     ...category,
     ...video,
     ...collection,
-    ...rating
+    ...rating,
+    ...notice,
+    ...noticeRecord
 };

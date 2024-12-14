@@ -18,6 +18,7 @@ export default {
     'menu.user.list': 'User List',
     'menu.user.collection': 'Collection List',
     'menu.user.rating': 'Rating List',
+    'menu.user.notice-record': 'Notice Record List',
 
     'menu.system.settings': 'Settings'
 };
