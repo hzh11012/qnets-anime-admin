@@ -12,7 +12,8 @@ import {
     ListVideo,
     ContactRound,
     Star,
-    Mail
+    Mail,
+    BookOpenText
 } from 'lucide-react';
 
 export interface NavLink {
@@ -47,6 +48,11 @@ export const links: SideLink[] = [
         href: '/video',
         icon: <Tv2 size={18} />,
         sub: [
+            {
+                title: 'menu.video.series',
+                href: '/series',
+                icon: <BookOpenText size={18} />
+            },
             {
                 title: 'menu.video.list',
                 href: '',

@@ -1,5 +1,6 @@
 export default {
     'video.table.id': 'Anime ID',
+    'video.table.sid': 'Anime Series',
     'video.table.name': 'Anime Name',
     'video.table.description': 'Anime Description',
     'video.table.cover': 'Anime Cover',

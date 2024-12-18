@@ -9,6 +9,7 @@ export default {
     'menu.notice': 'Notice',
 
     'menu.video': 'Videos',
+    'menu.video.series': 'Series List',
     'menu.video.list': 'Video List',
     'menu.video.category': 'Category List',
     'menu.video.danmaku': 'Danmaku List',

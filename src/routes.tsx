@@ -45,6 +45,13 @@ const staticRoutes: RouteObject[] = [
                 path: 'video/',
                 children: [
                     {
+                        path: 'series',
+                        lazy: async () => ({
+                            Component: (await import('@/pages/series/index'))
+                                .default
+                        })
+                    },
+                    {
                         index: true,
                         path: '',
                         lazy: async () => ({

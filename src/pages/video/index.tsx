@@ -11,6 +11,7 @@ import { DataTable } from '@/components/custom/data-table/data-table';
 import { validFilter, validSort } from '@/lib/utils';
 import { VideoItem } from '@/apis/models/video-model';
 import { getVideoCategoryList } from '@/apis/category';
+import { getSeriesList } from '@/apis/series';
 
 const Video = () => {
     const { t } = useTranslation();
@@ -33,6 +34,10 @@ const Video = () => {
     const [categories, setCategories] = useState<
         { label: string; value: number }[]
     >([]);
+
+    const [series, setSeries] = useState<{ label: string; value: number }[]>(
+        []
+    );
 
     const { run, loading, refresh } = useRequest(getVideoList, {
         defaultParams: [
@@ -81,6 +86,25 @@ const Video = () => {
         }
     });
 
+    useRequest(getSeriesList, {
+        defaultParams: [
+            {
+                page: 1,
+                pageSize: 999
+            }
+        ],
+        onSuccess(data) {
+            const { rows } = data.data;
+            const res = rows.map(item => {
+                return {
+                    label: item.name,
+                    value: item.id
+                };
+            });
+            setSeries(res);
+        }
+    });
+
     const columns = getColumns(
         t,
         () => {
@@ -115,7 +139,11 @@ const Video = () => {
                 columnFilters={columnFilters}
                 onColumnFiltersChange={setColumnFilters}
                 customTools={
-                    <CustomTools categories={categories} onRefresh={refresh} />
+                    <CustomTools
+                        categories={categories}
+                        series={series}
+                        onRefresh={refresh}
+                    />
                 }
             />
         </Layout>

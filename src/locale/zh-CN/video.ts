@@ -1,5 +1,6 @@
 export default {
     'video.table.id': '动漫ID',
+    'video.table.sid': '动漫系列',
     'video.table.name': '动漫名称',
     'video.table.description': '动漫简介',
     'video.table.cover': '动漫封面',

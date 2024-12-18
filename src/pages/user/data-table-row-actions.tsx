@@ -79,7 +79,7 @@ export function DataTableRowActions({
         resolver: zodResolver(editFormSchema),
         defaultValues: {
             id,
-            avatar,
+            avatar: avatar || '',
             nickname,
             scope
         }
@@ -157,38 +157,6 @@ export function DataTableRowActions({
                                 onSubmit={editForm.handleSubmit(handleEdit)}
                                 className={cn('space-y-6')}
                             >
-                                <FormField
-                                    control={editForm.control}
-                                    name="avatar"
-                                    render={() => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('user.table.avatar')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Avatar
-                                                    className={cn(
-                                                        'w-16 h-16 rounded-lg'
-                                                    )}
-                                                >
-                                                    <AvatarImage
-                                                        src={avatar}
-                                                        className={cn(
-                                                            'rounded-lg'
-                                                        )}
-                                                    />
-                                                    <AvatarFallback
-                                                        className={cn(
-                                                            'rounded-lg'
-                                                        )}
-                                                    >
-                                                        {nickname?.slice(0, 1)}
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
                                 <FormField
                                     control={editForm.control}
                                     name="nickname"

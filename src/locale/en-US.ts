@@ -14,6 +14,7 @@ import collection from '@/locale/en-US/collection';
 import rating from '@/locale/en-US/rating';
 import notice from '@/locale/en-US/notice';
 import noticeRecord from '@/locale/en-US/notice-record';
+import series from '@/locale/en-US/series';
 
 export default {
     ...menu,
@@ -31,5 +32,6 @@ export default {
     ...collection,
     ...rating,
     ...notice,
-    ...noticeRecord
+    ...noticeRecord,
+    ...series
 };

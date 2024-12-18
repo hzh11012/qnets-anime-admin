@@ -47,17 +47,25 @@ import {
 
 interface CustomToolsProps {
     categories: { label: string; value: number }[];
+    series: { label: string; value: number }[];
     onRefresh: () => void;
 }
 
 const COVER_REG = /^(https?:)?\/\/.*\.(jpe?g|png|webp)$/;
 const YEAR_REG = /^\d{4}$/;
 
-const CustomTools = ({ onRefresh, categories }: CustomToolsProps) => {
+const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
     const { t } = useTranslation();
     const [createOpen, setCreateOpen] = useState(false);
 
     const createFormSchema = z.object({
+        sid: z
+            .number({
+                required_error: `${t('video.table.sid')} ${t('validator.empty')}`,
+                invalid_type_error: `${t('video.table.sid')} ${t('validator.type')}`
+            })
+            .int(`${t('video.table.sid')} ${t('validator.int')}`)
+            .min(1, `${t('video.table.sid')} ${t('validator.min')} 1`),
         name: z
             .string({
                 required_error: `${t('video.table.name')} ${t('validator.empty')}`,
@@ -212,6 +220,49 @@ const CustomTools = ({ onRefresh, categories }: CustomToolsProps) => {
                     >
                         <ScrollArea className={cn('h-96')}>
                             <div className={cn('space-y-6 px-6 pb-1')}>
+                                <FormField
+                                    control={createForm.control}
+                                    name="sid"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel
+                                                className={cn('required')}
+                                            >
+                                                {t('video.table.sid')}
+                                            </FormLabel>
+                                            <Select
+                                                onValueChange={val =>
+                                                    field.onChange(
+                                                        parseInt(val)
+                                                    )
+                                                }
+                                                defaultValue={`${field.value}`}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {series.map(item => {
+                                                        return (
+                                                            <SelectItem
+                                                                key={
+                                                                    item.label +
+                                                                    item.value
+                                                                }
+                                                                value={`${item.value}`}
+                                                            >
+                                                                {item.label}
+                                                            </SelectItem>
+                                                        );
+                                                    })}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                                 <FormField
                                     control={createForm.control}
                                     name="name"
