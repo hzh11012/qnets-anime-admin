@@ -8,7 +8,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
 import { userStore } from '@/store/user';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
@@ -36,17 +35,12 @@ const UserCenter = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button
-                    variant="ghost"
-                    className={cn('relative h-8 w-8 rounded-full !ml-7')}
-                >
-                    <Avatar className={cn('w-8 h-8')}>
-                        <AvatarImage src={userInfo.avatar} />
-                        <AvatarFallback>
-                            {userInfo.nickname?.slice(0, 1)}
-                        </AvatarFallback>
-                    </Avatar>
-                </Button>
+                <Avatar className={cn('size-10 cursor-pointer')}>
+                    <AvatarImage src={userInfo.avatar} />
+                    <AvatarFallback>
+                        {userInfo.nickname?.slice(0, 1)}
+                    </AvatarFallback>
+                </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className={cn('w-40')} align="end" forceMount>
                 <DropdownMenuLabel className={cn('font-normal')}>

@@ -55,7 +55,7 @@ export const getColumns = (
             accessorKey: 'scope',
             title: t('user.table.scope'),
             header: ({ column }: any) => (
-                <div className="flex items-center space-x-1">
+                <div className={cn('flex items-center space-x-1')}>
                     <span>{t('user.table.scope')}</span>
                     <DataTableColumnFilter
                         column={column}

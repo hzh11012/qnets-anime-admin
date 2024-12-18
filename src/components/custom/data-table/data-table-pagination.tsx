@@ -28,16 +28,10 @@ function DataTablePagination<TData>({
         <div className={cn('flex items-center justify-between')}>
             <div className={cn('flex items-center')}>
                 <div className={cn('items-center space-x-2 hidden sm:flex')}>
-                    {!!total && (
-                        <>
-                            <div className={cn('text-sm font-medium')}>
-                                {t('pagination.total')}
-                            </div>
-                            <div className={cn('text-sm font-medium')}>
-                                {total}
-                            </div>
-                        </>
-                    )}
+                    <div className={cn('text-sm font-medium')}>
+                        {t('pagination.total')}
+                    </div>
+                    <div className={cn('text-sm font-medium')}>{total}</div>
                 </div>
             </div>
             <div className={cn('flex items-center justify-between space-x-6')}>

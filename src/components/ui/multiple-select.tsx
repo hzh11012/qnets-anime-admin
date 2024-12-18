@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { CaretSortIcon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import {
     Primitive,
@@ -27,6 +26,7 @@ import {
     TooltipProvider,
     TooltipTrigger
 } from '@/components/ui/tooltip';
+import { ChevronDown, Check, X } from 'lucide-react';
 
 export interface MultiSelectOptionItem {
     value: string | number;
@@ -216,7 +216,7 @@ const MultiSelectTrigger = React.forwardRef<
                 data-disabled={disabled}
                 {...props}
                 className={cn(
-                    'flex h-full min-h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-1.5 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>span]:line-clamp-1',
+                    'flex h-full min-h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-1.5 text-sm ring-offset-background focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 [&>span]:line-clamp-1',
                     disabled
                         ? 'cursor-not-allowed opacity-50'
                         : 'cursor-pointer',
@@ -226,9 +226,9 @@ const MultiSelectTrigger = React.forwardRef<
                 onTouchStart={disabled ? PreventClick : props.onTouchStart}
             >
                 {children}
-                <CaretSortIcon
+                <ChevronDown
                     aria-hidden
-                    className="h-4 w-4 opacity-50 shrink-0"
+                    className={cn('h-4 w-4 opacity-50 ml-2')}
                 />
             </div>
         </PopoverPrimitive.Trigger>
@@ -302,7 +302,7 @@ const MultiSelectValue = React.forwardRef<
                                 className="px-2 py-0.5 leading-4 pr-1 group/multi-select-badge rounded-full cursor-default"
                             >
                                 <span>{child}</span>
-                                <Cross2Icon
+                                <X
                                     onClick={e => {
                                         e.preventDefault();
                                         e.stopPropagation();
@@ -520,7 +520,7 @@ const MultiSelectItem = React.forwardRef<
                     {children || label || value}
                 </span>
                 {selected ? (
-                    <CheckIcon className="h-4 w-4 ml-auto shrink-0" />
+                    <Check className="h-4 w-4 ml-auto shrink-0" />
                 ) : null}
             </CommandItem>
         );

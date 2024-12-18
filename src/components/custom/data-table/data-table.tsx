@@ -155,15 +155,17 @@ export function DataTable<TData, TValue>({
                         </TableBody>
                     </Table>
                 </div>
-                <div className={cn('pt-6')}>
-                    <DataTablePagination
-                        {...{
-                            table: table,
-                            total: total,
-                            sizes: sizes
-                        }}
-                    />
-                </div>
+                {!!total && (
+                    <div className={cn('pt-6')}>
+                        <DataTablePagination
+                            {...{
+                                table: table,
+                                total: total,
+                                sizes: sizes
+                            }}
+                        />
+                    </div>
+                )}
             </CardContent>
         </Card>
     );

@@ -1,8 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { StarFilledIcon } from '@radix-ui/react-icons';
-import { IconProps } from '@radix-ui/react-icons/dist/types';
+import { Star } from 'lucide-react';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 
 import { cn } from '@/lib/utils';
@@ -10,40 +9,38 @@ import { cn } from '@/lib/utils';
 interface RatingItemProps
     extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
     selectedValue: number;
-    Icon?: React.ComponentType<IconProps>;
+    Icon?: React.ComponentType<any>;
 }
 
 const RatingItem = React.forwardRef<
     React.ElementRef<typeof RadioGroupPrimitive.Item>,
     RatingItemProps
->(
-    (
-        { className, value, selectedValue, Icon = StarFilledIcon, ...props },
-        ref
-    ) => {
-        return (
-            <RadioGroupPrimitive.Item
-                ref={ref}
-                value={value}
-                className={cn(
-                    'aspect-square fill-transparent text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:stroke-primary',
-                    props['aria-readonly'] && 'pointer-events-none',
-                    selectedValue >= Number(value) && '[&>svg]:text-primary',
-                    className
-                )}
-                {...props}
-            >
-                <Icon className="size-6 fill-none stroke-transparent stroke-1 text-transparent" />
-            </RadioGroupPrimitive.Item>
-        );
-    }
-);
+>(({ className, value, selectedValue, Icon = Star, ...props }, ref) => {
+    return (
+        <RadioGroupPrimitive.Item
+            ref={ref}
+            value={value}
+            className={cn(
+                'aspect-square fill-transparent text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:stroke-primary',
+                props['aria-readonly'] && 'pointer-events-none',
+                selectedValue >= Number(value) && '[&>svg]:text-primary',
+                className
+            )}
+            {...props}
+        >
+            <Icon
+                fill={selectedValue >= Number(value) ? 'currentColor' : ''}
+                className="size-6 fill-none stroke-transparent stroke-1 text-transparent"
+            />
+        </RadioGroupPrimitive.Item>
+    );
+});
 
 RatingItem.displayName = RadioGroupPrimitive.Item.displayName;
 
 interface RatingGroupProps
     extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
-    Icon?: React.ComponentType<IconProps>;
+    Icon?: React.ComponentType<any>;
     customLabel?: string;
     ratingSteps?: number;
     readonly?: boolean;

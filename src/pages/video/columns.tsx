@@ -37,7 +37,7 @@ export const getColumns = (
             header: ({ column }: any) => {
                 const { categories = [] } = options;
                 return (
-                    <div className="flex items-center space-x-1">
+                    <div className={cn('flex items-center space-x-1')}>
                         <span>{t('video.table.categories')}</span>
                         {categories.length && (
                             <DataTableColumnFilter
@@ -65,7 +65,7 @@ export const getColumns = (
             accessorKey: 'type',
             title: t('video.table.type'),
             header: ({ column }: any) => (
-                <div className="flex items-center space-x-1">
+                <div className={cn('flex items-center space-x-1')}>
                     <span>{t('video.table.type')}</span>
                     <DataTableColumnFilter
                         column={column}
@@ -110,7 +110,7 @@ export const getColumns = (
             accessorKey: 'status',
             title: t('video.table.status'),
             header: ({ column }: any) => (
-                <div className="flex items-center space-x-1">
+                <div className={cn('flex items-center space-x-1')}>
                     <span>{t('video.table.status')}</span>
                     <DataTableColumnFilter
                         column={column}
@@ -156,7 +156,7 @@ export const getColumns = (
                     }
                 ).reverse();
                 return (
-                    <div className="flex items-center space-x-1">
+                    <div className={cn('flex items-center space-x-1')}>
                         <span>{t('video.table.year')}</span>
                         <DataTableColumnFilter
                             column={column}
@@ -170,7 +170,7 @@ export const getColumns = (
             accessorKey: 'month',
             title: t('video.table.month'),
             header: ({ column }: any) => (
-                <div className="flex items-center space-x-1">
+                <div className={cn('flex items-center space-x-1')}>
                     <span>{t('video.table.month')}</span>
                     <DataTableColumnFilter
                         column={column}
@@ -210,7 +210,7 @@ export const getColumns = (
             accessorKey: 'created_at',
             title: t('video.table.created_at'),
             header: ({ column }: any) => (
-                <div className="flex items-center space-x-1">
+                <div className={cn('flex items-center space-x-1')}>
                     <span>{t('video.table.created_at')}</span>
                     <DataTableColumnSort column={column} />
                 </div>

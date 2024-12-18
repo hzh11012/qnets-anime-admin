@@ -77,7 +77,7 @@ export const getColumns = (
             accessorKey: 'status',
             title: t('correct.table.status'),
             header: ({ column }: any) => (
-                <div className="flex items-center space-x-1">
+                <div className={cn('flex items-center space-x-1')}>
                     <span>{t('correct.table.status')}</span>
                     <DataTableColumnFilter
                         column={column}
