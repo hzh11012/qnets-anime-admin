@@ -47,7 +47,10 @@ const CustomTools = ({ onRefresh }: CustomToolsProps) => {
     });
 
     const createForm = useForm<z.infer<typeof createFormSchema>>({
-        resolver: zodResolver(createFormSchema)
+        resolver: zodResolver(createFormSchema),
+        defaultValues: {
+            category: ''
+        }
     });
 
     const { run: runCreate } = useRequest(videoCategoryCreate, {

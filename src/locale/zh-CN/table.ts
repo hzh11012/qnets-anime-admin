@@ -3,6 +3,7 @@ export default {
     'table.empty': '空',
     'table.create': '新增',
     'table.edit': '编辑',
+    'table.detail': '详情',
     'table.delete': '删除',
     'table.actions': '操作',
     'table.search.placeholder': '请输入',

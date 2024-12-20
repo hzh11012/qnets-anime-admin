@@ -4,6 +4,7 @@ import { getUserInfo } from '@/apis/auth';
 import { userStore } from '@/store/user';
 import Layout from '@/layout';
 import Exception404 from '@/pages/404';
+import { getVideoDetail } from '@/apis/video';
 
 const tokenLoader = async () => {
     const { data, code, errorCode } = await getUserInfo();
@@ -20,6 +21,16 @@ const tokenLoader = async () => {
         );
     }
     return null;
+};
+
+const videoDetailLoader = async ({ params }: { params: any }) => {
+    const { id } = params;
+    const { data, code, errorCode } = await getVideoDetail({ id: Number(id) });
+    if (!code || errorCode != 0) {
+        // 禁止访问
+        return redirect('/404');
+    }
+    return data;
 };
 
 const staticRoutes: RouteObject[] = [
@@ -61,6 +72,7 @@ const staticRoutes: RouteObject[] = [
                     },
                     {
                         path: 'detail/:id',
+                        loader: videoDetailLoader,
                         lazy: async () => ({
                             Component: (
                                 await import('@/pages/video/detail/index')

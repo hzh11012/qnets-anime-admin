@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
 import { videoDelete } from '@/apis/video';
+import { useNavigate } from 'react-router-dom';
 
 interface DataTableRowActionsProps {
     row: any;
@@ -27,6 +28,7 @@ export function DataTableRowActions({
     const { id } = row.original;
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const navigate = useNavigate();
 
     const { run: runDelete } = useRequest(videoDelete, {
         manual: true,
@@ -47,33 +49,55 @@ export function DataTableRowActions({
         runDelete({ id });
     };
 
+    const handleDetail = () => {
+        navigate(`/video/detail/${id}`);
+    };
+
     return (
-        <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-            <DialogTrigger asChild>
-                <Button variant="link" className={cn('h-8 p-0')}>
-                    {t('table.delete')}
-                </Button>
-            </DialogTrigger>
-            <DialogContent aria-describedby={undefined}>
-                <DialogHeader>
-                    <DialogTitle className={cn('text-base')}>
+        <div className={cn('space-x-4')}>
+            <Button
+                variant="link"
+                className={cn('h-8 p-0')}
+                onClick={handleDetail}
+            >
+                {t('table.detail')}
+            </Button>
+
+            <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                <DialogTrigger asChild>
+                    <Button variant="link" className={cn('h-8 p-0')}>
                         {t('table.delete')}
-                    </DialogTitle>
-                </DialogHeader>
-                <div className={cn('text-sm')}>
-                    {t('dialog.delete.content')}
-                </div>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button size="sm" variant="outline" aria-label="Close">
-                            {t('dialog.cancel')}
-                        </Button>
-                    </DialogClose>
-                    <Button size="sm" variant="outline" onClick={handleDelete}>
-                        {t('dialog.confirm')}
                     </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                </DialogTrigger>
+                <DialogContent aria-describedby={undefined}>
+                    <DialogHeader>
+                        <DialogTitle className={cn('text-base')}>
+                            {t('table.delete')}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className={cn('text-sm')}>
+                        {t('dialog.delete.content')}
+                    </div>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                aria-label="Close"
+                            >
+                                {t('dialog.cancel')}
+                            </Button>
+                        </DialogClose>
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={handleDelete}
+                        >
+                            {t('dialog.confirm')}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </div>
     );
 }

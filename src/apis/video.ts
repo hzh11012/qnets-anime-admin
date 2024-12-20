@@ -3,7 +3,9 @@ import {
     VideoListReq,
     VideoListRes,
     VideoCreateReq,
-    VideoDeleteReq
+    VideoDeleteReq,
+    VideoDetailReq,
+    VideoDetailRes
 } from '@/apis/models/video-model';
 
 const prefix = '/v1/api/anime';
@@ -18,4 +20,8 @@ export const videoCreate = (params: VideoCreateReq) => {
 
 export const videoDelete = (params: VideoDeleteReq) => {
     return HttpClient.post(`${prefix}/admin_delete`, params);
+};
+
+export const getVideoDetail = (params: VideoDetailReq) => {
+    return HttpClient.post<VideoDetailRes>(`${prefix}/admin_detail`, params);
 };

@@ -15,7 +15,7 @@ export interface RatingItem {
     content: string;
     anime: {
         name: string;
-        cover: string;
+        cover_url: string;
         status: number;
         type: number;
         remark?: string;

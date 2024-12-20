@@ -44,6 +44,20 @@ import {
     MultiSelectTrigger,
     MultiSelectValue
 } from '@/components/ui/multiple-select';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from '@/components/ui/popover';
+import { Check, ChevronDown } from 'lucide-react';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList
+} from '@/components/ui/command';
 
 interface CustomToolsProps {
     categories: { label: string; value: number }[];
@@ -57,6 +71,7 @@ const YEAR_REG = /^\d{4}$/;
 const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
     const { t } = useTranslation();
     const [createOpen, setCreateOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
 
     const createFormSchema = z.object({
         sid: z
@@ -84,17 +99,29 @@ const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
                 message: `${t('video.table.description')} ${t('validator.max.length')} 255`
             })
             .min(1, `${t('video.table.description')} ${t('validator.empty')}`),
-        cover: z
+        cover_url: z
             .string({
-                required_error: `${t('video.table.cover')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.cover')} ${t('validator.type')}`
+                required_error: `${t('video.table.cover_url')} ${t('validator.empty')}`,
+                invalid_type_error: `${t('video.table.cover_url')} ${t('validator.type')}`
             })
             .max(255, {
-                message: `${t('video.table.cover')} ${t('validator.max.length')} 255`
+                message: `${t('video.table.cover_url')} ${t('validator.max.length')} 255`
             })
-            .min(1, `${t('video.table.cover')} ${t('validator.empty')}`)
+            .min(1, `${t('video.table.cover_url')} ${t('validator.empty')}`)
             .regex(COVER_REG, {
-                message: `${t('video.table.cover')} ${t('validator.format')}`
+                message: `${t('video.table.cover_url')} ${t('validator.format')}`
+            }),
+        banner_url: z
+            .string({
+                required_error: `${t('video.table.banner_url')} ${t('validator.empty')}`,
+                invalid_type_error: `${t('video.table.banner_url')} ${t('validator.type')}`
+            })
+            .max(255, {
+                message: `${t('video.table.banner_url')} ${t('validator.max.length')} 255`
+            })
+            .min(1, `${t('video.table.banner_url')} ${t('validator.empty')}`)
+            .regex(COVER_REG, {
+                message: `${t('video.table.banner_url')} ${t('validator.format')}`
             }),
         remark: z
             .string({
@@ -158,11 +185,34 @@ const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
         category: z.array(z.number(), {
             required_error: `${t('video.table.categories')} ${t('validator.empty')}`,
             invalid_type_error: `${t('video.table.categories')} ${t('validator.type')}`
-        })
+        }),
+        season: z
+            .number({
+                required_error: `${t('video.table.season')} ${t('validator.empty')}`,
+                invalid_type_error: `${t('video.table.season')} ${t('validator.type')}`
+            })
+            .int(`${t('video.table.season')} ${t('validator.int')}`)
+            .min(1, `${t('video.table.season')} ${t('validator.min')} 1`),
+        season_name: z
+            .string({
+                invalid_type_error: `${t('video.table.season_name')} ${t('validator.type')}`
+            })
+            .max(10, `${t('video.table.season_name')} ${t('validator.max')} 10`)
+            .optional()
     });
 
     const createForm = useForm<z.infer<typeof createFormSchema>>({
-        resolver: zodResolver(createFormSchema)
+        resolver: zodResolver(createFormSchema),
+        defaultValues: {
+            name: '',
+            cover_url: '',
+            banner_url: '',
+            season_name: '',
+            year: '',
+            director: '',
+            cv: '',
+            remark: ''
+        }
     });
 
     const { run: runCreate } = useRequest(videoCreate, {
@@ -230,35 +280,95 @@ const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
                                             >
                                                 {t('video.table.sid')}
                                             </FormLabel>
-                                            <Select
-                                                onValueChange={val =>
-                                                    field.onChange(
-                                                        parseInt(val)
-                                                    )
-                                                }
-                                                defaultValue={`${field.value}`}
+                                            <Popover
+                                                open={searchOpen}
+                                                onOpenChange={setSearchOpen}
                                             >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {series.map(item => {
-                                                        return (
-                                                            <SelectItem
-                                                                key={
-                                                                    item.label +
-                                                                    item.value
-                                                                }
-                                                                value={`${item.value}`}
-                                                            >
-                                                                {item.label}
-                                                            </SelectItem>
-                                                        );
-                                                    })}
-                                                </SelectContent>
-                                            </Select>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            aria-expanded={
+                                                                searchOpen
+                                                            }
+                                                            className={cn(
+                                                                'w-full justify-between bg-background px-3 outline-offset-0 hover:bg-background h-9'
+                                                            )}
+                                                        >
+                                                            <span>
+                                                                {field.value
+                                                                    ? series.find(
+                                                                          item =>
+                                                                              item.value ===
+                                                                              field.value
+                                                                      )?.label
+                                                                    : ''}
+                                                            </span>
+                                                            <ChevronDown
+                                                                size={16}
+                                                                strokeWidth={2}
+                                                                className={cn(
+                                                                    'shrink-0 text-muted-foreground/80'
+                                                                )}
+                                                                aria-hidden="true"
+                                                            />
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent
+                                                    className={cn(
+                                                        'w-full min-w-[var(--radix-popper-anchor-width)] border-input p-0'
+                                                    )}
+                                                    align="start"
+                                                >
+                                                    <Command>
+                                                        <CommandInput />
+                                                        <CommandList>
+                                                            <CommandEmpty>
+                                                                {t(
+                                                                    'table.toolbar.result_empty'
+                                                                )}
+                                                            </CommandEmpty>
+                                                            <CommandGroup>
+                                                                {series.map(
+                                                                    item => (
+                                                                        <CommandItem
+                                                                            key={
+                                                                                item.value
+                                                                            }
+                                                                            value={
+                                                                                item.label
+                                                                            }
+                                                                            onSelect={() => {
+                                                                                field.onChange(
+                                                                                    item.value
+                                                                                );
+                                                                                setSearchOpen(
+                                                                                    false
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            {
+                                                                                item.label
+                                                                            }
+                                                                            <Check
+                                                                                className={cn(
+                                                                                    'ml-auto',
+                                                                                    item.value ===
+                                                                                        field.value
+                                                                                        ? 'opacity-100'
+                                                                                        : 'opacity-0'
+                                                                                )}
+                                                                            />
+                                                                        </CommandItem>
+                                                                    )
+                                                                )}
+                                                            </CommandGroup>
+                                                        </CommandList>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -308,13 +418,95 @@ const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
                                 />
                                 <FormField
                                     control={createForm.control}
-                                    name="cover"
+                                    name="cover_url"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel
                                                 className={cn('required')}
                                             >
-                                                {t('video.table.cover')}
+                                                {t('video.table.cover_url')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    autoComplete="off"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={createForm.control}
+                                    name="banner_url"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel
+                                                className={cn('required')}
+                                            >
+                                                {t('video.table.banner_url')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    autoComplete="off"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={createForm.control}
+                                    name="season"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel
+                                                className={cn('required')}
+                                            >
+                                                {t('video.table.season')}
+                                            </FormLabel>
+                                            <Select
+                                                onValueChange={val =>
+                                                    field.onChange(
+                                                        parseInt(val)
+                                                    )
+                                                }
+                                                defaultValue={`${field.value}`}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {[...Array(10).keys()]
+                                                        .map(x => x + 1)
+                                                        .map(item => {
+                                                            return (
+                                                                <SelectItem
+                                                                    key={item}
+                                                                    value={`${item}`}
+                                                                >
+                                                                    {item}
+                                                                </SelectItem>
+                                                            );
+                                                        })}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={createForm.control}
+                                    name="season_name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                {t('video.table.season_name')}
                                             </FormLabel>
                                             <FormControl>
                                                 <Input

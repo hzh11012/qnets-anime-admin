@@ -3,6 +3,7 @@ export default {
     'table.empty': 'Empty',
     'table.create': 'Create',
     'table.edit': 'Edit',
+    'table.detail': 'Detail',
     'table.delete': 'Delete',
     'table.actions': 'Actions',
     'table.search.placeholder': 'Please enter',

@@ -13,7 +13,7 @@ export interface CollectionItem {
     nickname: string;
     anime: {
         name: string;
-        cover: string;
+        cover_url: string;
         status: number;
         type: number;
         remark?: string;
