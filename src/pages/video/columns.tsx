@@ -197,13 +197,13 @@ export const getColumns = (
             ),
             cell: ({ row }: any) => {
                 //  0-一月番 1-四月番 2-七月番 3-十月番
-                const StatusMap: { [key: number]: string } = {
+                const MonthMap: { [key: number]: string } = {
                     0: t('video.month.jan'),
                     1: t('video.month.apr'),
                     2: t('video.month.jul'),
                     3: t('video.month.oct')
                 };
-                return StatusMap[row.original.month];
+                return MonthMap[row.original.month];
             }
         },
         {

@@ -27,5 +27,20 @@ export default {
     'video.month.jan': 'Jan',
     'video.month.apr': 'Apr',
     'video.month.jul': 'Jul',
-    'video.month.oct': 'Oct'
+    'video.month.oct': 'Oct',
+
+    'video.detail.aid': 'Anime ID',
+    'video.detail.title': 'Video Title',
+    'video.detail.episode_id': 'Video Episode',
+    'video.detail.url': 'Video Url',
+    'video.detail.description': 'Description',
+    'video.detail.rating': 'Score',
+    'video.detail.play_count': 'Plays',
+    'video.detail.rating_count': 'Ratings',
+    'video.detail.collection_count': 'Collections',
+    'video.detail.episode': 'Episode',
+    'video.detail.episode_empty': 'No Episodes Fount',
+    'video.detail.related_anime': 'Related Anime',
+    'video.detail.director': 'Director',
+    'video.detail.cv': 'Cv'
 };

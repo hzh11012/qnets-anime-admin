@@ -19,4 +19,10 @@ const validSort = (sortName: string, sorts: any[]) => {
     return isDesc ? 'DESC' : 'ASC';
 };
 
-export { cn, validFilter, validSort };
+const formateNumber = (x: number) => {
+    var parts = x.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+};
+
+export { cn, validFilter, validSort, formateNumber };

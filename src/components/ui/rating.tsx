@@ -30,7 +30,7 @@ const RatingItem = React.forwardRef<
         >
             <Icon
                 fill={selectedValue >= Number(value) ? 'currentColor' : ''}
-                className="size-6 fill-none stroke-transparent stroke-1 text-transparent"
+                className="size-6 stroke-transparent stroke-1 text-transparent"
             />
         </RadioGroupPrimitive.Item>
     );

@@ -45,6 +45,7 @@ export interface VideoDeleteReq {
 }
 
 export interface VideoCreateReq {
+    sid: number;
     name: string;
     description: string;
     cover_url: string;
@@ -76,6 +77,10 @@ export interface VideoDetailRes {
     status: number;
     season: number;
     season_name?: string;
+    score: string;
+    score_count: number;
+    play_count: string;
+    collection_count: number;
     type: number;
     cv?: string;
     director?: string;
@@ -86,7 +91,31 @@ export interface VideoDetailRes {
         name: string;
         status: number;
         type: number;
+        year: string;
+        month: number;
+        cv?: string;
+        director?: string;
         cover_url: string;
+        banner_url: string;
     }[];
-    video: {}[];
+    videos: {
+        id: number;
+        title: string;
+        episode: number;
+        url: string;
+        play_count: number;
+    }[];
+}
+
+export interface EpisodeCreateReq {
+    id: number;
+    title: string;
+    episode: number;
+    url: string;
+}
+
+export interface EpisodeDeleteReq extends VideoDeleteReq {}
+
+export interface VideoEditReq extends VideoCreateReq {
+    id: number;
 }

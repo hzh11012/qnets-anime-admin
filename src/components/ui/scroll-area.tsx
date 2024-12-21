@@ -3,13 +3,19 @@ import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 
 import { cn } from '@/lib/utils';
 
+type ScrollAreaPops = React.ComponentPropsWithoutRef<
+    typeof ScrollAreaPrimitive.Root
+> & {
+    wrapperClassName?: string;
+};
+
 const ScrollArea = React.forwardRef<
     React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-    React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
->(({ className, children, ...props }, ref) => (
+    ScrollAreaPops
+>(({ className, wrapperClassName, children, ...props }, ref) => (
     <ScrollAreaPrimitive.Root
         ref={ref}
-        className={cn('relative overflow-hidden')}
+        className={cn('relative overflow-hidden', wrapperClassName)}
         {...props}
     >
         <ScrollAreaPrimitive.Viewport

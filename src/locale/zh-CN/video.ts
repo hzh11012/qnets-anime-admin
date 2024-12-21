@@ -27,5 +27,20 @@ export default {
     'video.month.jan': '一月番',
     'video.month.apr': '四月番',
     'video.month.jul': '七月番',
-    'video.month.oct': '十月番'
+    'video.month.oct': '十月番',
+
+    'video.detail.aid': '动漫ID',
+    'video.detail.title': '视频标题',
+    'video.detail.episode_id': '集数编号',
+    'video.detail.url': '视频地址',
+    'video.detail.description': '简介',
+    'video.detail.rating': '评分',
+    'video.detail.play_count': '播放量',
+    'video.detail.rating_count': '评分数',
+    'video.detail.collection_count': '收藏数',
+    'video.detail.episode': '剧集',
+    'video.detail.episode_empty': '暂无剧集',
+    'video.detail.related_anime': '相关作品',
+    'video.detail.director': '导演',
+    'video.detail.cv': '声优'
 };
