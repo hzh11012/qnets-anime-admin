@@ -13,5 +13,7 @@ export default {
     'table.toolbar.clear_filters': 'Clear Filters',
     'table.toolbar.reset': 'Reset',
     'table.toolbar.asc': 'Asc',
-    'table.toolbar.desc': 'Desc'
+    'table.toolbar.desc': 'Desc',
+    'table.set_swiper': 'Set Swiper',
+    'table.cancel_swiper': 'Cancel Swiper'
 };

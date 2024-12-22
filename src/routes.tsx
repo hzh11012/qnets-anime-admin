@@ -47,6 +47,12 @@ const staticRoutes: RouteObject[] = [
                 })
             },
             {
+                path: 'swiper',
+                lazy: async () => ({
+                    Component: (await import('@/pages/swiper/index')).default
+                })
+            },
+            {
                 path: 'notice',
                 lazy: async () => ({
                     Component: (await import('@/pages/notice/index')).default

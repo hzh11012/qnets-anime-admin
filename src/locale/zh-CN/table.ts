@@ -13,5 +13,7 @@ export default {
     'table.toolbar.clear_filters': '清空筛选',
     'table.toolbar.reset': '重置',
     'table.toolbar.asc': '升序',
-    'table.toolbar.desc': '降序'
+    'table.toolbar.desc': '降序',
+    'table.set_swiper': '设为轮播',
+    'table.cancel_swiper': '取消轮播'
 };

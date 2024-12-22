@@ -23,8 +23,7 @@ import {
 import VideoCreate from '@/pages/video/detail/video-create';
 import EpisodeButton from '@/pages/video/detail/episode-button';
 import { useRequest } from 'ahooks';
-import { getVideoDetail } from '@/apis/video';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AnimeEdit from './anime-edit';
 import { getVideoCategoryList } from '@/apis/category';
 import { getSeriesList } from '@/apis/series';
@@ -34,11 +33,6 @@ const VideoDetail = () => {
     const { id } = useParams();
     const { t } = useTranslation();
     const data = useLoaderData<VideoDetailRes>();
-    const [detail, setDetail] = useState<VideoDetailRes>(data);
-
-    useEffect(() => {
-        run({ id: Number(id) });
-    }, [id]);
 
     //  0-即将上线 1-连载中 2-已完结
     const StatusMap: { [key: number]: string } = {
@@ -63,15 +57,6 @@ const VideoDetail = () => {
         3: t('video.type.china'),
         4: t('video.type.hentai')
     };
-
-    const { run } = useRequest(getVideoDetail, {
-        manual: true,
-        onSuccess({ code, data }) {
-            if (code === 200 && data) {
-                setDetail(data);
-            }
-        }
-    });
 
     const [categoriesList, setCategoriesList] = useState<
         { label: string; value: number }[]
@@ -124,7 +109,7 @@ const VideoDetail = () => {
     };
 
     const handleRefresh = () => {
-        run({ id: Number(id) });
+        navigate(`/video/detail/${id}`);
     };
 
     const {
@@ -144,7 +129,7 @@ const VideoDetail = () => {
         director,
         videos,
         description
-    } = detail;
+    } = data;
 
     return (
         <Layout className={cn('h-full')}>
@@ -182,8 +167,8 @@ const VideoDetail = () => {
                             aid={Number(id)}
                             series={seriesList}
                             onRefresh={handleRefresh}
-                            {...detail}
-                            category={detail.categories.map(item => item.id)}
+                            {...data}
+                            category={data.categories.map(item => item.id)}
                             categories={categoriesList}
                         />
                     </div>
@@ -365,7 +350,9 @@ const VideoDetail = () => {
                             />
                         </div>
                         {videos.length ? (
-                            <ScrollArea className={cn('max-h-[280px]')}>
+                            <ScrollArea
+                                className={cn('max-h-[360px] md:max-h-[600px]')}
+                            >
                                 <div className={cn('flex flex-wrap gap-4')}>
                                     {videos.map(item => {
                                         return (
@@ -393,7 +380,9 @@ const VideoDetail = () => {
                             <h3 className={cn('font-bold text-base')}>
                                 {t('video.detail.related_anime')}
                             </h3>
-                            <ScrollArea className={cn('max-h-[240px]')}>
+                            <ScrollArea
+                                className={cn('max-h-[360px] md:max-h-[600px]')}
+                            >
                                 <div className={cn('space-y-4')}>
                                     {related.map(item => {
                                         const {

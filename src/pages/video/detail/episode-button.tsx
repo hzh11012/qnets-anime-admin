@@ -87,10 +87,10 @@ const EpisodeButton = ({
             <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                 <DialogTrigger asChild>
                     <Button
-                        className="md:size-9 size-7  rounded-none shadow-none first:rounded-s-lg last:rounded-e-lg focus-visible:z-10"
+                        className="md:size-9 size-7 rounded-none shadow-none first:rounded-s-lg last:rounded-e-lg focus-visible:z-10"
                         variant="outline"
                         size="icon"
-                        aria-label="Menu"
+                        aria-label="Delete"
                     >
                         <Trash2 className={cn('text-[#1677ff]')} size={14} />
                     </Button>

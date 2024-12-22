@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
 import { videoDelete } from '@/apis/video';
 import { useNavigate } from 'react-router-dom';
+import { swiperCreate, swiperDelete } from '@/apis/swiper';
 
 interface DataTableRowActionsProps {
     row: any;
@@ -25,7 +26,7 @@ export function DataTableRowActions({
     row,
     onRefresh
 }: DataTableRowActionsProps) {
-    const { id } = row.original;
+    const { id, is_swiper } = row.original;
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
     const navigate = useNavigate();
@@ -45,6 +46,34 @@ export function DataTableRowActions({
         }
     });
 
+    const { run: runSetSwiper } = useRequest(swiperCreate, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess({ code, msg }) {
+            if (code === 200) {
+                onRefresh && onRefresh();
+                toast({
+                    description: msg,
+                    duration: 1500
+                });
+            }
+        }
+    });
+
+    const { run: runCancelSwiper } = useRequest(swiperDelete, {
+        manual: true,
+        debounceWait: 300,
+        onSuccess({ code, msg }) {
+            if (code === 200) {
+                onRefresh && onRefresh();
+                toast({
+                    description: msg,
+                    duration: 1500
+                });
+            }
+        }
+    });
+
     const handleDelete = () => {
         runDelete({ id });
     };
@@ -53,8 +82,20 @@ export function DataTableRowActions({
         navigate(`/video/detail/${id}`);
     };
 
+    const handleSwiper = () => {
+        is_swiper ? runCancelSwiper({ id }) : runSetSwiper({ id });
+    };
+
     return (
         <div className={cn('space-x-4')}>
+            <Button
+                variant="link"
+                className={cn('h-8 p-0')}
+                onClick={handleSwiper}
+            >
+                {!is_swiper ? t('table.set_swiper') : t('table.cancel_swiper')}
+            </Button>
+
             <Button
                 variant="link"
                 className={cn('h-8 p-0')}

@@ -235,9 +235,11 @@ const AnimeEdit = ({
     } = rest;
 
     useEffect(() => {
-        editForm.reset({
-            ...rest
-        });
+        if (editOpen) {
+            editForm.reset({
+                ...rest
+            });
+        }
     }, [
         sid,
         name,
@@ -256,7 +258,7 @@ const AnimeEdit = ({
         category
     ]);
 
-    const { run: runCreate } = useRequest(videoEdit, {
+    const { run: runEdit } = useRequest(videoEdit, {
         manual: true,
         debounceWait: 300,
         onSuccess({ code, msg }) {
@@ -267,13 +269,12 @@ const AnimeEdit = ({
                     duration: 1500
                 });
                 setEditOpen(false);
-                editForm.reset();
             }
         }
     });
 
     const handleCreate = (values: z.infer<typeof editFormSchema>) => {
-        runCreate({
+        runEdit({
             ...values,
             id: aid
         });
@@ -284,16 +285,10 @@ const AnimeEdit = ({
             open={editOpen}
             onOpenChange={() => {
                 setEditOpen(!editOpen);
-                setTimeout(() => {
-                    // 关闭弹窗 reset 表单
-                    if (editOpen) {
-                        editForm.reset();
-                    }
-                }, 200);
             }}
         >
             <DialogTrigger asChild>
-                <Button variant="outline" className={cn('h-9 px-3')}>
+                <Button variant="link" className={cn('h-5 p-0 text-[#1677ff]')}>
                     {t('table.edit')}
                 </Button>
             </DialogTrigger>

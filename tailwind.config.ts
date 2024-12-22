@@ -89,7 +89,9 @@ const config: Config = {
                 nav: 'calc(100vh - 4rem)'
             },
             backgroundImage: {
-                404: "url('@/img/404.png')"
+                404: "url('@/img/404.png')",
+                'bottom-shadow':
+                    'linear-gradient(180deg,rgba(22,22,26,0),rgb(17,19,25) 100%)'
             }
         }
     },

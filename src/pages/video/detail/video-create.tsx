@@ -87,7 +87,9 @@ const VideoCreate = ({ onRefresh, aid }: VideoCreateProps) => {
                     duration: 1500
                 });
                 setCreateOpen(false);
-                createForm.reset();
+                setTimeout(() => {
+                    createForm.reset();
+                }, 200);
             }
         }
     });
