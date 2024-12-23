@@ -18,6 +18,7 @@ import {
     getPaginationRowModel,
     OnChangeFn,
     PaginationState,
+    RowSelectionState,
     SortingState,
     useReactTable
 } from '@tanstack/react-table';
@@ -36,9 +37,12 @@ interface DataTableProps<TData, TValue> {
     sorting?: SortingState;
     columnFilters?: ColumnFiltersState;
     customTools?: ReactNode;
+    rowSelection?: RowSelectionState;
+    enableRowSelection?: boolean | ((row: any) => boolean);
     onPaginationChange: OnChangeFn<PaginationState>;
     onSortingChange?: OnChangeFn<SortingState>;
     onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
+    onRowSelectionChange?: OnChangeFn<RowSelectionState>;
     onSearch: (val: string) => void;
 }
 
@@ -53,23 +57,29 @@ export function DataTable<TData, TValue>({
     sorting,
     columnFilters,
     customTools,
+    rowSelection,
+    enableRowSelection,
     onSearch,
     onPaginationChange,
     onSortingChange,
-    onColumnFiltersChange
+    onColumnFiltersChange,
+    onRowSelectionChange
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
+        getRowId: (row: any) => row.id,
         data,
         columns,
         pageCount,
-        state: { pagination, sorting, columnFilters },
+        state: { pagination, sorting, rowSelection, columnFilters },
         manualPagination: true,
         manualFiltering: true,
+        enableRowSelection,
         onColumnFiltersChange,
         onPaginationChange,
         onSortingChange,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel()
+        getPaginationRowModel: getPaginationRowModel(),
+        onRowSelectionChange
     });
 
     const { t } = useTranslation();
@@ -95,6 +105,7 @@ export function DataTable<TData, TValue>({
                                         return (
                                             <TableHead
                                                 key={header.id}
+                                                colSpan={header.colSpan}
                                                 className={cn(
                                                     'text-nowrap bg-gray-100 dark:bg-neutral-800'
                                                 )}
