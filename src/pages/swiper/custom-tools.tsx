@@ -112,6 +112,7 @@ const AnimePickerTable = ({
                 return (
                     <img
                         src={row.original.banner_url}
+                        loading="lazy"
                         className={cn(
                             'block max-w-none w-[8rem] h-[4rem] object-cover rounded-sm'
                         )}

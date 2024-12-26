@@ -24,6 +24,7 @@ export const getColumns = (
                 return (
                     <img
                         src={row.original.banner_url}
+                        loading="lazy"
                         className={cn(
                             'block max-w-none w-[12rem] h-[6rem] object-cover rounded-sm'
                         )}

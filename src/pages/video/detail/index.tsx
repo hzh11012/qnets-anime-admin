@@ -179,6 +179,7 @@ const VideoDetail = () => {
                             <AspectRatio ratio={3 / 4}>
                                 <img
                                     src={cover_url}
+                                    loading="lazy"
                                     className={cn(
                                         'block rounded-md object-cover size-full brightness-90'
                                     )}
@@ -411,6 +412,7 @@ const VideoDetail = () => {
                                                     >
                                                         <img
                                                             src={banner_url}
+                                                            loading="lazy"
                                                             className={cn(
                                                                 'block rounded-md object-cover size-full brightness-90'
                                                             )}
