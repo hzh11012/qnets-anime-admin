@@ -4,6 +4,5 @@ export default {
     'rating.table.nickname': 'User Nickname',
     'rating.table.anime.name': 'Anime Name',
     'rating.table.score': 'Rating Grade',
-    'rating.table.content': 'Rating Content',
-    'rating.table.created_at': 'Create Time'
+    'rating.table.content': 'Rating Content'
 };

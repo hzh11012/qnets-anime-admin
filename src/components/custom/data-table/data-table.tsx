@@ -32,7 +32,7 @@ interface DataTableProps<TData, TValue> {
     pageCount?: number;
     total?: number;
     loading: boolean;
-    sizes: number[];
+    sizes?: number[];
     pagination: PaginationState;
     sorting?: SortingState;
     columnFilters?: ColumnFiltersState;
@@ -44,6 +44,8 @@ interface DataTableProps<TData, TValue> {
     onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
     onRowSelectionChange?: OnChangeFn<RowSelectionState>;
     onSearch: (val: string) => void;
+    className?: string;
+    headerClassName?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -52,18 +54,20 @@ export function DataTable<TData, TValue>({
     pageCount,
     total,
     loading,
-    sizes,
+    sizes = [],
     pagination,
     sorting,
     columnFilters,
     customTools,
-    rowSelection,
+    rowSelection = {},
     enableRowSelection,
     onSearch,
     onPaginationChange,
     onSortingChange,
     onColumnFiltersChange,
-    onRowSelectionChange
+    onRowSelectionChange,
+    className,
+    headerClassName
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         getRowId: (row: any) => row.id,
@@ -86,14 +90,14 @@ export function DataTable<TData, TValue>({
 
     return (
         <Card className={cn('border-none shadow-none h-full')}>
-            <CardHeader>
+            <CardHeader className={cn(headerClassName)}>
                 <DataTableToolbar
                     table={table}
                     customTools={customTools}
                     onSearch={onSearch}
                 />
             </CardHeader>
-            <CardContent>
+            <CardContent className={cn(className)}>
                 <div className={cn('rounded-md border overflow-hidden')}>
                     <Table key={'table'}>
                         <TableHeader

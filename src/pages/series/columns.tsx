@@ -30,10 +30,10 @@ export const getColumns = (
         },
         {
             accessorKey: 'created_at',
-            title: t('series.table.created_at'),
+            title: t('table.created_at'),
             header: ({ column }: any) => (
                 <div className={cn('flex items-center space-x-1')}>
-                    <span>{t('series.table.created_at')}</span>
+                    <span>{t('table.created_at')}</span>
                     <DataTableColumnSort column={column} />
                 </div>
             )

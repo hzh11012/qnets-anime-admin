@@ -4,6 +4,5 @@ export default {
     'danmaku.table.color': 'Danmaku Color',
     'danmaku.table.time_dot': 'Time Point',
     'danmaku.table.ip': 'IP Address',
-    'danmaku.table.created_at': 'Create Time',
     'danmaku.table.source': 'Source'
 };

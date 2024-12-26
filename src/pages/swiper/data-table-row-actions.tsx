@@ -1,3 +1,4 @@
+import { swiperDelete } from '@/apis/swiper';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -13,7 +14,6 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { videoDelete } from '@/apis/video';
 import { useNavigate } from 'react-router-dom';
 
 interface DataTableRowActionsProps {
@@ -25,12 +25,12 @@ export function DataTableRowActions({
     row,
     onRefresh
 }: DataTableRowActionsProps) {
-    const { id } = row.original;
+    const { aid } = row.original;
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
     const navigate = useNavigate();
 
-    const { run: runDelete } = useRequest(videoDelete, {
+    const { run: runDelete } = useRequest(swiperDelete, {
         manual: true,
         debounceWait: 300,
         onSuccess({ code, msg }) {
@@ -46,11 +46,11 @@ export function DataTableRowActions({
     });
 
     const handleDelete = () => {
-        runDelete({ id });
+        runDelete({ id: aid });
     };
 
     const handleDetail = () => {
-        navigate(`/video/detail/${id}`);
+        navigate(`/video/detail/${aid}`);
     };
 
     return (
@@ -62,7 +62,6 @@ export function DataTableRowActions({
             >
                 {t('table.detail')}
             </Button>
-
             <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                 <DialogTrigger asChild>
                     <Button variant="link" className={cn('h-8 p-0')}>

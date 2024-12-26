@@ -5,6 +5,7 @@ import { userStore } from '@/store/user';
 import Layout from '@/layout';
 import Exception404 from '@/pages/404';
 import { getVideoDetail } from '@/apis/video';
+import { Loading } from '@/components/custom/loading';
 
 const tokenLoader = async () => {
     const { data, code, errorCode } = await getUserInfo();
@@ -38,6 +39,7 @@ const staticRoutes: RouteObject[] = [
         path: '/',
         loader: tokenLoader,
         element: <Layout />,
+        hydrateFallbackElement: <Loading />,
         children: [
             {
                 index: true,

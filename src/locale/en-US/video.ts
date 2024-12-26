@@ -15,7 +15,6 @@ export default {
     'video.table.categories': 'Anime category',
     'video.table.season': 'Anime Season',
     'video.table.season_name': 'Anime Season Name',
-    'video.table.created_at': 'Create Time',
     'video.status.coming': 'Coming',
     'video.status.serializing': 'Serializing',
     'video.status.completed': 'Completed',

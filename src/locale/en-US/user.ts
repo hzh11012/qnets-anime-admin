@@ -4,7 +4,6 @@ export default {
     'user.table.nickname': 'User Nickname',
     'user.table.phone': 'User Phone',
     'user.table.scope': 'User Role',
-    'user.table.created_at': 'Create Time',
     'user.role.ban': 'Ban',
     'user.role.general': 'General',
     'user.role.visitor': 'Visitor',

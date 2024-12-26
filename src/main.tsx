@@ -5,7 +5,6 @@ import { RouterProvider } from 'react-router-dom';
 import i18next from '@/locale';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { ThemeProvider } from '@/components/custom/theme-provider';
-import { Loading } from '@/components/custom/loading';
 import { Toaster } from '@/components/ui/toaster';
 import router from '@/routes';
 import '@/style/index.css';
@@ -16,10 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <I18nextProvider i18n={i18next} defaultNS={'translation'}>
             <ThemeProvider defaultTheme="system" storageKey="qnets-ui-theme">
                 <TooltipProvider>
-                    <RouterProvider
-                        router={router}
-                        fallbackElement={<Loading />}
-                    />
+                    <RouterProvider router={router} />
                     <Toaster />
                 </TooltipProvider>
             </ThemeProvider>

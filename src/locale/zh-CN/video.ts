@@ -15,7 +15,6 @@ export default {
     'video.table.categories': '动漫分类',
     'video.table.season': '动漫季数编号',
     'video.table.season_name': '动漫季数名称',
-    'video.table.created_at': '创建时间',
     'video.status.coming': '即将上线',
     'video.status.serializing': '连载中',
     'video.status.completed': '已完结',

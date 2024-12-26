@@ -4,7 +4,6 @@ export default {
     'user.table.nickname': '用户昵称',
     'user.table.phone': '用户手机号',
     'user.table.scope': '用户角色',
-    'user.table.created_at': '创建时间',
     'user.role.ban': '封禁',
     'user.role.visitor': '游客',
     'user.role.general': '普通用户',

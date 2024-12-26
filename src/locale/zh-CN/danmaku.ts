@@ -4,6 +4,5 @@ export default {
     'danmaku.table.color': '弹幕颜色',
     'danmaku.table.time_dot': '时间点',
     'danmaku.table.ip': 'IP地址',
-    'danmaku.table.created_at': '创建时间',
     'danmaku.table.source': '来源'
 };

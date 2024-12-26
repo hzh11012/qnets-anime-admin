@@ -55,8 +55,8 @@ export const getColumns = (
         },
         {
             accessorKey: 'created_at',
-            title: t('danmaku.table.created_at'),
-            header: t('danmaku.table.created_at')
+            title: t('table.created_at'),
+            header: t('table.created_at')
         },
         {
             id: 'actions',

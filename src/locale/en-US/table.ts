@@ -6,6 +6,7 @@ export default {
     'table.detail': 'Detail',
     'table.delete': 'Delete',
     'table.actions': 'Actions',
+    'table.selected': 'Selected',
     'table.search.placeholder': 'Please enter',
     'table.toolbar.toggle_columns': 'Toggle Columns',
     'table.toolbar.result_empty': 'No Results Found',
@@ -15,5 +16,6 @@ export default {
     'table.toolbar.asc': 'Asc',
     'table.toolbar.desc': 'Desc',
     'table.set_swiper': 'Set Swiper',
-    'table.cancel_swiper': 'Cancel Swiper'
+    'table.cancel_swiper': 'Cancel Swiper',
+    'table.created_at': 'Create Time'
 };

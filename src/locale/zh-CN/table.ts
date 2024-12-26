@@ -6,6 +6,7 @@ export default {
     'table.detail': '详情',
     'table.delete': '删除',
     'table.actions': '操作',
+    'table.selected': '已选择',
     'table.search.placeholder': '请输入',
     'table.toolbar.toggle_columns': '选择显示列',
     'table.toolbar.result_empty': '暂无结果',
@@ -14,6 +15,5 @@ export default {
     'table.toolbar.reset': '重置',
     'table.toolbar.asc': '升序',
     'table.toolbar.desc': '降序',
-    'table.set_swiper': '设为轮播',
-    'table.cancel_swiper': '取消轮播'
+    'table.created_at': '创建时间'
 };

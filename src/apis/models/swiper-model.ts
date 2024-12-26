@@ -1,5 +1,5 @@
 export interface SwiperCreateReq {
-    id: number;
+    ids: number[];
 }
 
 export interface SwiperListReq {

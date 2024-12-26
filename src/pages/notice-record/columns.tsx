@@ -125,10 +125,10 @@ export const getColumns = (
         },
         {
             accessorKey: 'created_at',
-            title: t('notice-record.table.created_at'),
+            title: t('table.created_at'),
             header: ({ column }: any) => (
                 <div className={cn('flex items-center space-x-1')}>
-                    <span>{t('notice-record.table.created_at')}</span>
+                    <span>{t('table.created_at')}</span>
                     <DataTableColumnSort column={column} />
                 </div>
             )

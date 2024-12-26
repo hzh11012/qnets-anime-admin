@@ -1,18 +1,24 @@
-import { SwiperItem } from '@/apis/models/swiper-model';
-import { getSwiperList } from '@/apis/swiper';
 import { Layout } from '@/components/layout';
-import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import usePagination from '@/hooks/use-pagination';
+import { getSwiperList } from '@/apis/swiper';
 import { useState } from 'react';
-import { SwiperTable } from '@/pages/swiper/swiper-table';
+import usePagination from '@/hooks/use-pagination';
+import CustomTools from '@/pages/swiper/custom-tools';
+import { getColumns } from '@/pages/swiper/columns';
+import { SortingState } from '@tanstack/react-table';
+import { DataTable } from '@/components/custom/data-table/data-table';
+import { SwiperItem } from '@/apis/models/swiper-model';
 
 const Swiper = () => {
+    const { t } = useTranslation();
+
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
     const [data, setData] = useState<SwiperItem[]>([]);
 
+    const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
 
     const { run, loading, refresh } = useRequest(getSwiperList, {
@@ -37,10 +43,22 @@ const Swiper = () => {
         }
     });
 
+    const columns = getColumns(t, () => {
+        if (data.length === 1 && page > 1) {
+            onPaginationChange({
+                pageIndex: page - 2,
+                pageSize: limit
+            });
+        } else {
+            refresh();
+        }
+    });
+
     return (
-        <Layout className={cn('h-full')}>
-            <SwiperTable
+        <Layout>
+            <DataTable
                 data={data}
+                columns={columns}
                 loading={loading}
                 pagination={pagination}
                 pageCount={Math.ceil(total / limit)}
@@ -48,7 +66,9 @@ const Swiper = () => {
                 onPaginationChange={onPaginationChange}
                 sizes={[10, 20, 50, 100]}
                 onSearch={setKeyword}
-                onRefresh={refresh}
+                sorting={sorting}
+                onSortingChange={setSorting}
+                customTools={<CustomTools onRefresh={refresh} />}
             />
         </Layout>
     );

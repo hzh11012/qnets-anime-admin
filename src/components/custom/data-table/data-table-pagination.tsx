@@ -35,39 +35,41 @@ function DataTablePagination<TData>({
                 </div>
             </div>
             <div className={cn('flex items-center justify-between space-x-6')}>
-                <div className={cn('flex items-center space-x-2')}>
-                    <p
-                        className={cn(
-                            'hidden text-sm items-center font-medium sm:block'
-                        )}
-                    >
-                        {t('pagination.pageSize')}
-                    </p>
-                    <Select
-                        value={`${table.getState().pagination.pageSize}`}
-                        onValueChange={value => {
-                            table.setPageSize(Number(value));
-                        }}
-                    >
-                        <SelectTrigger className={cn('w-auto')}>
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                {sizes.map(pageSize => {
-                                    return (
-                                        <SelectItem
-                                            key={pageSize}
-                                            value={`${pageSize}`}
-                                        >
-                                            {pageSize}
-                                        </SelectItem>
-                                    );
-                                })}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                </div>
+                {!!sizes.length && (
+                    <div className={cn('flex items-center space-x-2')}>
+                        <p
+                            className={cn(
+                                'hidden text-sm items-center font-medium sm:block'
+                            )}
+                        >
+                            {t('pagination.pageSize')}
+                        </p>
+                        <Select
+                            value={`${table.getState().pagination.pageSize}`}
+                            onValueChange={value => {
+                                table.setPageSize(Number(value));
+                            }}
+                        >
+                            <SelectTrigger className={cn('w-auto')}>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    {sizes.map(pageSize => {
+                                        return (
+                                            <SelectItem
+                                                key={pageSize}
+                                                value={`${pageSize}`}
+                                            >
+                                                {pageSize}
+                                            </SelectItem>
+                                        );
+                                    })}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                )}
                 <div className={cn('flex items-center space-x-2')}>
                     <PaginationPage table={table} />
                 </div>
