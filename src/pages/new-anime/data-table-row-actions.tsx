@@ -25,7 +25,7 @@ export function DataTableRowActions({
     row,
     onRefresh
 }: DataTableRowActionsProps) {
-    const { aid } = row.original;
+    const { id, aid } = row.original;
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ export function DataTableRowActions({
     });
 
     const handleDelete = () => {
-        runDelete({ id: aid });
+        runDelete({ id });
     };
 
     const handleDetail = () => {
