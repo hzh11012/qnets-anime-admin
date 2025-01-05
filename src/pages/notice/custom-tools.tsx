@@ -104,9 +104,6 @@ const CustomTools = ({ onRefresh }: CustomToolsProps) => {
             </DialogTrigger>
             <DialogContent
                 aria-describedby={undefined}
-                onOpenAutoFocus={e => {
-                    e.preventDefault();
-                }}
             >
                 <DialogHeader>
                     <DialogTitle>{t('table.create')}</DialogTitle>

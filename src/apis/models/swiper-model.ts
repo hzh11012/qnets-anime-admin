@@ -25,4 +25,6 @@ export interface SwiperListRes {
     rows: SwiperItem[];
 }
 
-export interface SwiperDeleteReq extends SwiperCreateReq {}
+export interface SwiperDeleteReq {
+    id: number;
+}

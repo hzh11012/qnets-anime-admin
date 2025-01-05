@@ -142,12 +142,7 @@ export function DataTableRowActions({
                         {t('table.edit')}
                     </Button>
                 </DialogTrigger>
-                <DialogContent
-                    aria-describedby={undefined}
-                    onOpenAutoFocus={e => {
-                        e.preventDefault();
-                    }}
-                >
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>{t('table.edit')}</DialogTitle>
                     </DialogHeader>

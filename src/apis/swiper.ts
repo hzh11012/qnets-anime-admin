@@ -13,7 +13,7 @@ export const swiperCreate = (params: SwiperCreateReq) => {
 };
 
 export const getSwiperList = (params: SwiperListReq) => {
-    return HttpClient.post<SwiperListRes>(`${prefix}/list`, params);
+    return HttpClient.post<SwiperListRes>(`${prefix}/admin_list`, params);
 };
 
 export const swiperDelete = (params: SwiperDeleteReq) => {

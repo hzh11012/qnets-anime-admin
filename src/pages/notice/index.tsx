@@ -21,7 +21,7 @@ const Rating = () => {
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
-    const order = validSort('created_at', sorting);
+    const [orderBy, order] = validSort(sorting);
 
     const { run, loading, refresh } = useRequest(getNoticeList, {
         defaultParams: [
@@ -41,6 +41,7 @@ const Rating = () => {
                 page,
                 keyword,
                 pageSize: limit,
+                orderBy,
                 order
             });
         }

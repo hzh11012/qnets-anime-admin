@@ -62,9 +62,11 @@ function PaginationPage<TData>({ table }: DataTablePaginationProps<TData>) {
     const getPaginationItem = (arr: (number | string)[]) => {
         return (
             <>
-                {arr.map(page => {
+                {arr.map((page, index) => {
                     return (
-                        <PaginationItem key={'page-' + page.toString()}>
+                        <PaginationItem
+                            key={index + '-page-' + page.toString()}
+                        >
                             {page === '...' ? (
                                 <PaginationEllipsis />
                             ) : (

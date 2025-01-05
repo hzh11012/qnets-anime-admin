@@ -11,12 +11,17 @@ const validFilter = (filterName: string, filters: any[]) => {
     );
 };
 
-const validSort = (sortName: string, sorts: any[]) => {
+const validSort = (
+    sorts: {
+        id: string;
+        desc: boolean;
+    }[]
+) => {
     if (sorts.length === 0) {
-        return undefined;
+        return [undefined, undefined];
     }
-    const isDesc = sorts.find((item: any) => item.id === sortName)?.desc;
-    return isDesc ? 'DESC' : 'ASC';
+    const isDesc = sorts[0].desc;
+    return [sorts[0].id, isDesc ? 'DESC' : 'ASC'];
 };
 
 const formateNumber = (x: number) => {

@@ -13,7 +13,8 @@ import {
     ContactRound,
     Star,
     Mail,
-    BookOpenText
+    BookOpenText,
+    LayoutList
 } from 'lucide-react';
 
 export interface NavLink {
@@ -32,6 +33,11 @@ export const links: SideLink[] = [
         title: 'menu.dashboard',
         href: '/',
         icon: <LayoutDashboard size={18} />
+    },
+    {
+        title: 'menu.new_anime',
+        href: '/new-anime',
+        icon: <LayoutList size={18} />
     },
     {
         title: 'menu.swiper',

@@ -22,7 +22,7 @@ const Correction = () => {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
     const status = validFilter('status', columnFilters);
-    const order = validSort('created_at', sorting);
+    const [orderBy, order] = validSort(sorting);
 
     const { run, loading, refresh } = useRequest(getCorrectionList, {
         defaultParams: [
@@ -43,6 +43,7 @@ const Correction = () => {
                 keyword,
                 pageSize: limit,
                 status,
+                orderBy,
                 order
             });
         }

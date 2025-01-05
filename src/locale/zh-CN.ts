@@ -15,6 +15,7 @@ import rating from '@/locale/zh-CN/rating';
 import notice from '@/locale/zh-CN/notice';
 import noticeRecord from '@/locale/zh-CN/notice-record';
 import series from '@/locale/zh-CN/series';
+import new_anime from '@/locale/zh-CN/new_anime';
 
 export default {
     ...menu,
@@ -33,5 +34,6 @@ export default {
     ...rating,
     ...notice,
     ...noticeRecord,
-    ...series
+    ...series,
+    ...new_anime
 };

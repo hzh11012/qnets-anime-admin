@@ -28,8 +28,8 @@ const Video = () => {
     const type = validFilter('type', columnFilters);
     const year = validFilter('year', columnFilters);
     const month = validFilter('month', columnFilters);
-    const order = validSort('created_at', sorting);
     const category = validFilter('categories', columnFilters);
+    const [orderBy, order] = validSort(sorting);
 
     const [categories, setCategories] = useState<
         { label: string; value: number }[]
@@ -62,6 +62,7 @@ const Video = () => {
                 year,
                 month,
                 category,
+                orderBy,
                 order
             });
         }

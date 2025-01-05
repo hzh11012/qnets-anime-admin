@@ -81,16 +81,16 @@ const AnimePickerTable = ({
                     onCheckedChange={value =>
                         table.toggleAllPageRowsSelected(!!value)
                     }
-                    aria-label="Select all"
+                    aria-label="全选"
                     className="translate-y-[2px]"
                 />
             ),
             cell: ({ row }: any) => (
                 <Checkbox
                     disabled={!row.getCanSelect()}
-                    checked={row.getIsSelected()}
+                    checked={row.getIsSelected() || !row.getCanSelect()}
                     onCheckedChange={value => row.toggleSelected(!!value)}
-                    aria-label="Select row"
+                    aria-label="选择行"
                     className="translate-y-[2px]"
                 />
             ),
@@ -206,9 +206,6 @@ const CustomTools = ({ onRefresh }: CustomToolsProps) => {
             <DialogContent
                 className="flex flex-col"
                 aria-describedby={undefined}
-                onOpenAutoFocus={e => {
-                    e.preventDefault();
-                }}
             >
                 <DialogHeader>
                     <DialogTitle>{t('table.create')}</DialogTitle>

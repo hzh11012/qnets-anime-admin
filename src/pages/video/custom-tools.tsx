@@ -253,13 +253,7 @@ const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
                     {t('table.create')}
                 </Button>
             </DialogTrigger>
-            <DialogContent
-                className={cn('px-0')}
-                aria-describedby={undefined}
-                onOpenAutoFocus={e => {
-                    e.preventDefault();
-                }}
-            >
+            <DialogContent className={cn('px-0')} aria-describedby={undefined}>
                 <DialogHeader className={cn('px-6')}>
                     <DialogTitle>{t('table.create')}</DialogTitle>
                 </DialogHeader>

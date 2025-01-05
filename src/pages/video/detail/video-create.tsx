@@ -119,12 +119,7 @@ const VideoCreate = ({ onRefresh, aid }: VideoCreateProps) => {
                     {t('table.create')}
                 </Button>
             </DialogTrigger>
-            <DialogContent
-                aria-describedby={undefined}
-                onOpenAutoFocus={e => {
-                    e.preventDefault();
-                }}
-            >
+            <DialogContent aria-describedby={undefined}>
                 <DialogHeader>
                     <DialogTitle>{t('table.create')}</DialogTitle>
                 </DialogHeader>

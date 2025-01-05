@@ -16,6 +16,7 @@ import {
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
+    getSortedRowModel,
     OnChangeFn,
     PaginationState,
     RowSelectionState,
@@ -39,6 +40,7 @@ interface DataTableProps<TData, TValue> {
     customTools?: ReactNode;
     rowSelection?: RowSelectionState;
     enableRowSelection?: boolean | ((row: any) => boolean);
+    enableMultiRowSelection?: boolean | ((row: any) => boolean);
     onPaginationChange: OnChangeFn<PaginationState>;
     onSortingChange?: OnChangeFn<SortingState>;
     onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
@@ -61,6 +63,7 @@ export function DataTable<TData, TValue>({
     customTools,
     rowSelection = {},
     enableRowSelection,
+    enableMultiRowSelection,
     onSearch,
     onPaginationChange,
     onSortingChange,
@@ -78,9 +81,11 @@ export function DataTable<TData, TValue>({
         manualPagination: true,
         manualFiltering: true,
         enableRowSelection,
+        enableMultiRowSelection,
         onColumnFiltersChange,
         onPaginationChange,
         onSortingChange,
+        getSortedRowModel: getSortedRowModel(),
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onRowSelectionChange

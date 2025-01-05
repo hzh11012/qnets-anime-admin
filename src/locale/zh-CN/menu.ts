@@ -4,6 +4,8 @@ export default {
 
     'menu.dashboard': '仪表盘',
 
+    'menu.new_anime': '新番',
+
     'menu.swiper': '轮播图',
 
     'menu.notice': '公告',

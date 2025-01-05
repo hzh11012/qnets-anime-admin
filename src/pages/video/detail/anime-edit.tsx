@@ -292,13 +292,7 @@ const AnimeEdit = ({
                     {t('table.edit')}
                 </Button>
             </DialogTrigger>
-            <DialogContent
-                className={cn('px-0')}
-                aria-describedby={undefined}
-                onOpenAutoFocus={e => {
-                    e.preventDefault();
-                }}
-            >
+            <DialogContent className={cn('px-0')} aria-describedby={undefined}>
                 <DialogHeader className={cn('px-6')}>
                     <DialogTitle>{t('table.edit')}</DialogTitle>
                 </DialogHeader>

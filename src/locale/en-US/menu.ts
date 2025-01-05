@@ -4,6 +4,8 @@ export default {
 
     'menu.dashboard': 'Dashboard',
 
+    'menu.new_anime': 'New Anime',
+
     'menu.swiper': 'Swiper',
 
     'menu.notice': 'Notice',

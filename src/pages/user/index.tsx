@@ -21,6 +21,8 @@ const User = () => {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
+    const scope = validFilter('scope', columnFilters);
+    const [orderBy, order] = validSort(sorting);
 
     const { run, loading, refresh } = useRequest(getUserList, {
         defaultParams: [
@@ -36,13 +38,12 @@ const User = () => {
         },
         refreshDeps: [page, limit, columnFilters, keyword, sorting],
         refreshDepsAction: () => {
-            const scope = validFilter('scope', columnFilters);
-            const order = validSort('created_at', sorting);
             run({
                 page,
                 keyword,
                 pageSize: limit,
                 scope,
+                orderBy,
                 order
             });
         }

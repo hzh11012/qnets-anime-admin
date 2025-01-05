@@ -21,6 +21,7 @@ const Category = () => {
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
+    const [orderBy, order] = validSort(sorting);
 
     const { run, loading, refresh } = useRequest(getVideoCategoryList, {
         defaultParams: [
@@ -36,11 +37,11 @@ const Category = () => {
         },
         refreshDeps: [page, limit, keyword, sorting],
         refreshDepsAction: () => {
-            const order = validSort('created_at', sorting);
             run({
                 page,
                 keyword,
                 pageSize: limit,
+                orderBy,
                 order
             });
         }

@@ -1,30 +1,32 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getNoticeRecordList } from '@/apis/notice-record';
+import { getNewAnimeList } from '@/apis/new-anime';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import { getColumns } from '@/pages/notice-record/columns';
+import CustomTools from '@/pages/new-anime/custom-tools';
+import { getColumns } from '@/pages/new-anime/columns';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
+import { NewAnimeItem } from '@/apis/models/new-anime-model';
 import { validFilter, validSort } from '@/lib/utils';
-import { NoticeRecordItem } from '@/apis/models/notice-record-model';
 
-const Rating = () => {
+const NewAnime = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState<NoticeRecordItem[]>([]);
+    const [data, setData] = useState<NewAnimeItem[]>([]);
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
-    const status = validFilter('status', columnFilters);
+    const update_day = validFilter('update_day', columnFilters);
     const [orderBy, order] = validSort(sorting);
 
-    const { run, loading, refresh } = useRequest(getNoticeRecordList, {
+    const { run, loading, refresh } = useRequest(getNewAnimeList, {
         defaultParams: [
             {
                 page,
@@ -42,7 +44,7 @@ const Rating = () => {
                 page,
                 keyword,
                 pageSize: limit,
-                status,
+                update_day,
                 orderBy,
                 order
             });
@@ -76,9 +78,10 @@ const Rating = () => {
                 onSortingChange={setSorting}
                 columnFilters={columnFilters}
                 onColumnFiltersChange={setColumnFilters}
+                customTools={<CustomTools onRefresh={refresh} />}
             />
         </Layout>
     );
 };
 
-export default Rating;
+export default NewAnime;

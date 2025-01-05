@@ -20,7 +20,7 @@ const Collection = () => {
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
-    const order = validSort('created_at', sorting);
+    const [orderBy, order] = validSort(sorting);
 
     const { run, loading, refresh } = useRequest(getCollectionList, {
         defaultParams: [
@@ -40,6 +40,7 @@ const Collection = () => {
                 page,
                 keyword,
                 pageSize: limit,
+                orderBy,
                 order
             });
         }

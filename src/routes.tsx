@@ -49,6 +49,12 @@ const staticRoutes: RouteObject[] = [
                 })
             },
             {
+                path: 'new-anime',
+                lazy: async () => ({
+                    Component: (await import('@/pages/new-anime/index')).default
+                })
+            },
+            {
                 path: 'swiper',
                 lazy: async () => ({
                     Component: (await import('@/pages/swiper/index')).default
