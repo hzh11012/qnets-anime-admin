@@ -17,12 +17,12 @@ export const getColumns = (
             enableHiding: false
         },
         {
-            accessorKey: 'category',
-            title: t('category.table.category'),
+            accessorKey: 'name',
+            title: t('category.table.name'),
             header: () => {
                 return (
                     <div className={cn('flex items-center space-x-1')}>
-                        <span>{t('category.table.category')}</span>
+                        <span>{t('category.table.name')}</span>
                         <Search className={cn('w-3.5 h-3.5')} />
                     </div>
                 );

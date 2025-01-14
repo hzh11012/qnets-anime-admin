@@ -7,7 +7,7 @@ import dialog from '@/locale/zh-CN/dialog';
 import userCenter from '@/locale/zh-CN/user-center';
 import user from '@/locale/zh-CN/user';
 import validator from '@/locale/zh-CN/validator';
-import correction from '@/locale/zh-CN/correction';
+import message from '@/locale/zh-CN/message';
 import category from '@/locale/zh-CN/category';
 import video from '@/locale/zh-CN/video';
 import collection from '@/locale/zh-CN/collection';
@@ -27,7 +27,7 @@ export default {
     ...userCenter,
     ...user,
     ...validator,
-    ...correction,
+    ...message,
     ...category,
     ...video,
     ...collection,

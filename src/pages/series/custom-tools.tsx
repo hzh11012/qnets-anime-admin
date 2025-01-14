@@ -36,11 +36,11 @@ const createFormSchema = z.object({
         .min(1, `${t('series.table.name')} ${t('validator.empty')}`)
 });
 
-interface AddFormProps extends CustomToolsProps {
+interface AddFormProps {
     form: any;
 }
 
-export const AddForm: React.FC<AddFormProps> = ({ form }) => {
+const AddForm: React.FC<AddFormProps> = ({ form }) => {
     const { t } = useTranslation();
 
     return (
@@ -109,7 +109,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ onRefresh }) => {
                     </DialogTitle>
                 </DialogHeader>
                 <div className={cn('px-6 pb-1')}>
-                    <AddForm form={createForm} onRefresh={onRefresh} />
+                    <AddForm form={createForm} />
                 </div>
                 <DialogFooter className={cn('p-6 pt-5')}>
                     <Button

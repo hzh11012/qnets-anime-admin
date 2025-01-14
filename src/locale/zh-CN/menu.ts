@@ -10,12 +10,13 @@ export default {
 
     'menu.notice': '公告',
 
+    'menu.message': '留言',
+
     'menu.video': '视频',
     'menu.video.series': '系列管理',
     'menu.video.list': '视频管理',
     'menu.video.category': '分类管理',
     'menu.video.danmaku': '弹幕管理',
-    'menu.video.correction': '纠错管理',
 
     'menu.user': '用户',
     'menu.user.list': '用户管理',

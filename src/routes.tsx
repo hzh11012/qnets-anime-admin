@@ -67,6 +67,12 @@ const staticRoutes: RouteObject[] = [
                 })
             },
             {
+                path: 'message',
+                lazy: async () => ({
+                    Component: (await import('@/pages/message/index')).default
+                })
+            },
+            {
                 path: 'video/',
                 children: [
                     {
@@ -105,14 +111,6 @@ const staticRoutes: RouteObject[] = [
                         lazy: async () => ({
                             Component: (await import('@/pages/danmaku/index'))
                                 .default
-                        })
-                    },
-                    {
-                        path: 'correction',
-                        lazy: async () => ({
-                            Component: (
-                                await import('@/pages/correction/index')
-                            ).default
                         })
                     }
                 ]

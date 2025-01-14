@@ -1,14 +1,14 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getCorrectionList } from '@/apis/correction';
+import { getMessageList } from '@/apis/message';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import { getColumns } from '@/pages/correction/columns';
+import { getColumns } from '@/pages/message/columns';
 import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { validFilter, validSort } from '@/lib/utils';
-import { CorrectionItem } from '@/apis/models/correction-model';
+import { MessageItem } from '@/apis/models/message-model';
 
 const Correction = () => {
     const { t } = useTranslation();
@@ -16,15 +16,16 @@ const Correction = () => {
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState<CorrectionItem[]>([]);
+    const [data, setData] = useState<MessageItem[]>([]);
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
+    const type = validFilter('type', columnFilters);
     const status = validFilter('status', columnFilters);
     const [orderBy, order] = validSort(sorting);
 
-    const { run, loading, refresh } = useRequest(getCorrectionList, {
+    const { run, loading, refresh } = useRequest(getMessageList, {
         defaultParams: [
             {
                 page,
@@ -42,6 +43,7 @@ const Correction = () => {
                 page,
                 keyword,
                 pageSize: limit,
+                type,
                 status,
                 orderBy,
                 order

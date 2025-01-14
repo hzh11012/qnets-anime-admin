@@ -7,7 +7,7 @@ import dialog from '@/locale/en-US/dialog';
 import userCenter from '@/locale/en-US/user-center';
 import user from '@/locale/en-US/user';
 import validator from '@/locale/en-US/validator';
-import correction from '@/locale/en-US/correction';
+import message from '@/locale/en-US/message';
 import category from '@/locale/en-US/category';
 import video from '@/locale/en-US/video';
 import collection from '@/locale/en-US/collection';
@@ -27,7 +27,7 @@ export default {
     ...userCenter,
     ...user,
     ...validator,
-    ...correction,
+    ...message,
     ...category,
     ...video,
     ...collection,

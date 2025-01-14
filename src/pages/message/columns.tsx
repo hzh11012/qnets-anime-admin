@@ -1,7 +1,9 @@
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/correction/data-table-row-actions';
+import DataTableRowActions, {
+    status
+} from '@/pages/message/data-table-row-actions';
 import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
 import { DataTableColumnFilter } from '@/components/custom/data-table/data-table-column-filter';
 import {
@@ -18,30 +20,30 @@ export const getColumns = (
     const columns = [
         {
             accessorKey: 'id',
-            title: t('correct.table.id'),
-            header: t('correct.table.id'),
+            title: t('message.table.id'),
+            header: t('message.table.id'),
             enableSorting: false,
             enableHiding: false
         },
         {
-            accessorKey: 'uid',
-            title: t('correct.table.uid'),
-            header: t('correct.table.uid'),
+            accessorKey: 'user_id',
+            title: t('message.table.user_id'),
+            header: t('message.table.user_id'),
             enableSorting: false,
             enableHiding: false
         },
         {
             accessorKey: 'nickname',
-            title: t('correct.table.nickname'),
-            header: t('correct.table.nickname')
+            title: t('message.table.nickname'),
+            header: t('message.table.nickname')
         },
         {
-            accessorKey: 'message',
-            title: t('correct.table.message'),
+            accessorKey: 'content',
+            title: t('message.table.content'),
             header: () => {
                 return (
                     <div className={cn('flex items-center space-x-1')}>
-                        <span>{t('correct.table.message')}</span>
+                        <span>{t('message.table.content')}</span>
                         <Search className={cn('w-3.5 h-3.5')} />
                     </div>
                 );
@@ -56,7 +58,7 @@ export const getColumns = (
                                         'max-w-64 text-ellipsis overflow-hidden whitespace-nowrap'
                                     )}
                                 >
-                                    {row.original.message}
+                                    {row.original.content}
                                 </p>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -65,7 +67,7 @@ export const getColumns = (
                                         'max-w-64 break-all text-wrap'
                                     )}
                                 >
-                                    {row.original.message}
+                                    {row.original.content}
                                 </p>
                             </TooltipContent>
                         </Tooltip>
@@ -74,33 +76,63 @@ export const getColumns = (
             }
         },
         {
-            accessorKey: 'status',
-            title: t('correct.table.status'),
+            accessorKey: 'type',
+            title: t('message.table.type'),
             header: ({ column }: any) => (
                 <div className={cn('flex items-center space-x-1')}>
-                    <span>{t('correct.table.status')}</span>
+                    <span>{t('message.table.type')}</span>
                     <DataTableColumnFilter
                         column={column}
                         options={[
                             {
-                                label: t('correct.status.pending'),
+                                label: t('message.type.consult'),
                                 value: 0
                             },
                             {
-                                label: t('correct.status.done'),
+                                label: t('message.type.suggestion'),
                                 value: 1
+                            },
+                            {
+                                label: t('message.type.complaint'),
+                                value: 2
+                            },
+                            {
+                                label: t('message.type.others'),
+                                value: 3
                             }
                         ]}
                     />
                 </div>
             ),
             cell: ({ row }: any) => {
-                // 0-待处理 1-已完成
+                // 0-咨询 1-建议 2-投诉 3-其他
                 const StatusMap: { [key: number]: string } = {
-                    0: t('correct.status.pending'),
-                    1: t('correct.status.done')
+                    0: t('message.type.consult'),
+                    1: t('message.type.suggestion'),
+                    2: t('message.type.complaint'),
+                    3: t('message.type.others')
                 };
-                return StatusMap[row.original?.status || 0];
+                return StatusMap[row.original.type];
+            }
+        },
+        {
+            accessorKey: 'status',
+            title: t('message.table.status'),
+            header: ({ column }: any) => (
+                <div className={cn('flex items-center space-x-1')}>
+                    <span>{t('message.table.status')}</span>
+                    <DataTableColumnFilter column={column} options={status} />
+                </div>
+            ),
+            cell: ({ row }: any) => {
+                // 0-待处理 1-处理中 2-已完成 3-已关闭
+                const StatusMap: { [key: number]: string } = {
+                    0: t('message.status.pending'),
+                    1: t('message.status.processing'),
+                    2: t('message.status.completed'),
+                    3: t('message.status.closed')
+                };
+                return StatusMap[row.original.status];
             }
         },
         {

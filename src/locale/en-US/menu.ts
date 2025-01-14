@@ -10,12 +10,13 @@ export default {
 
     'menu.notice': 'Notice',
 
+    'menu.message': 'Message',
+
     'menu.video': 'Videos',
     'menu.video.series': 'Series List',
     'menu.video.list': 'Video List',
     'menu.video.category': 'Category List',
     'menu.video.danmaku': 'Danmaku List',
-    'menu.video.correction': 'Correction List',
 
     'menu.user': 'Users',
     'menu.user.list': 'User List',

@@ -50,6 +50,11 @@ export const links: SideLink[] = [
         icon: <Bell size={18} />
     },
     {
+        title: 'menu.message',
+        href: '/message',
+        icon: <MailWarning size={18} />
+    },
+    {
         title: 'menu.video',
         href: '/video',
         icon: <Tv2 size={18} />,
@@ -73,11 +78,6 @@ export const links: SideLink[] = [
                 title: 'menu.video.danmaku',
                 href: '/danmaku',
                 icon: <Tv size={18} />
-            },
-            {
-                title: 'menu.video.correction',
-                href: '/correction',
-                icon: <MailWarning size={18} />
             }
         ]
     },
