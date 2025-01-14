@@ -27,36 +27,37 @@ import { useState } from 'react';
 import AnimeEdit from './anime-edit';
 import { getVideoCategoryList } from '@/apis/category';
 import { getSeriesList } from '@/apis/series';
+import { t } from 'i18next';
+
+// 0-即将上线 1-连载中 2-已完结
+const StatusMap: { [key: number]: string } = {
+    0: t('video.status.coming'),
+    1: t('video.status.serializing'),
+    2: t('video.status.completed')
+};
+
+// 0-一月番 1-四月番 2-七月番 3-十月番
+const MonthMap: { [key: number]: string } = {
+    0: t('video.month.jan'),
+    1: t('video.month.apr'),
+    2: t('video.month.jul'),
+    3: t('video.month.oct')
+};
+
+// 0-剧场版 1-日番 2-美番 3-国番 4-里番
+const TypeMap: { [key: number]: string } = {
+    0: t('video.type.ova'),
+    1: t('video.type.japan'),
+    2: t('video.type.american'),
+    3: t('video.type.china'),
+    4: t('video.type.hentai')
+};
 
 const VideoDetail = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const { t } = useTranslation();
     const data = useLoaderData<VideoDetailRes>();
-
-    //  0-即将上线 1-连载中 2-已完结
-    const StatusMap: { [key: number]: string } = {
-        0: t('video.status.coming'),
-        1: t('video.status.serializing'),
-        2: t('video.status.completed')
-    };
-
-    //  0-一月番 1-四月番 2-七月番 3-十月番
-    const MonthMap: { [key: number]: string } = {
-        0: t('video.month.jan'),
-        1: t('video.month.apr'),
-        2: t('video.month.jul'),
-        3: t('video.month.oct')
-    };
-
-    //  0-剧场版 1-日番 2-美番 3-国番 4-里番
-    const TypeMap: { [key: number]: string } = {
-        0: t('video.type.ova'),
-        1: t('video.type.japan'),
-        2: t('video.type.american'),
-        3: t('video.type.china'),
-        4: t('video.type.hentai')
-    };
 
     const [categoriesList, setCategoriesList] = useState<
         { label: string; value: number }[]
@@ -70,14 +71,14 @@ const VideoDetail = () => {
         defaultParams: [
             {
                 page: 1,
-                pageSize: 999
+                pageSize: 9999
             }
         ],
         onSuccess(data) {
             const { rows } = data.data;
             const res = rows.map(item => {
                 return {
-                    label: item.category,
+                    label: item.name,
                     value: item.id
                 };
             });
@@ -164,11 +165,11 @@ const VideoDetail = () => {
                         </Breadcrumb>
 
                         <AnimeEdit
-                            aid={Number(id)}
                             series={seriesList}
                             onRefresh={handleRefresh}
                             {...data}
-                            category={data.categories.map(item => item.id)}
+                            id={Number(id)}
+                            category={categories.map(item => item.id)}
                             categories={categoriesList}
                         />
                     </div>
@@ -205,7 +206,7 @@ const VideoDetail = () => {
                                             key={item.id}
                                             variant="secondary"
                                         >
-                                            {item.category}
+                                            {item.name}
                                         </Badge>
                                     );
                                 })}
@@ -215,12 +216,12 @@ const VideoDetail = () => {
                                     'md:text-sm text-xs text-muted-foreground space-y-3'
                                 )}
                             >
-                                <div className={cn(' md:hidden')}>
+                                <div className={cn('md:hidden')}>
                                     {categories.map((item, index) => {
                                         if (index === 0) {
-                                            return item.category;
+                                            return item.name;
                                         }
-                                        return `/${item.category}`;
+                                        return `/${item.name}`;
                                     })}
                                 </div>
                                 <div>
@@ -346,7 +347,7 @@ const VideoDetail = () => {
                                 {t('video.detail.episode')}
                             </h3>
                             <VideoCreate
-                                aid={Number(id)}
+                                anime_id={Number(id)}
                                 onRefresh={handleRefresh}
                             />
                         </div>

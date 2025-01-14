@@ -10,15 +10,15 @@ const prefix = '/v1/api/category';
 
 export const getVideoCategoryList = (params: VideoCategoryListReq) => {
     return HttpClient.post<VideoCategoryListRes>(
-        `${prefix}/admin_list`,
+        `${prefix}/admin/list`,
         params
     );
 };
 
 export const videoCategoryDelete = (params: VideoCategoryDeleteReq) => {
-    return HttpClient.post(`${prefix}/admin_delete`, params);
+    return HttpClient.post(`${prefix}/admin/delete`, params);
 };
 
 export const videoCategoryCreate = (params: VideoCategoryCreateReq) => {
-    return HttpClient.post(`${prefix}/admin_create`, params);
+    return HttpClient.post(`${prefix}/admin/create`, params);
 };

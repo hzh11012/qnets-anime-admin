@@ -7,7 +7,7 @@ export interface VideoListReq {
     searchType?: string;
     type?: number[];
     status?: number[];
-    year?: string[];
+    year?: number[];
     month?: number[];
     category?: number[];
 }
@@ -19,12 +19,12 @@ interface Category {
 
 export interface VideoItem {
     id: number;
-    sid: number;
+    series_id: number;
     name: string;
     description: string;
     cover_url: string;
     banner_url: string;
-    year: string;
+    year: number;
     month: number;
     remark?: string;
     status: number;
@@ -45,7 +45,7 @@ export interface VideoDeleteReq {
 }
 
 export interface VideoCreateReq {
-    sid: number;
+    series_id: number;
     name: string;
     description: string;
     cover_url: string;
@@ -57,7 +57,7 @@ export interface VideoCreateReq {
     type: number;
     director?: string;
     cv?: string;
-    year: string;
+    year: number;
     month: number;
     category: number[];
 }
@@ -66,12 +66,12 @@ export interface VideoDetailReq extends VideoDeleteReq {}
 
 export interface VideoDetailRes {
     id: number;
-    sid: number;
+    series_id: number;
     name: string;
     description: string;
     cover_url: string;
     banner_url: string;
-    year: string;
+    year: number;
     month: number;
     remark?: string;
     status: number;
@@ -85,7 +85,7 @@ export interface VideoDetailRes {
     cv?: string;
     director?: string;
     created_at: string;
-    categories: { id: number; category: string }[];
+    categories: { id: number; name: string }[];
     related: {
         id: number;
         name: string;

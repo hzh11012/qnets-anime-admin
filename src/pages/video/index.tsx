@@ -79,7 +79,7 @@ const Video = () => {
             const { rows } = data.data;
             const res = rows.map(item => {
                 return {
-                    label: item.category,
+                    label: item.name,
                     value: item.id
                 };
             });

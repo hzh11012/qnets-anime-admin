@@ -12,52 +12,20 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import { z } from 'zod';
 import { useRequest } from 'ahooks';
 import { videoCreate } from '@/apis/video';
-import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from '@/components/ui/select';
-import {
-    MultiSelect,
-    MultiSelectContent,
-    MultiSelectEmpty,
-    MultiSelectItem,
-    MultiSelectList,
-    MultiSelectSearch,
-    MultiSelectTrigger,
-    MultiSelectValue
-} from '@/components/ui/multiple-select';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger
-} from '@/components/ui/popover';
-import { Check, ChevronDown } from 'lucide-react';
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList
-} from '@/components/ui/command';
+import FormVirtualized from '@/components/custom/form/form-virtualized';
+import FormInput from '@/components/custom/form/form-input';
+import FormNumber from '@/components/custom/form/form-number';
+import FormTextarea from '@/components/custom/form/form-textarea';
+import FormSelect from '@/components/custom/form/form-select';
+import { FlowerIcon, SnowflakeIcon, SunIcon, LeafIcon } from 'lucide-react';
+import FormMultiSelect from '@/components/custom/form/form-multi-select';
 
 interface CustomToolsProps {
     categories: { label: string; value: number }[];
@@ -65,153 +33,399 @@ interface CustomToolsProps {
     onRefresh: () => void;
 }
 
-const COVER_REG = /^(https?:)?\/\/.*\.(jpe?g|png|webp)$/;
-const YEAR_REG = /^\d{4}$/;
+const IMG_REG = /^(https?:)?\/\/.*\.(jpe?g|png|webp)$/;
 
-const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
-    const { t } = useTranslation();
-    const [createOpen, setCreateOpen] = useState(false);
-    const [searchOpen, setSearchOpen] = useState(false);
+const status = [
+    {
+        label: t('video.status.coming'),
+        value: 0,
+        icon: (
+            <svg
+                width="8"
+                height="8"
+                fill="currentColor"
+                viewBox="0 0 8 8"
+                xmlns="http://www.w3.org/2000/svg"
+                className={cn('text-amber-500')}
+                aria-hidden="true"
+            >
+                <circle cx="4" cy="4" r="4" />
+            </svg>
+        )
+    },
+    {
+        label: t('video.status.serializing'),
+        value: 1,
+        icon: (
+            <svg
+                width="8"
+                height="8"
+                fill="currentColor"
+                viewBox="0 0 8 8"
+                xmlns="http://www.w3.org/2000/svg"
+                className={cn('text-blue-500')}
+                aria-hidden="true"
+            >
+                <circle cx="4" cy="4" r="4" />
+            </svg>
+        )
+    },
+    {
+        label: t('video.status.completed'),
+        value: 2,
+        icon: (
+            <svg
+                width="8"
+                height="8"
+                fill="currentColor"
+                viewBox="0 0 8 8"
+                xmlns="http://www.w3.org/2000/svg"
+                className={cn('text-emerald-600')}
+                aria-hidden="true"
+            >
+                <circle cx="4" cy="4" r="4" />
+            </svg>
+        )
+    }
+];
 
-    const createFormSchema = z.object({
-        sid: z
-            .number({
-                required_error: `${t('video.table.sid')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.sid')} ${t('validator.type')}`
-            })
-            .int(`${t('video.table.sid')} ${t('validator.int')}`)
-            .min(1, `${t('video.table.sid')} ${t('validator.min')} 1`),
-        name: z
-            .string({
-                required_error: `${t('video.table.name')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.name')} ${t('validator.type')}`
-            })
-            .max(50, {
-                message: `${t('video.table.name')} ${t('validator.max.length')} 50`
-            })
-            .min(1, `${t('video.table.name')} ${t('validator.empty')}`),
-        description: z
-            .string({
-                required_error: `${t('video.table.description')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.description')} ${t('validator.type')}`
-            })
-            .max(255, {
-                message: `${t('video.table.description')} ${t('validator.max.length')} 255`
-            })
-            .min(1, `${t('video.table.description')} ${t('validator.empty')}`),
-        cover_url: z
-            .string({
-                required_error: `${t('video.table.cover_url')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.cover_url')} ${t('validator.type')}`
-            })
-            .max(255, {
-                message: `${t('video.table.cover_url')} ${t('validator.max.length')} 255`
-            })
-            .min(1, `${t('video.table.cover_url')} ${t('validator.empty')}`)
-            .regex(COVER_REG, {
-                message: `${t('video.table.cover_url')} ${t('validator.format')}`
-            }),
-        banner_url: z
-            .string({
-                required_error: `${t('video.table.banner_url')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.banner_url')} ${t('validator.type')}`
-            })
-            .max(255, {
-                message: `${t('video.table.banner_url')} ${t('validator.max.length')} 255`
-            })
-            .min(1, `${t('video.table.banner_url')} ${t('validator.empty')}`)
-            .regex(COVER_REG, {
-                message: `${t('video.table.banner_url')} ${t('validator.format')}`
-            }),
-        remark: z
-            .string({
-                invalid_type_error: `${t('video.table.remark')} ${t('validator.type')}`
-            })
-            .max(50, {
-                message: `${t('video.table.remark')} ${t('validator.max.length')} 50`
-            })
-            .optional(),
-        status: z
-            .number({
-                required_error: `${t('video.table.status')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.status')} ${t('validator.type')}`
-            })
-            .int(`${t('video.table.status')} ${t('validator.int')}`)
-            .min(0, `${t('video.table.status')} ${t('validator.min')} 0`)
-            .max(2, `${t('video.table.status')} ${t('validator.max')} 2`),
-        type: z
-            .number({
-                required_error: `${t('video.table.type')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.type')} ${t('validator.type')}`
-            })
-            .int(`${t('video.table.type')} ${t('validator.int')}`)
-            .min(0, `${t('video.table.type')} ${t('validator.min')} 0`)
-            .max(3, `${t('video.table.type')} ${t('validator.max')} 3`),
-        director: z
-            .string({
-                invalid_type_error: `${t('video.table.director')} ${t('validator.type')}`
-            })
-            .max(25, {
-                message: `${t('video.table.director')} ${t('validator.max.length')} 25`
-            })
-            .optional(),
-        cv: z
-            .string({
-                invalid_type_error: `${t('video.table.cv')} ${t('validator.type')}`
-            })
-            .max(255, {
-                message: `${t('video.table.cv')} ${t('validator.max.length')} 255`
-            })
-            .optional(),
-        year: z
-            .string({
-                required_error: `${t('video.table.year')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.year')} ${t('validator.type')}`
-            })
-            .min(1, {
-                message: `${t('video.table.year')} ${t('validator.type')}`
-            })
-            .regex(YEAR_REG, {
-                message: `${t('video.table.year')} ${t('validator.format')}`
-            }),
-        month: z
-            .number({
-                required_error: `${t('video.table.month')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.month')} ${t('validator.type')}`
-            })
-            .int(`${t('video.table.month')} ${t('validator.int')}`)
-            .min(0, `${t('video.table.month')} ${t('validator.min')} 0`)
-            .max(3, `${t('video.table.month')} ${t('validator.max')} 3`),
-        category: z.array(z.number(), {
+const type = [
+    {
+        label: t('video.type.ova'),
+        value: 0
+    },
+    {
+        label: t('video.type.japan'),
+        value: 1
+    },
+    {
+        label: t('video.type.american'),
+        value: 2
+    },
+    {
+        label: t('video.type.china'),
+        value: 3
+    },
+    {
+        label: t('video.type.hentai'),
+        value: 4
+    }
+];
+
+const month = [
+    {
+        label: t('video.month.jan'),
+        value: 0,
+        icon: <FlowerIcon size={16} color="#059669" />
+    },
+    {
+        label: t('video.month.apr'),
+        value: 1,
+        icon: <SunIcon size={16} color="#ef4444" />
+    },
+    {
+        label: t('video.month.jul'),
+        value: 2,
+        icon: <LeafIcon size={16} color="#f59e0b" />
+    },
+    {
+        label: t('video.month.oct'),
+        value: 3,
+        icon: <SnowflakeIcon size={16} color="#3b82f6" />
+    }
+];
+
+export const createFormSchema = z.object({
+    series_id: z
+        .number({
+            required_error: `${t('video.table.series_id')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.series_id')} ${t('validator.type')}`
+        })
+        .int(`${t('video.table.series_id')} ${t('validator.int')}`)
+        .min(1, `${t('video.table.series_id')} ${t('validator.min')} 1`),
+    name: z
+        .string({
+            required_error: `${t('video.table.name')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.name')} ${t('validator.type')}`
+        })
+        .max(50, {
+            message: `${t('video.table.name')} ${t('validator.max.length')} 50`
+        })
+        .min(1, `${t('video.table.name')} ${t('validator.empty')}`),
+    season: z
+        .number({
+            required_error: `${t('video.table.season')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.season')} ${t('validator.type')}`
+        })
+        .int(`${t('video.table.season')} ${t('validator.int')}`)
+        .min(1, `${t('video.table.season')} ${t('validator.min')} 1`),
+    season_name: z
+        .string({
+            invalid_type_error: `${t('video.table.season_name')} ${t('validator.type')}`
+        })
+        .max(10, `${t('video.table.season_name')} ${t('validator.max')} 10`)
+        .optional(),
+    description: z
+        .string({
+            required_error: `${t('video.table.description')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.description')} ${t('validator.type')}`
+        })
+        .max(1000, {
+            message: `${t('video.table.description')} ${t('validator.max.length')} 1000`
+        })
+        .min(1, `${t('video.table.description')} ${t('validator.empty')}`),
+    cover_url: z
+        .string({
+            required_error: `${t('video.table.cover_url')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.cover_url')} ${t('validator.type')}`
+        })
+        .max(255, {
+            message: `${t('video.table.cover_url')} ${t('validator.max.length')} 255`
+        })
+        .min(1, `${t('video.table.cover_url')} ${t('validator.empty')}`)
+        .regex(IMG_REG, {
+            message: `${t('video.table.cover_url')} ${t('validator.format')}`
+        }),
+    banner_url: z
+        .string({
+            required_error: `${t('video.table.banner_url')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.banner_url')} ${t('validator.type')}`
+        })
+        .max(255, {
+            message: `${t('video.table.banner_url')} ${t('validator.max.length')} 255`
+        })
+        .min(1, `${t('video.table.banner_url')} ${t('validator.empty')}`)
+        .regex(IMG_REG, {
+            message: `${t('video.table.banner_url')} ${t('validator.format')}`
+        }),
+    status: z
+        .number({
+            required_error: `${t('video.table.status')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.status')} ${t('validator.type')}`
+        })
+        .int(`${t('video.table.status')} ${t('validator.int')}`)
+        .min(0, `${t('video.table.status')} ${t('validator.min')} 0`)
+        .max(2, `${t('video.table.status')} ${t('validator.max')} 2`),
+    type: z
+        .number({
+            required_error: `${t('video.table.type')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.type')} ${t('validator.type')}`
+        })
+        .int(`${t('video.table.type')} ${t('validator.int')}`)
+        .min(0, `${t('video.table.type')} ${t('validator.min')} 0`)
+        .max(4, `${t('video.table.type')} ${t('validator.max')} 4`),
+    year: z
+        .number({
+            required_error: `${t('video.table.year')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.year')} ${t('validator.type')}`
+        })
+        .int(`${t('video.table.year')} ${t('validator.int')}`)
+        .min(1970, `${t('video.table.status')} ${t('validator.min')} 1970`)
+        .max(2099, `${t('video.table.status')} ${t('validator.max')} 2099`),
+    month: z
+        .number({
+            required_error: `${t('video.table.month')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.table.month')} ${t('validator.type')}`
+        })
+        .int(`${t('video.table.month')} ${t('validator.int')}`)
+        .min(0, `${t('video.table.month')} ${t('validator.min')} 0`)
+        .max(3, `${t('video.table.month')} ${t('validator.max')} 3`),
+    category: z
+        .number({
             required_error: `${t('video.table.categories')} ${t('validator.empty')}`,
             invalid_type_error: `${t('video.table.categories')} ${t('validator.type')}`
+        })
+        .array()
+        .nonempty({
+            message: `${t('video.table.categories')} ${t('validator.empty')}`
         }),
-        season: z
-            .number({
-                required_error: `${t('video.table.season')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.table.season')} ${t('validator.type')}`
-            })
-            .int(`${t('video.table.season')} ${t('validator.int')}`)
-            .min(1, `${t('video.table.season')} ${t('validator.min')} 1`),
-        season_name: z
-            .string({
-                invalid_type_error: `${t('video.table.season_name')} ${t('validator.type')}`
-            })
-            .max(10, `${t('video.table.season_name')} ${t('validator.max')} 10`)
-            .optional()
-    });
+    cv: z
+        .string({
+            invalid_type_error: `${t('video.table.cv')} ${t('validator.type')}`
+        })
+        .max(255, {
+            message: `${t('video.table.cv')} ${t('validator.max.length')} 255`
+        })
+        .optional(),
+    remark: z
+        .string({
+            invalid_type_error: `${t('video.table.remark')} ${t('validator.type')}`
+        })
+        .max(50, {
+            message: `${t('video.table.remark')} ${t('validator.max.length')} 50`
+        })
+        .optional(),
+    director: z
+        .string({
+            invalid_type_error: `${t('video.table.director')} ${t('validator.type')}`
+        })
+        .max(25, {
+            message: `${t('video.table.director')} ${t('validator.max.length')} 25`
+        })
+        .optional()
+});
+
+interface AddFormProps extends CustomToolsProps {
+    form: any;
+    anime_id?: number;
+}
+
+export const AddForm: React.FC<AddFormProps> = ({
+    form,
+    categories,
+    series
+}) => {
+    const { t } = useTranslation();
+
+    return (
+        <Form {...form}>
+            <form className={cn('space-y-6')}>
+                <FormVirtualized
+                    control={form.control}
+                    name="series_id"
+                    label={t('video.table.series_id')}
+                    required
+                    options={series}
+                />
+                <FormInput
+                    control={form.control}
+                    name="name"
+                    label={t('video.table.name')}
+                    required
+                />
+                <div className={cn('flex gap-6')}>
+                    <div className={cn('flex-1')}>
+                        <FormNumber
+                            control={form.control}
+                            name="season"
+                            label={t('video.table.season')}
+                            required
+                            minValue={1}
+                            maxValue={100}
+                        />
+                    </div>
+                    <div className={cn('flex-1')}>
+                        <FormInput
+                            control={form.control}
+                            name="season_name"
+                            label={t('video.table.season_name')}
+                        />
+                    </div>
+                </div>
+                <FormTextarea
+                    control={form.control}
+                    name="description"
+                    label={t('video.table.description')}
+                    required
+                />
+                <FormInput
+                    control={form.control}
+                    name="cover_url"
+                    label={t('video.table.cover_url')}
+                    required
+                />
+                <FormInput
+                    control={form.control}
+                    name="banner_url"
+                    label={t('video.table.banner_url')}
+                    required
+                />
+                <div className={cn('flex gap-6')}>
+                    <div className={cn('flex-1')}>
+                        <FormSelect
+                            control={form.control}
+                            name="status"
+                            label={t('video.table.status')}
+                            required
+                            options={status}
+                        />
+                    </div>
+                    <div className={cn('flex-1')}>
+                        <FormSelect
+                            control={form.control}
+                            name="type"
+                            label={t('video.table.type')}
+                            required
+                            options={type}
+                        />
+                    </div>
+                </div>
+                <div className={cn('flex gap-6')}>
+                    <div className={cn('flex-1')}>
+                        <FormNumber
+                            control={form.control}
+                            name="year"
+                            label={t('video.table.year')}
+                            required
+                            minValue={1970}
+                            maxValue={2099}
+                        />
+                    </div>
+                    <div className={cn('flex-1')}>
+                        <FormSelect
+                            control={form.control}
+                            name="month"
+                            label={t('video.table.month')}
+                            required
+                            options={month}
+                        />
+                    </div>
+                </div>
+                <FormMultiSelect
+                    control={form.control}
+                    name="category"
+                    label={t('video.table.categories')}
+                    required
+                    options={categories}
+                />
+                <div className={cn('flex gap-6')}>
+                    <div className={cn('flex-1')}>
+                        <FormInput
+                            control={form.control}
+                            name="director"
+                            label={t('video.table.director')}
+                        />
+                    </div>
+                    <div className={cn('flex-1')}>
+                        <FormInput
+                            control={form.control}
+                            name="remark"
+                            label={t('video.table.remark')}
+                        />
+                    </div>
+                </div>
+                <FormTextarea
+                    control={form.control}
+                    name="cv"
+                    label={t('video.table.cv')}
+                />
+            </form>
+        </Form>
+    );
+};
+
+interface AddDialogProps extends CustomToolsProps {}
+
+const AddDialog: React.FC<AddDialogProps> = ({
+    onRefresh,
+    categories,
+    series
+}) => {
+    const { t } = useTranslation();
+    const [createOpen, setCreateOpen] = useState(false);
 
     const createForm = useForm<z.infer<typeof createFormSchema>>({
         resolver: zodResolver(createFormSchema),
         defaultValues: {
             name: '',
-            cover_url: '',
-            banner_url: '',
+            season: 1,
             season_name: '',
-            year: '',
+            banner_url: '',
+            cover_url: '',
+            year: new Date().getFullYear(),
             director: '',
-            cv: '',
-            remark: ''
+            remark: '',
+            category: []
         }
     });
 
@@ -221,11 +435,11 @@ const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
         onSuccess({ code, msg }) {
             if (code === 200) {
                 onRefresh && onRefresh();
+                setCreateOpen(false);
                 toast({
                     description: msg,
                     duration: 1500
                 });
-                setCreateOpen(false);
                 createForm.reset();
             }
         }
@@ -236,570 +450,54 @@ const CustomTools = ({ onRefresh, categories, series }: CustomToolsProps) => {
     };
 
     return (
-        <Dialog
-            open={createOpen}
-            onOpenChange={() => {
-                setCreateOpen(!createOpen);
-                setTimeout(() => {
-                    // 关闭弹窗 reset 表单
-                    if (createOpen) {
-                        createForm.reset();
-                    }
-                }, 200);
-            }}
-        >
+        <Dialog open={createOpen} onOpenChange={setCreateOpen}>
             <DialogTrigger asChild>
                 <Button variant="outline" className={cn('h-9 px-3')}>
                     {t('table.create')}
                 </Button>
             </DialogTrigger>
-            <DialogContent className={cn('px-0')} aria-describedby={undefined}>
-                <DialogHeader className={cn('px-6')}>
-                    <DialogTitle>{t('table.create')}</DialogTitle>
+            <DialogContent
+                aria-describedby={undefined}
+                className={cn(
+                    'flex flex-col gap-0 p-0 max-h-full sm:max-h-[36rem] sm:max-w-lg max-w-full [&>button:last-child]:top-[1.36rem] [&>button:last-child]:right-5'
+                )}
+            >
+                <DialogHeader>
+                    <DialogTitle className={cn('p-6 text-base')}>
+                        {t('table.create')}
+                    </DialogTitle>
                 </DialogHeader>
-                <Form {...createForm}>
-                    <form
-                        onSubmit={createForm.handleSubmit(handleCreate)}
-                        className={cn('space-y-6')}
+                <ScrollArea
+                    className={cn(
+                        'max-h-[calc(100vh-10rem)] sm:max-h-[calc(26rem)]'
+                    )}
+                >
+                    <div className={cn('px-6 pb-1')}>
+                        <AddForm
+                            form={createForm}
+                            onRefresh={onRefresh}
+                            categories={categories}
+                            series={series}
+                        />
+                    </div>
+                </ScrollArea>
+                <DialogFooter className={cn('p-6 pt-5')}>
+                    <Button
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                        onClick={createForm.handleSubmit(handleCreate)}
                     >
-                        <ScrollArea className={cn('h-96')}>
-                            <div className={cn('space-y-6 px-6 pb-1')}>
-                                <FormField
-                                    control={createForm.control}
-                                    name="sid"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.sid')}
-                                            </FormLabel>
-                                            <Popover
-                                                open={searchOpen}
-                                                onOpenChange={setSearchOpen}
-                                            >
-                                                <PopoverTrigger asChild>
-                                                    <FormControl>
-                                                        <Button
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            aria-expanded={
-                                                                searchOpen
-                                                            }
-                                                            className={cn(
-                                                                'w-full justify-between bg-background px-3 outline-offset-0 hover:bg-background h-9'
-                                                            )}
-                                                        >
-                                                            <span>
-                                                                {field.value
-                                                                    ? series.find(
-                                                                          item =>
-                                                                              item.value ===
-                                                                              field.value
-                                                                      )?.label
-                                                                    : ''}
-                                                            </span>
-                                                            <ChevronDown
-                                                                size={16}
-                                                                strokeWidth={2}
-                                                                className={cn(
-                                                                    'shrink-0 text-muted-foreground/80'
-                                                                )}
-                                                                aria-hidden="true"
-                                                            />
-                                                        </Button>
-                                                    </FormControl>
-                                                </PopoverTrigger>
-                                                <PopoverContent
-                                                    className={cn(
-                                                        'w-full min-w-[var(--radix-popper-anchor-width)] border-input p-0'
-                                                    )}
-                                                    align="start"
-                                                >
-                                                    <Command>
-                                                        <CommandInput />
-                                                        <CommandList>
-                                                            <CommandEmpty>
-                                                                {t(
-                                                                    'table.toolbar.result_empty'
-                                                                )}
-                                                            </CommandEmpty>
-                                                            <CommandGroup>
-                                                                {series.map(
-                                                                    item => (
-                                                                        <CommandItem
-                                                                            key={
-                                                                                item.value
-                                                                            }
-                                                                            value={
-                                                                                item.label
-                                                                            }
-                                                                            onSelect={() => {
-                                                                                field.onChange(
-                                                                                    item.value
-                                                                                );
-                                                                                setSearchOpen(
-                                                                                    false
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            {
-                                                                                item.label
-                                                                            }
-                                                                            <Check
-                                                                                className={cn(
-                                                                                    'ml-auto',
-                                                                                    item.value ===
-                                                                                        field.value
-                                                                                        ? 'opacity-100'
-                                                                                        : 'opacity-0'
-                                                                                )}
-                                                                            />
-                                                                        </CommandItem>
-                                                                    )
-                                                                )}
-                                                            </CommandGroup>
-                                                        </CommandList>
-                                                    </Command>
-                                                </PopoverContent>
-                                            </Popover>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.name')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="description"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.description')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Textarea
-                                                    className={cn(
-                                                        'resize-none'
-                                                    )}
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="cover_url"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.cover_url')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="banner_url"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.banner_url')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="season"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.season')}
-                                            </FormLabel>
-                                            <Select
-                                                onValueChange={val =>
-                                                    field.onChange(
-                                                        parseInt(val)
-                                                    )
-                                                }
-                                                defaultValue={`${field.value}`}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {[...Array(10).keys()]
-                                                        .map(x => x + 1)
-                                                        .map(item => {
-                                                            return (
-                                                                <SelectItem
-                                                                    key={item}
-                                                                    value={`${item}`}
-                                                                >
-                                                                    {item}
-                                                                </SelectItem>
-                                                            );
-                                                        })}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="season_name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('video.table.season_name')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="category"
-                                    render={({ field }) => {
-                                        return (
-                                            <FormItem>
-                                                <FormLabel
-                                                    className={cn('required')}
-                                                >
-                                                    {t(
-                                                        'video.table.categories'
-                                                    )}
-                                                </FormLabel>
-                                                <MultiSelect
-                                                    onValueChange={val => {
-                                                        field.onChange(
-                                                            val?.length
-                                                                ? val
-                                                                : undefined
-                                                        );
-                                                    }}
-                                                    defaultValue={field.value}
-                                                >
-                                                    <MultiSelectTrigger>
-                                                        <MultiSelectValue
-                                                            maxDisplay={4}
-                                                        />
-                                                    </MultiSelectTrigger>
-                                                    <MultiSelectContent>
-                                                        <MultiSelectSearch />
-                                                        <MultiSelectList>
-                                                            {categories.map(
-                                                                item => {
-                                                                    return (
-                                                                        <MultiSelectItem
-                                                                            key={
-                                                                                item.label +
-                                                                                item.value
-                                                                            }
-                                                                            value={
-                                                                                item.value
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                item.label
-                                                                            }
-                                                                        </MultiSelectItem>
-                                                                    );
-                                                                }
-                                                            )}
-                                                            <MultiSelectEmpty>
-                                                                {t(
-                                                                    'table.toolbar.result_empty'
-                                                                )}
-                                                            </MultiSelectEmpty>
-                                                        </MultiSelectList>
-                                                    </MultiSelectContent>
-                                                </MultiSelect>
-                                                <FormMessage />
-                                            </FormItem>
-                                        );
-                                    }}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="status"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.status')}
-                                            </FormLabel>
-                                            <Select
-                                                onValueChange={val =>
-                                                    field.onChange(
-                                                        parseInt(val)
-                                                    )
-                                                }
-                                                defaultValue={`${field.value}`}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="0">
-                                                        {t(
-                                                            'video.status.coming'
-                                                        )}
-                                                    </SelectItem>
-                                                    <SelectItem value="1">
-                                                        {t(
-                                                            'video.status.serializing'
-                                                        )}
-                                                    </SelectItem>
-                                                    <SelectItem value="2">
-                                                        {t(
-                                                            'video.status.completed'
-                                                        )}
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="type"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.type')}
-                                            </FormLabel>
-                                            <Select
-                                                onValueChange={val =>
-                                                    field.onChange(
-                                                        parseInt(val)
-                                                    )
-                                                }
-                                                defaultValue={`${field.value}`}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="0">
-                                                        {t('video.type.ova')}
-                                                    </SelectItem>
-                                                    <SelectItem value="1">
-                                                        {t('video.type.japan')}
-                                                    </SelectItem>
-                                                    <SelectItem value="2">
-                                                        {t(
-                                                            'video.type.american'
-                                                        )}
-                                                    </SelectItem>
-                                                    <SelectItem value="3">
-                                                        {t('video.type.china')}
-                                                    </SelectItem>
-                                                    <SelectItem value="4">
-                                                        {t('video.type.hentai')}
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="year"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.year')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="month"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('video.table.month')}
-                                            </FormLabel>
-                                            <Select
-                                                onValueChange={val =>
-                                                    field.onChange(
-                                                        parseInt(val)
-                                                    )
-                                                }
-                                                defaultValue={`${field.value}`}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="0">
-                                                        {t('video.month.jan')}
-                                                    </SelectItem>
-                                                    <SelectItem value="1">
-                                                        {t('video.month.apr')}
-                                                    </SelectItem>
-                                                    <SelectItem value="2">
-                                                        {t('video.month.jul')}
-                                                    </SelectItem>
-                                                    <SelectItem value="3">
-                                                        {t('video.month.oct')}
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="director"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('video.table.director')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="cv"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('video.table.cv')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={createForm.control}
-                                    name="remark"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                {t('video.table.remark')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                        </ScrollArea>
-                        <DialogFooter className={cn('px-6 !mt-5')}>
-                            <Button size="sm" type="submit" variant="outline">
-                                {t('dialog.confirm')}
-                            </Button>
-                        </DialogFooter>
-                    </form>
-                </Form>
+                        {t('dialog.confirm')}
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
+};
+
+const CustomTools: React.FC<CustomToolsProps> = props => {
+    return <AddDialog {...props} />;
 };
 
 export default CustomTools;

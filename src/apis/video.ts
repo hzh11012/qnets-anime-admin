@@ -19,25 +19,25 @@ export const getVideoList = (params: VideoListReq) => {
 };
 
 export const videoCreate = (params: VideoCreateReq) => {
-    return HttpClient.post(`${prefix}/admin_create`, params);
+    return HttpClient.post(`${prefix}/admin/create`, params);
 };
 
 export const videoDelete = (params: VideoDeleteReq) => {
-    return HttpClient.post(`${prefix}/admin_delete`, params);
+    return HttpClient.post(`${prefix}/admin/delete`, params);
 };
 
 export const videoEdit = (params: VideoEditReq) => {
-    return HttpClient.post(`${prefix}/admin_edit`, params);
+    return HttpClient.post(`${prefix}/admin/edit`, params);
 };
 
 export const getVideoDetail = (params: VideoDetailReq) => {
-    return HttpClient.post<VideoDetailRes>(`${prefix}/admin_detail`, params);
+    return HttpClient.post<VideoDetailRes>(`${prefix}/admin/detail`, params);
 };
 
 export const episodeCreate = (params: EpisodeCreateReq) => {
-    return HttpClient.post(`${episode_prefix}/admin_create`, params);
+    return HttpClient.post(`${episode_prefix}/admin/create`, params);
 };
 
 export const episodeDelete = (params: EpisodeDeleteReq) => {
-    return HttpClient.post(`${episode_prefix}/admin_delete`, params);
+    return HttpClient.post(`${episode_prefix}/admin/delete`, params);
 };

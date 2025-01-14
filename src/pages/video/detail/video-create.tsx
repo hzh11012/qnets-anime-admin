@@ -9,69 +9,109 @@ import {
 } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import { z } from 'zod';
+import { t } from 'i18next';
 import { useRequest } from 'ahooks';
 import { episodeCreate } from '@/apis/video';
+import FormInput from '@/components/custom/form/form-input';
+import FormNumber from '@/components/custom/form/form-number';
+import FormTextarea from '@/components/custom/form/form-textarea';
 
 interface VideoCreateProps {
-    aid: number;
-    onRefresh?: () => void;
+    anime_id: number;
+    onRefresh: () => void;
 }
 
 const VIDEO_REG = /^(https?:)?\/\/.*\.(m3u8)$/;
 
-const VideoCreate = ({ onRefresh, aid }: VideoCreateProps) => {
+const createFormSchema = z.object({
+    title: z
+        .string({
+            required_error: `${t('video.detail.title')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.detail.title')} ${t('validator.type')}`
+        })
+        .max(50, {
+            message: `${t('video.detail.title')} ${t('validator.max.length')} 50`
+        })
+        .min(1, `${t('video.detail.title')} ${t('validator.empty')}`),
+    episode: z
+        .number({
+            required_error: `${t('video.detail.episode_id')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.detail.episode_id')} ${t('validator.type')}`
+        })
+        .int(`${t('video.detail.episode_id')} ${t('validator.int')}`)
+        .min(1, `${t('video.detail.episode_id')} ${t('validator.min')} 1`),
+    url: z
+        .string({
+            required_error: `${t('video.detail.url')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('video.detail.url')} ${t('validator.type')}`
+        })
+        .max(255, {
+            message: `${t('video.detail.url')} ${t('validator.max.length')} 255`
+        })
+        .min(1, `${t('video.detail.url')} ${t('validator.empty')}`)
+        .regex(VIDEO_REG, {
+            message: `${t('video.detail.url')} ${t('validator.format')}`
+        })
+});
+
+interface AddFormProps {
+    form: any;
+}
+
+const AddForm: React.FC<AddFormProps> = ({ form }) => {
+    const { t } = useTranslation();
+
+    return (
+        <Form {...form}>
+            <form className={cn('space-y-6')}>
+                <div className={cn('flex gap-6')}>
+                    <div className={cn('flex-1')}>
+                        <FormInput
+                            control={form.control}
+                            name="title"
+                            label={t('video.detail.title')}
+                            required
+                        />
+                    </div>
+                    <div className={cn('flex-1')}>
+                        <FormNumber
+                            control={form.control}
+                            name="episode"
+                            label={t('video.detail.episode')}
+                            required
+                            minValue={1}
+                            maxValue={9999}
+                        />
+                    </div>
+                </div>
+                <FormTextarea
+                    control={form.control}
+                    name="url"
+                    label={t('video.detail.url')}
+                    required
+                />
+            </form>
+        </Form>
+    );
+};
+
+interface AddDialogProps extends VideoCreateProps {}
+
+const AddDialog: React.FC<AddDialogProps> = ({ onRefresh, anime_id }) => {
     const { t } = useTranslation();
     const [createOpen, setCreateOpen] = useState(false);
-
-    const createFormSchema = z.object({
-        title: z
-            .string({
-                required_error: `${t('video.detail.title')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.detail.title')} ${t('validator.type')}`
-            })
-            .max(50, {
-                message: `${t('video.detail.title')} ${t('validator.max.length')} 50`
-            })
-            .min(1, `${t('video.detail.title')} ${t('validator.empty')}`),
-        episode: z
-            .number({
-                required_error: `${t('video.detail.episode_id')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.detail.episode_id')} ${t('validator.type')}`
-            })
-            .int(`${t('video.detail.episode_id')} ${t('validator.int')}`)
-            .min(1, `${t('video.detail.episode_id')} ${t('validator.min')} 1`),
-        url: z
-            .string({
-                required_error: `${t('video.detail.url')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('video.detail.url')} ${t('validator.type')}`
-            })
-            .max(255, {
-                message: `${t('video.detail.url')} ${t('validator.max.length')} 255`
-            })
-            .min(1, `${t('video.detail.url')} ${t('validator.empty')}`)
-            .regex(VIDEO_REG, {
-                message: `${t('video.detail.url')} ${t('validator.format')}`
-            })
-    });
 
     const createForm = useForm<z.infer<typeof createFormSchema>>({
         resolver: zodResolver(createFormSchema),
         defaultValues: {
             title: '',
+            episode: 1,
             url: ''
         }
     });
@@ -82,14 +122,12 @@ const VideoCreate = ({ onRefresh, aid }: VideoCreateProps) => {
         onSuccess({ code, msg }) {
             if (code === 200) {
                 onRefresh && onRefresh();
+                setCreateOpen(false);
                 toast({
                     description: msg,
                     duration: 1500
                 });
-                setCreateOpen(false);
-                setTimeout(() => {
-                    createForm.reset();
-                }, 200);
+                createForm.reset();
             }
         }
     });
@@ -97,113 +135,49 @@ const VideoCreate = ({ onRefresh, aid }: VideoCreateProps) => {
     const handleCreate = (values: z.infer<typeof createFormSchema>) => {
         runCreate({
             ...values,
-            id: aid
+            id: anime_id
         });
     };
 
     return (
-        <Dialog
-            open={createOpen}
-            onOpenChange={() => {
-                setCreateOpen(!createOpen);
-                setTimeout(() => {
-                    // 关闭弹窗 reset 表单
-                    if (createOpen) {
-                        createForm.reset();
-                    }
-                }, 200);
-            }}
-        >
+        <Dialog open={createOpen} onOpenChange={setCreateOpen}>
             <DialogTrigger asChild>
                 <Button variant="link" className={cn('h-5 p-0 text-[#1677ff]')}>
                     {t('table.create')}
                 </Button>
             </DialogTrigger>
-            <DialogContent aria-describedby={undefined}>
+            <DialogContent
+                aria-describedby={undefined}
+                className={cn(
+                    'flex flex-col gap-0 p-0 max-h-full sm:max-h-[36rem] sm:max-w-lg max-w-full [&>button:last-child]:top-[1.36rem] [&>button:last-child]:right-5'
+                )}
+            >
                 <DialogHeader>
-                    <DialogTitle>{t('table.create')}</DialogTitle>
+                    <DialogTitle className={cn('p-6 text-base')}>
+                        {t('table.create')}
+                    </DialogTitle>
                 </DialogHeader>
-                <Form {...createForm}>
-                    <form
-                        onSubmit={createForm.handleSubmit(handleCreate)}
-                        className={cn('space-y-6')}
+
+                <div className={cn('px-6 pb-1')}>
+                    <AddForm form={createForm} />
+                </div>
+                <DialogFooter className={cn('p-6 pt-5')}>
+                    <Button
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                        onClick={createForm.handleSubmit(handleCreate)}
                     >
-                        <FormField
-                            control={createForm.control}
-                            name="title"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className={cn('required')}>
-                                        {t('video.detail.title')}
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            autoComplete="off"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={createForm.control}
-                            name="episode"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className={cn('required')}>
-                                        {t('video.detail.episode_id')}
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            autoComplete="off"
-                                            defaultValue={''}
-                                            onChange={e => {
-                                                field.onChange(
-                                                    e.target.value
-                                                        ? parseInt(
-                                                              e.target.value
-                                                          )
-                                                        : undefined
-                                                );
-                                            }}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={createForm.control}
-                            name="url"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className={cn('required')}>
-                                        {t('video.detail.url')}
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            autoComplete="off"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <DialogFooter>
-                            <Button size="sm" type="submit" variant="outline">
-                                {t('dialog.confirm')}
-                            </Button>
-                        </DialogFooter>
-                    </form>
-                </Form>
+                        {t('dialog.confirm')}
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
+};
+
+const VideoCreate = (props: VideoCreateProps) => {
+    return <AddDialog {...props} />;
 };
 
 export default VideoCreate;

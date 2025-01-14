@@ -27,7 +27,7 @@ const tokenLoader = async () => {
 const videoDetailLoader = async ({ params }: { params: any }) => {
     const { id } = params;
     const { data, code, errorCode } = await getVideoDetail({ id: Number(id) });
-    if (!code || errorCode != 0) {
+    if (!code || errorCode) {
         // 禁止访问
         return redirect('/404');
     }

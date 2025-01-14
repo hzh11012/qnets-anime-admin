@@ -8,7 +8,7 @@ export interface VideoCategoryListReq {
 
 export interface VideoCategoryItem {
     id: number;
-    category: string;
+    name: string;
     created_at: string;
 }
 
@@ -22,5 +22,5 @@ export interface VideoCategoryDeleteReq {
 }
 
 export interface VideoCategoryCreateReq {
-    category: string;
+    name: string;
 }

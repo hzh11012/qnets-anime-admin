@@ -1,10 +1,8 @@
 import { HttpClient } from '@/lib/request';
 import { InfoRes } from '@/apis/models/auth-model';
 
-const prefix = '/v1/api/user';
-
 export const getUserInfo = () => {
-    return HttpClient.get<InfoRes>(`${prefix}/info`);
+    return HttpClient.get<InfoRes>('/v1/api/user/info');
 };
 
 export const logout = () => {

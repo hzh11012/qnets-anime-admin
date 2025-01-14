@@ -2,7 +2,7 @@ import { DataTableColumnSort } from '@/components/custom/data-table/data-table-c
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/video/data-table-row-actions';
+import DataTableRowActions from '@/pages/video/data-table-row-actions';
 import { Badge } from '@/components/ui/badge';
 import { DataTableColumnFilter } from '@/components/custom/data-table/data-table-column-filter';
 
@@ -54,7 +54,7 @@ export const getColumns = (
                     <div className={cn('space-x-2')}>
                         {arr.map((item: any) => (
                             <Badge key={item.id} variant="secondary">
-                                {item.category}
+                                {item.name}
                             </Badge>
                         ))}
                     </div>
@@ -147,11 +147,11 @@ export const getColumns = (
             header: ({ column }: any) => {
                 const currentYear = new Date().getFullYear();
                 const options = Array.from(
-                    { length: currentYear - 1990 + 1 },
+                    { length: currentYear - 1970 + 2 },
                     (_, i) => {
                         return {
-                            label: `${1990 + i}`,
-                            value: `${1990 + i}`
+                            label: `${1970 + i}`,
+                            value: 1970 + i
                         };
                     }
                 ).reverse();

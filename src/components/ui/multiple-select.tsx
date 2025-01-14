@@ -216,7 +216,7 @@ const MultiSelectTrigger = React.forwardRef<
                 data-disabled={disabled}
                 {...props}
                 className={cn(
-                    'flex h-full min-h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-1.5 text-sm ring-offset-background focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 [&>span]:line-clamp-1',
+                    'flex h-full min-h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 pl-1.5 py-1 text-sm ring-offset-background focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 [&>span]:line-clamp-1',
                     disabled
                         ? 'cursor-not-allowed opacity-50'
                         : 'cursor-pointer',
@@ -297,9 +297,9 @@ const MultiSelectValue = React.forwardRef<
 
                         const el = (
                             <Badge
-                                variant="secondary"
+                                variant="outline"
                                 key={value}
-                                className="px-2 py-0.5 leading-4 pr-1 group/multi-select-badge rounded-full cursor-default"
+                                className="px-2 py-0 h-6 leading-4 group/multi-select-badge rounded-sm cursor-default"
                             >
                                 <span>{child}</span>
                                 <X
@@ -308,7 +308,7 @@ const MultiSelectValue = React.forwardRef<
                                         e.stopPropagation();
                                         onDeselect(value, item!);
                                     }}
-                                    className="h-3 w-3 ml-1 text-muted-foreground group-hover/multi-select-badge:text-foreground cursor-pointer"
+                                    className="h-3.5 w-3.5 ml-1 text-muted-foreground group-hover/multi-select-badge:text-foreground cursor-pointer"
                                 />
                             </Badge>
                         );
