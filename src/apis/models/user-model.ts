@@ -26,7 +26,7 @@ export interface UserDeleteReq {
 }
 
 export interface UserEditReq extends UserDeleteReq {
-    nickname: string;
+    nickname?: string;
     avatar?: string | null;
-    scope: number;
+    scope?: number;
 }

@@ -4,11 +4,11 @@ export default {
 
     'menu.dashboard': 'Dashboard',
 
-    'menu.new_anime': 'New Anime',
+    'menu.anime-guide': 'Anime Guide',
 
     'menu.swiper': 'Swiper',
 
-    'menu.notice': 'Notice',
+    'menu.announcement': 'Announcement',
 
     'menu.message': 'Message',
 
@@ -22,7 +22,6 @@ export default {
     'menu.user.list': 'User List',
     'menu.user.collection': 'Collection List',
     'menu.user.rating': 'Rating List',
-    'menu.user.notice-record': 'Notice Record List',
 
     'menu.system.settings': 'Settings'
 };

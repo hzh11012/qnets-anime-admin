@@ -8,8 +8,8 @@ export interface CollectionListReq {
 
 export interface CollectionItem {
     id: number;
-    uid: number;
-    aid: number;
+    user_id: number;
+    anime_id: number;
     nickname: string;
     anime: {
         name: string;

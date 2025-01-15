@@ -9,13 +9,13 @@ import {
 const prefix = '/v1/api/user';
 
 export const getUserList = (params: UserListReq) => {
-    return HttpClient.post<UserListRes>(`${prefix}/admin_list`, params);
+    return HttpClient.post<UserListRes>(`${prefix}/admin/list`, params);
 };
 
 export const userDelete = (params: UserDeleteReq) => {
-    return HttpClient.post(`${prefix}/admin_delete`, params);
+    return HttpClient.post(`${prefix}/admin/delete`, params);
 };
 
 export const userEdit = (params: UserEditReq) => {
-    return HttpClient.post(`${prefix}/admin_edit`, params);
+    return HttpClient.post(`${prefix}/admin/edit`, params);
 };

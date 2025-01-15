@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/danmaku/data-table-row-actions';
+import DataTableRowActions from '@/pages/danmaku/data-table-row-actions';
 import Color from '@/components/custom/color';
 
 export const getColumns = (

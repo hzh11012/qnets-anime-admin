@@ -1,9 +1,10 @@
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/new-anime/data-table-row-actions';
+import DataTableRowActions from '@/pages/anime-guide/data-table-row-actions';
 import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
 import { DataTableColumnFilter } from '@/components/custom/data-table/data-table-column-filter';
+import { days } from '@/pages/anime-guide/custom-tools';
 
 export const getColumns = (
     t: TFunction<'translation', undefined>,
@@ -11,8 +12,8 @@ export const getColumns = (
 ) => {
     const columns = [
         {
-            accessorKey: 'aid',
-            title: t('video.table.id'),
+            accessorKey: 'anime_id',
+            title: t('video.table.'),
             header: t('video.table.id'),
             enableSorting: false,
             enableHiding: false
@@ -64,64 +65,32 @@ export const getColumns = (
         },
         {
             accessorKey: 'update_day',
-            title: t('new_anime.table.update_day'),
+            title: t('anime-guide.table.update_day'),
             header: ({ column }: any) => (
                 <div className={cn('flex items-center space-x-1')}>
-                    <span>{t('new_anime.table.update_day')}</span>
-                    <DataTableColumnFilter
-                        column={column}
-                        options={[
-                            {
-                                label: t('new_anime.day.mon'),
-                                value: 1
-                            },
-                            {
-                                label: t('new_anime.day.tues'),
-                                value: 2
-                            },
-                            {
-                                label: t('new_anime.day.wed'),
-                                value: 3
-                            },
-                            {
-                                label: t('new_anime.day.thur'),
-                                value: 4
-                            },
-                            {
-                                label: t('new_anime.day.fri'),
-                                value: 5
-                            },
-                            {
-                                label: t('new_anime.day.sat'),
-                                value: 6
-                            },
-                            {
-                                label: t('new_anime.day.sun'),
-                                value: 7
-                            }
-                        ]}
-                    />
+                    <span>{t('anime-guide.table.update_day')}</span>
+                    <DataTableColumnFilter column={column} options={days} />
                 </div>
             ),
             cell: ({ row }: any) => {
                 const DayMap: { [key: number]: string } = {
-                    1: t('new_anime.day.mon'),
-                    2: t('new_anime.day.tues'),
-                    3: t('new_anime.day.wed'),
-                    4: t('new_anime.day.thur'),
-                    5: t('new_anime.day.fri'),
-                    6: t('new_anime.day.sat'),
-                    7: t('new_anime.day.sun')
+                    1: t('anime-guide.day.mon'),
+                    2: t('anime-guide.day.tues'),
+                    3: t('anime-guide.day.wed'),
+                    4: t('anime-guide.day.thur'),
+                    5: t('anime-guide.day.fri'),
+                    6: t('anime-guide.day.sat'),
+                    7: t('anime-guide.day.sun')
                 };
                 return DayMap[row.original.update_day];
             }
         },
         {
             accessorKey: 'update_time',
-            title: t('new_anime.table.update_time'),
+            title: t('anime-guide.table.update_time'),
             header: ({ column }: any) => (
                 <div className={cn('flex items-center space-x-1')}>
-                    <span>{t('new_anime.table.update_time')}</span>
+                    <span>{t('anime-guide.table.update_time')}</span>
                     <DataTableColumnSort column={column} />
                 </div>
             )
@@ -142,8 +111,8 @@ export const getColumns = (
         },
         {
             accessorKey: 'update_tip',
-            title: t('new_anime.table.update_tip'),
-            header: t('new_anime.table.update_tip'),
+            title: t('anime-guide.table.update_tip'),
+            header: t('anime-guide.table.update_tip'),
             cell: ({ row }: any) => {
                 const { status, latest_video } = row.original;
                 if (status === 0 || !latest_video) {

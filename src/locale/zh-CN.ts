@@ -12,10 +12,9 @@ import category from '@/locale/zh-CN/category';
 import video from '@/locale/zh-CN/video';
 import collection from '@/locale/zh-CN/collection';
 import rating from '@/locale/zh-CN/rating';
-import notice from '@/locale/zh-CN/notice';
-import noticeRecord from '@/locale/zh-CN/notice-record';
+import announcement from '@/locale/zh-CN/announcement';
 import series from '@/locale/zh-CN/series';
-import new_anime from '@/locale/zh-CN/new_anime';
+import animeGuide from '@/locale/zh-CN/anime-guide';
 
 export default {
     ...menu,
@@ -32,8 +31,7 @@ export default {
     ...video,
     ...collection,
     ...rating,
-    ...notice,
-    ...noticeRecord,
+    ...announcement,
     ...series,
-    ...new_anime
+    ...animeGuide
 };

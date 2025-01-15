@@ -10,7 +10,7 @@ import { DataTable } from '@/components/custom/data-table/data-table';
 import { validFilter, validSort } from '@/lib/utils';
 import { MessageItem } from '@/apis/models/message-model';
 
-const Correction = () => {
+const Message = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
@@ -83,4 +83,4 @@ const Correction = () => {
     );
 };
 
-export default Correction;
+export default Message;

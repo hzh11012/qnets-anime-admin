@@ -8,8 +8,8 @@ export interface RatingListReq {
 
 export interface RatingItem {
     id: number;
-    uid: number;
-    aid: number;
+    user_id: number;
+    anime_id: number;
     nickname: string;
     score: number;
     content: string;

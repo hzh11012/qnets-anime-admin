@@ -25,7 +25,7 @@ export function DataTableRowActions({
     row,
     onRefresh
 }: DataTableRowActionsProps) {
-    const { aid } = row.original;
+    const { anime_id } = row.original;
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
     const navigate = useNavigate();
@@ -46,11 +46,11 @@ export function DataTableRowActions({
     });
 
     const handleDelete = () => {
-        runDelete({ id: aid });
+        runDelete({ id: anime_id });
     };
 
     const handleDetail = () => {
-        navigate(`/video/detail/${aid}`);
+        navigate(`/video/detail/${anime_id}`);
     };
 
     return (

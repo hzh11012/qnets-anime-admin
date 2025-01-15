@@ -1,4 +1,4 @@
-import { collectionDelete } from '@/apis/collection';
+import { animeGuideDelete } from '@/apis/anime-guide';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
+import { useNavigate } from 'react-router-dom';
 
 interface DataTableRowActionsProps {
     row: any;
@@ -29,7 +30,7 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ id, onRefresh }) => {
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
 
-    const { run: runDelete } = useRequest(collectionDelete, {
+    const { run: runDelete } = useRequest(animeGuideDelete, {
         manual: true,
         debounceWait: 300,
         onSuccess({ code, msg }) {
@@ -98,9 +99,27 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({
     row,
     onRefresh
 }) => {
-    const { id } = row.original;
+    const { id, anime_id } = row.original;
+    const { t } = useTranslation();
+    const navigate = useNavigate();
 
-    return <DeleteDialog id={id} onRefresh={onRefresh} />;
+    const handleDetail = () => {
+        navigate(`/video/detail/${anime_id}`);
+    };
+
+    return (
+        <div className={cn('space-x-4')}>
+            <Button
+                variant="link"
+                className={cn('h-8 p-0')}
+                onClick={handleDetail}
+            >
+                {t('table.detail')}
+            </Button>
+
+            <DeleteDialog id={id} onRefresh={onRefresh} />
+        </div>
+    );
 };
 
 export default DataTableRowActions;

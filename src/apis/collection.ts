@@ -8,9 +8,9 @@ import {
 const prefix = '/v1/api/collection';
 
 export const getCollectionList = (params: CollectionListReq) => {
-    return HttpClient.post<CollectionListRes>(`${prefix}/admin_list`, params);
+    return HttpClient.post<CollectionListRes>(`${prefix}/admin/list`, params);
 };
 
 export const collectionDelete = (params: CollectionDeleteReq) => {
-    return HttpClient.post(`${prefix}/admin_delete`, params);
+    return HttpClient.post(`${prefix}/admin/delete`, params);
 };

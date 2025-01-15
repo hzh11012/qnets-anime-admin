@@ -8,9 +8,9 @@ import {
 const prefix = '/v1/api/rating';
 
 export const getRatingList = (params: RatingListReq) => {
-    return HttpClient.post<RatingListRes>(`${prefix}/admin_list`, params);
+    return HttpClient.post<RatingListRes>(`${prefix}/admin/list`, params);
 };
 
 export const ratingDelete = (params: RatingDeleteReq) => {
-    return HttpClient.post(`${prefix}/admin_delete`, params);
+    return HttpClient.post(`${prefix}/admin/delete`, params);
 };

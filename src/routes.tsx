@@ -49,9 +49,9 @@ const staticRoutes: RouteObject[] = [
                 })
             },
             {
-                path: 'new-anime',
+                path: 'anime-guide',
                 lazy: async () => ({
-                    Component: (await import('@/pages/new-anime/index')).default
+                    Component: (await import('@/pages/anime-guide/index')).default
                 })
             },
             {
@@ -61,9 +61,9 @@ const staticRoutes: RouteObject[] = [
                 })
             },
             {
-                path: 'notice',
+                path: 'announcement',
                 lazy: async () => ({
-                    Component: (await import('@/pages/notice/index')).default
+                    Component: (await import('@/pages/announcement/index')).default
                 })
             },
             {
@@ -139,14 +139,6 @@ const staticRoutes: RouteObject[] = [
                         lazy: async () => ({
                             Component: (await import('@/pages/rating/index'))
                                 .default
-                        })
-                    },
-                    {
-                        path: 'notice-record',
-                        lazy: async () => ({
-                            Component: (
-                                await import('@/pages/notice-record/index')
-                            ).default
                         })
                     }
                 ]

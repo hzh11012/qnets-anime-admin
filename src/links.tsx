@@ -12,7 +12,6 @@ import {
     ListVideo,
     ContactRound,
     Star,
-    Mail,
     BookOpenText,
     LayoutList
 } from 'lucide-react';
@@ -35,8 +34,8 @@ export const links: SideLink[] = [
         icon: <LayoutDashboard size={18} />
     },
     {
-        title: 'menu.new_anime',
-        href: '/new-anime',
+        title: 'menu.anime-guide',
+        href: '/anime-guide',
         icon: <LayoutList size={18} />
     },
     {
@@ -45,8 +44,8 @@ export const links: SideLink[] = [
         icon: <Images size={18} />
     },
     {
-        title: 'menu.notice',
-        href: '/notice',
+        title: 'menu.announcement',
+        href: '/announcement',
         icon: <Bell size={18} />
     },
     {
@@ -100,11 +99,6 @@ export const links: SideLink[] = [
                 title: 'menu.user.rating',
                 href: '/rating',
                 icon: <Star size={18} />
-            },
-            {
-                title: 'menu.user.notice-record',
-                href: '/notice-record',
-                icon: <Mail size={18} />
             }
         ]
     },

@@ -28,7 +28,7 @@ export default {
     'video.month.jul': 'Jul',
     'video.month.oct': 'Oct',
 
-    'video.detail.aid': 'Anime ID',
+    'video.detail.anime_id': 'Anime ID',
     'video.detail.title': 'Video Title',
     'video.detail.episode_id': 'Video Episode',
     'video.detail.url': 'Video Url',

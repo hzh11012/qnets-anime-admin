@@ -1,29 +1,37 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getNoticeList } from '@/apis/notice';
+import { getAnimeGuideList } from '@/apis/anime-guide';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import { getColumns } from '@/pages/notice/columns';
-import { SortingState } from '@tanstack/react-table';
+import CustomTools from '@/pages/anime-guide/custom-tools';
+import { getColumns } from '@/pages/anime-guide/columns';
+import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
-import { validSort } from '@/lib/utils';
-import { NoticeItem } from '@/apis/models/notice-model';
-import CustomTools from '@/pages/notice/custom-tools';
+import { AnimeGuideItem } from '@/apis/models/anime-guide-model';
+import { validFilter, validSort } from '@/lib/utils';
+import { getVideoList } from '@/apis/video';
 
-const Rating = () => {
+const AnimeGuide = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState<NoticeItem[]>([]);
+    const [data, setData] = useState<AnimeGuideItem[]>([]);
+
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
+    const update_day = validFilter('update_day', columnFilters);
     const [orderBy, order] = validSort(sorting);
 
-    const { run, loading, refresh } = useRequest(getNoticeList, {
+    const [animes, setAnimes] = useState<{ label: string; value: number }[]>(
+        []
+    );
+
+    const { run, loading, refresh } = useRequest(getAnimeGuideList, {
         defaultParams: [
             {
                 page,
@@ -35,15 +43,37 @@ const Rating = () => {
             setTotal(count);
             setData(rows);
         },
-        refreshDeps: [page, limit, keyword, sorting],
+        refreshDeps: [page, limit, columnFilters, keyword, sorting],
         refreshDepsAction: () => {
             run({
                 page,
                 keyword,
                 pageSize: limit,
+                update_day,
                 orderBy,
                 order
             });
+        }
+    });
+
+    const { refresh: refreshVideo } = useRequest(getVideoList, {
+        defaultParams: [
+            {
+                page: 1,
+                pageSize: 9999
+            }
+        ],
+        onSuccess(data) {
+            const { rows } = data.data;
+            const res = rows
+                .filter(item => !item.is_anime_guide)
+                .map(item => {
+                    return {
+                        label: item.name,
+                        value: item.id
+                    };
+                });
+            setAnimes(res);
         }
     });
 
@@ -54,9 +84,14 @@ const Rating = () => {
                 pageSize: limit
             });
         } else {
-            refresh();
+            handleRefresh();
         }
     });
+
+    const handleRefresh = () => {
+        refreshVideo();
+        refresh();
+    };
 
     return (
         <Layout>
@@ -72,10 +107,14 @@ const Rating = () => {
                 onSearch={setKeyword}
                 sorting={sorting}
                 onSortingChange={setSorting}
-                customTools={<CustomTools onRefresh={refresh} />}
+                columnFilters={columnFilters}
+                onColumnFiltersChange={setColumnFilters}
+                customTools={
+                    <CustomTools onRefresh={handleRefresh} animes={animes} />
+                }
             />
         </Layout>
     );
 };
 
-export default Rating;
+export default AnimeGuide;

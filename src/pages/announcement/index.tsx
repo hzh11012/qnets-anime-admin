@@ -1,30 +1,29 @@
 import { Layout } from '@/components/layout';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
-import { getNoticeRecordList } from '@/apis/notice-record';
+import { getAnnouncementList } from '@/apis/announcement';
 import { useState } from 'react';
 import usePagination from '@/hooks/use-pagination';
-import { getColumns } from '@/pages/notice-record/columns';
-import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import { getColumns } from '@/pages/announcement/columns';
+import { SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
-import { validFilter, validSort } from '@/lib/utils';
-import { NoticeRecordItem } from '@/apis/models/notice-record-model';
+import { validSort } from '@/lib/utils';
+import { AnnouncementItem } from '@/apis/models/announcement-model';
+import CustomTools from '@/pages/announcement/custom-tools';
 
-const Rating = () => {
+const Announcement = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
 
     const [total, setTotal] = useState(0);
-    const [data, setData] = useState<NoticeRecordItem[]>([]);
+    const [data, setData] = useState<AnnouncementItem[]>([]);
 
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
-    const status = validFilter('status', columnFilters);
     const [orderBy, order] = validSort(sorting);
 
-    const { run, loading, refresh } = useRequest(getNoticeRecordList, {
+    const { run, loading, refresh } = useRequest(getAnnouncementList, {
         defaultParams: [
             {
                 page,
@@ -36,13 +35,12 @@ const Rating = () => {
             setTotal(count);
             setData(rows);
         },
-        refreshDeps: [page, limit, columnFilters, keyword, sorting],
+        refreshDeps: [page, limit, keyword, sorting],
         refreshDepsAction: () => {
             run({
                 page,
                 keyword,
                 pageSize: limit,
-                status,
                 orderBy,
                 order
             });
@@ -74,11 +72,10 @@ const Rating = () => {
                 onSearch={setKeyword}
                 sorting={sorting}
                 onSortingChange={setSorting}
-                columnFilters={columnFilters}
-                onColumnFiltersChange={setColumnFilters}
+                customTools={<CustomTools onRefresh={refresh} />}
             />
         </Layout>
     );
 };
 
-export default Rating;
+export default Announcement;

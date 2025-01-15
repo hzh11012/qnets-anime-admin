@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/notice/data-table-row-actions';
+import DataTableRowActions from '@/pages/announcement/data-table-row-actions';
 import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
 import {
     Tooltip,
@@ -17,18 +17,18 @@ export const getColumns = (
     const columns = [
         {
             accessorKey: 'id',
-            title: t('notice.table.id'),
-            header: t('notice.table.id'),
+            title: t('announcement.table.id'),
+            header: t('announcement.table.id'),
             enableSorting: false,
             enableHiding: false
         },
         {
             accessorKey: 'title',
-            title: t('notice.table.title'),
+            title: t('announcement.table.title'),
             header: () => {
                 return (
                     <div className={cn('flex items-center space-x-1')}>
-                        <span>{t('notice.table.title')}</span>
+                        <span>{t('announcement.table.title')}</span>
                         <Search className={cn('w-3.5 h-3.5')} />
                     </div>
                 );
@@ -36,11 +36,11 @@ export const getColumns = (
         },
         {
             accessorKey: 'content',
-            title: t('notice.table.content'),
+            title: t('announcement.table.content'),
             header: () => {
                 return (
                     <div className={cn('flex items-center space-x-1')}>
-                        <span>{t('notice.table.content')}</span>
+                        <span>{t('announcement.table.content')}</span>
                         <Search className={cn('w-3.5 h-3.5')} />
                     </div>
                 );
@@ -74,8 +74,8 @@ export const getColumns = (
         },
         {
             accessorKey: 'count',
-            title: t('notice.table.count'),
-            header: t('notice.table.count')
+            title: t('announcement.table.count'),
+            header: t('announcement.table.count')
         },
         {
             accessorKey: 'created_at',

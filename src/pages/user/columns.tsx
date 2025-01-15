@@ -3,7 +3,9 @@ import { cn } from '@/lib/utils';
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/user/data-table-row-actions';
+import DataTableRowActions, {
+    scope
+} from '@/pages/user/data-table-row-actions';
 import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
 import { DataTableColumnFilter } from '@/components/custom/data-table/data-table-column-filter';
 
@@ -57,31 +59,7 @@ export const getColumns = (
             header: ({ column }: any) => (
                 <div className={cn('flex items-center space-x-1')}>
                     <span>{t('user.table.scope')}</span>
-                    <DataTableColumnFilter
-                        column={column}
-                        options={[
-                            {
-                                label: t('user.role.ban'),
-                                value: -1
-                            },
-                            {
-                                label: t('user.role.visitor'),
-                                value: 0
-                            },
-                            {
-                                label: t('user.role.general'),
-                                value: 1
-                            },
-                            {
-                                label: t('user.role.member'),
-                                value: 2
-                            },
-                            {
-                                label: t('user.role.admin'),
-                                value: 3
-                            }
-                        ]}
-                    />
+                    <DataTableColumnFilter column={column} options={scope} />
                 </div>
             ),
             cell: ({ row }: any) => {

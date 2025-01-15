@@ -10,7 +10,7 @@ export const getColumns = (
 ) => {
     const columns = [
         {
-            accessorKey: 'aid',
+            accessorKey: 'anime_id',
             title: t('video.table.id'),
             header: t('video.table.id'),
             enableSorting: false,

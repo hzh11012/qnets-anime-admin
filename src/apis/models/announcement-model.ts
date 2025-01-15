@@ -1,4 +1,4 @@
-export interface NoticeListReq {
+export interface AnnouncementListReq {
     page?: number;
     pageSize?: number;
     order?: string;
@@ -6,23 +6,23 @@ export interface NoticeListReq {
     keyword?: string;
 }
 
-export interface NoticeItem {
+export interface AnnouncementItem {
     id: number;
     title: string;
     content: string;
     created_at: string;
 }
 
-export interface NoticeListRes {
+export interface AnnouncementListRes {
     count: number;
-    rows: NoticeItem[];
+    rows: AnnouncementItem[];
 }
 
-export interface NoticeDeleteReq {
+export interface AnnouncementDeleteReq {
     id: number;
 }
 
-export interface NoticeCreateReq {
+export interface AnnouncementCreateReq {
     title: string;
     content: string;
 }

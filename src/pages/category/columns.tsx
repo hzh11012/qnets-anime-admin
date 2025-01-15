@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/category/data-table-row-actions';
+import DataTableRowActions from '@/pages/category/data-table-row-actions';
 import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
 
 export const getColumns = (

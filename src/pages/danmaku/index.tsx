@@ -8,7 +8,7 @@ import { getColumns } from '@/pages/danmaku/columns';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { DanmakuItem } from '@/apis/models/danmaku-model';
 
-const Correction = () => {
+const Danmaku = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
@@ -68,4 +68,4 @@ const Correction = () => {
     );
 };
 
-export default Correction;
+export default Danmaku;

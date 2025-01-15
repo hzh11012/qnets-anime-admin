@@ -14,74 +14,100 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from '@/components/ui/select';
+import { Form } from '@/components/ui/form';
 import { z } from 'zod';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useRequest } from 'ahooks';
+import FormInput from '@/components/custom/form/form-input';
+import FormSelect from '@/components/custom/form/form-select';
 
 interface DataTableRowActionsProps {
     row: any;
     onRefresh: () => void;
 }
 
-export function DataTableRowActions({
-    row,
-    onRefresh
-}: DataTableRowActionsProps) {
-    const { id, avatar, nickname, scope } = row.original;
+export const scope = [
+    {
+        label: t('user.role.ban'),
+        value: -1
+    },
+    {
+        label: t('user.role.visitor'),
+        value: 0
+    },
+    {
+        label: t('user.role.general'),
+        value: 1
+    },
+    {
+        label: t('user.role.member'),
+        value: 2
+    },
+    {
+        label: t('user.role.admin'),
+        value: 3
+    }
+];
+
+const editFormSchema = z.object({
+    nickname: z
+        .string({
+            required_error: `${t('user.table.nickname')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('user.table.nickname')} ${t('validator.type')}`
+        })
+        .min(1, `${t('user.table.nickname')} ${t('validator.empty')}`),
+    scope: z
+        .number({
+            required_error: `${t('user.table.scope')} ${t('validator.empty')}`,
+            invalid_type_error: `${t('user.table.scope')} ${t('validator.type')}`
+        })
+        .int(`${t('user.table.scope')} ${t('validator.int')}`)
+        .min(-1, `${t('user.table.scope')} ${t('validator.min')} -1`)
+        .max(3, `${t('user.table.scope')} ${t('validator.max')} 3`)
+});
+
+interface EditFormProps {
+    form: any;
+}
+
+const EditForm: React.FC<EditFormProps> = ({ form }) => {
+    const { t } = useTranslation();
+
+    return (
+        <Form {...form}>
+            <form className={cn('space-y-6')}>
+                <FormInput
+                    control={form.control}
+                    name="nickname"
+                    label={t('user.table.nickname')}
+                    required
+                />
+                <FormSelect
+                    control={form.control}
+                    name="scope"
+                    label={t('user.table.scope')}
+                    required
+                    options={scope}
+                />
+            </form>
+        </Form>
+    );
+};
+
+interface EditDialogPops extends DeleteDialogProps {
+    nickname: string;
+    scope: number;
+}
+
+const EditDialog: React.FC<EditDialogPops> = ({ id, onRefresh, ...rest }) => {
     const { t } = useTranslation();
     const [editOpen, setEditOpen] = useState(false);
-    const [deleteOpen, setDeleteOpen] = useState(false);
-
-    const editFormSchema = z.object({
-        id: z.number({
-            required_error: `${t('user.table.id')} ${t('validator.empty')}`,
-            invalid_type_error: `${t('user.table.id')} ${t('validator.type')}`
-        }),
-        nickname: z
-            .string({
-                required_error: `${t('user.table.nickname')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('user.table.nickname')} ${t('validator.type')}`
-            })
-            .min(1, `${t('user.table.nickname')} ${t('validator.empty')}`),
-        avatar: z
-            .string({
-                invalid_type_error: `${t('user.table.avatar')} ${t('validator.type')}`
-            })
-            .optional(),
-        scope: z
-            .number({
-                required_error: `${t('user.table.scope')} ${t('validator.empty')}`,
-                invalid_type_error: `${t('user.table.scope')} ${t('validator.type')}`
-            })
-            .int(`${t('user.table.scope')} ${t('validator.int')}`)
-            .min(-1, `${t('user.table.scope')} ${t('validator.min')} -1`)
-            .max(3, `${t('user.table.scope')} ${t('validator.max')} 3`)
-    });
 
     const editForm = useForm<z.infer<typeof editFormSchema>>({
         resolver: zodResolver(editFormSchema),
         defaultValues: {
-            id,
-            avatar: avatar || '',
-            nickname,
-            scope
+            ...rest
         }
     });
 
@@ -91,14 +117,67 @@ export function DataTableRowActions({
         onSuccess({ code, msg }) {
             if (code === 200) {
                 onRefresh && onRefresh();
+                setEditOpen(false);
                 toast({
                     description: msg,
                     duration: 1500
                 });
-                setEditOpen(false);
+                editForm.reset();
             }
         }
     });
+
+    const handleEdit = (values: z.infer<typeof editFormSchema>) => {
+        runEdit({
+            ...values,
+            id
+        });
+    };
+
+    return (
+        <Dialog open={editOpen} onOpenChange={setEditOpen}>
+            <DialogTrigger asChild>
+                <Button variant="link" className={cn('h-8 p-0')}>
+                    {t('table.edit')}
+                </Button>
+            </DialogTrigger>
+            <DialogContent
+                aria-describedby={undefined}
+                className={cn(
+                    'flex flex-col gap-0 p-0 max-h-full sm:max-h-[36rem] sm:max-w-lg max-w-full [&>button:last-child]:top-[1.36rem] [&>button:last-child]:right-5'
+                )}
+            >
+                <DialogHeader>
+                    <DialogTitle className={cn('p-6 text-base')}>
+                        {t('table.edit')}
+                    </DialogTitle>
+                </DialogHeader>
+                <div className={cn('px-6 pb-1')}>
+                    <EditForm form={editForm} />
+                </div>
+                <DialogFooter className={cn('p-6 pt-5')}>
+                    <Button
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                        onClick={editForm.handleSubmit(handleEdit)}
+                    >
+                        {t('dialog.confirm')}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+interface DeleteDialogProps {
+    id: number;
+    onRefresh: () => void;
+}
+
+const DeleteDialog: React.FC<DeleteDialogProps> = ({ id, onRefresh }) => {
+    const { t } = useTranslation();
+    const [deleteOpen, setDeleteOpen] = useState(false);
 
     const { run: runDelete } = useRequest(userDelete, {
         manual: true,
@@ -115,160 +194,74 @@ export function DataTableRowActions({
         }
     });
 
-    const handleEdit = (values: z.infer<typeof editFormSchema>) => {
-        runEdit(values);
-    };
-
     const handleDelete = () => {
         runDelete({ id });
     };
 
     return (
-        <div className={cn('space-x-4')}>
-            <Dialog
-                open={editOpen}
-                onOpenChange={() => {
-                    setEditOpen(!editOpen);
-                    setTimeout(() => {
-                        // 关闭弹窗 reset 表单
-                        if (editOpen) {
-                            editForm.reset();
-                        }
-                    }, 200);
-                }}
+        <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+            <DialogTrigger asChild>
+                <Button variant="link" className={cn('h-8 p-0')}>
+                    {t('table.delete')}
+                </Button>
+            </DialogTrigger>
+            <DialogContent
+                aria-describedby={undefined}
+                className={cn(
+                    'flex flex-col gap-0 p-0 max-h-full sm:max-h-[36rem] sm:max-w-lg max-w-full [&>button:last-child]:top-[1.36rem] [&>button:last-child]:right-5'
+                )}
             >
-                <DialogTrigger asChild>
-                    <Button variant="link" className={cn('h-8 p-0')}>
-                        {t('table.edit')}
-                    </Button>
-                </DialogTrigger>
-                <DialogContent aria-describedby={undefined}>
-                    <DialogHeader>
-                        <DialogTitle>{t('table.edit')}</DialogTitle>
-                    </DialogHeader>
-                    <div>
-                        <Form {...editForm}>
-                            <form
-                                onSubmit={editForm.handleSubmit(handleEdit)}
-                                className={cn('space-y-6')}
-                            >
-                                <FormField
-                                    control={editForm.control}
-                                    name="nickname"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('user.table.nickname')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={editForm.control}
-                                    name="scope"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel
-                                                className={cn('required')}
-                                            >
-                                                {t('user.table.scope')}
-                                            </FormLabel>
-                                            <Select
-                                                onValueChange={val =>
-                                                    field.onChange(
-                                                        parseInt(val)
-                                                    )
-                                                }
-                                                defaultValue={`${field.value}`}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="-1">
-                                                        {t('user.role.ban')}
-                                                    </SelectItem>
-                                                    <SelectItem value="0">
-                                                        {t('user.role.visitor')}
-                                                    </SelectItem>
-                                                    <SelectItem value="1">
-                                                        {t('user.role.general')}
-                                                    </SelectItem>
-                                                    <SelectItem value="2">
-                                                        {t('user.role.member')}
-                                                    </SelectItem>
-                                                    <SelectItem value="3">
-                                                        {t('user.role.admin')}
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-
-                                <DialogFooter>
-                                    <Button
-                                        size="sm"
-                                        type="submit"
-                                        variant="outline"
-                                    >
-                                        {t('dialog.confirm')}
-                                    </Button>
-                                </DialogFooter>
-                            </form>
-                        </Form>
-                    </div>
-                </DialogContent>
-            </Dialog>
-
-            <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-                <DialogTrigger asChild>
-                    <Button variant="link" className={cn('h-8 p-0')}>
+                <DialogHeader>
+                    <DialogTitle className={cn('p-6 text-base')}>
                         {t('table.delete')}
-                    </Button>
-                </DialogTrigger>
-                <DialogContent aria-describedby={undefined}>
-                    <DialogHeader>
-                        <DialogTitle className={cn('text-base')}>
-                            {t('table.delete')}
-                        </DialogTitle>
-                    </DialogHeader>
-                    <div className={cn('text-sm')}>
-                        {t('dialog.delete.content')}
-                    </div>
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                aria-label="Close"
-                            >
-                                {t('dialog.cancel')}
-                            </Button>
-                        </DialogClose>
+                    </DialogTitle>
+                </DialogHeader>
+                <div className={cn('px-6 text-sm')}>
+                    {t('dialog.delete.content')}
+                </div>
+                <DialogFooter className={cn('p-6 pt-5 space-x-3')}>
+                    <DialogClose asChild>
                         <Button
                             size="sm"
+                            type="button"
                             variant="outline"
-                            onClick={handleDelete}
+                            aria-label="Close"
                         >
-                            {t('dialog.confirm')}
+                            {t('dialog.cancel')}
                         </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                    </DialogClose>
+                    <Button
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                        onClick={handleDelete}
+                    >
+                        {t('dialog.confirm')}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({
+    row,
+    onRefresh
+}) => {
+    const { id, nickname, scope } = row.original;
+
+    return (
+        <div className={cn('space-x-4')}>
+            <EditDialog
+                id={id}
+                onRefresh={onRefresh}
+                nickname={nickname}
+                scope={scope}
+            />
+
+            <DeleteDialog id={id} onRefresh={onRefresh} />
         </div>
     );
-}
+};
+
+export default DataTableRowActions;

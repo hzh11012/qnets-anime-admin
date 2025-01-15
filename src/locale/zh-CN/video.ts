@@ -28,7 +28,7 @@ export default {
     'video.month.jul': '七月番',
     'video.month.oct': '十月番',
 
-    'video.detail.aid': '动漫ID',
+    'video.detail.anime_id': '动漫ID',
     'video.detail.title': '视频标题',
     'video.detail.episode_id': '集数编号',
     'video.detail.url': '视频地址',

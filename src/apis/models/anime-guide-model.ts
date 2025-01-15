@@ -1,10 +1,10 @@
-export interface NewAnimeCreateReq {
+export interface AnimeGuideCreateReq {
     id: number;
     update_day: number;
     update_time: string;
 }
 
-export interface NewAnimeListReq {
+export interface AnimeGuideListReq {
     page?: number;
     pageSize?: number;
     update_day?: number;
@@ -13,9 +13,9 @@ export interface NewAnimeListReq {
     keyword?: string;
 }
 
-export interface NewAnimeItem {
+export interface AnimeGuideItem {
     id: number;
-    aid: number;
+    anime_id: number;
     update_day: number;
     update_time: string;
     title: string;
@@ -30,11 +30,11 @@ export interface NewAnimeItem {
     };
 }
 
-export interface NewAnimeListRes {
+export interface AnimeGuideListRes {
     count: number;
-    rows: NewAnimeItem[];
+    rows: AnimeGuideItem[];
 }
 
-export interface NewAnimeDeleteReq {
+export interface AnimeGuideDeleteReq {
     id: number;
 }

@@ -4,11 +4,11 @@ export default {
 
     'menu.dashboard': '仪表盘',
 
-    'menu.new_anime': '新番',
+    'menu.anime-guide': '新番导视',
 
     'menu.swiper': '轮播图',
 
-    'menu.notice': '公告',
+    'menu.announcement': '公告',
 
     'menu.message': '留言',
 
@@ -22,7 +22,6 @@ export default {
     'menu.user.list': '用户管理',
     'menu.user.collection': '收藏管理',
     'menu.user.rating': '评分管理',
-    'menu.user.notice-record': '公告记录管理',
 
     'menu.system.settings': '设置'
 };

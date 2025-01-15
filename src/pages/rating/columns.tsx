@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/rating/data-table-row-actions';
+import DataTableRowActions from '@/pages/rating/data-table-row-actions';
 import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
 import {
     Tooltip,
@@ -24,9 +24,9 @@ export const getColumns = (
             enableHiding: false
         },
         {
-            accessorKey: 'uid',
-            title: t('rating.table.uid'),
-            header: t('rating.table.uid'),
+            accessorKey: 'user_id',
+            title: t('rating.table.user_id'),
+            header: t('rating.table.user_id'),
             enableSorting: false,
             enableHiding: false
         },

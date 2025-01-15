@@ -32,7 +32,9 @@ export interface VideoItem {
     cv?: string;
     director?: string;
     created_at: string;
-    category: Category[];
+    categories: Category[];
+    is_anime_guide: number;
+    is_swiper: number;
 }
 
 export interface VideoListRes {

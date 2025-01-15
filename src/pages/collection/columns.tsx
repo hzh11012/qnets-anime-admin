@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { TFunction } from 'i18next';
 import { Search } from 'lucide-react';
-import { DataTableRowActions } from '@/pages/collection/data-table-row-actions';
+import DataTableRowActions from '@/pages/collection/data-table-row-actions';
 import { DataTableColumnSort } from '@/components/custom/data-table/data-table-column-sort';
 
 export const getColumns = (
@@ -17,9 +17,9 @@ export const getColumns = (
             enableHiding: false
         },
         {
-            accessorKey: 'uid',
-            title: t('collection.table.uid'),
-            header: t('collection.table.uid'),
+            accessorKey: 'user_id',
+            title: t('collection.table.user_id'),
+            header: t('collection.table.user_id'),
             enableSorting: false,
             enableHiding: false
         },

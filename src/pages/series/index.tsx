@@ -11,7 +11,7 @@ import { DataTable } from '@/components/custom/data-table/data-table';
 import { validSort } from '@/lib/utils';
 import { SeriesItem } from '@/apis/models/series-model';
 
-const Category = () => {
+const Series = () => {
     const { t } = useTranslation();
 
     const { onPaginationChange, page, limit, pagination } = usePagination();
@@ -78,4 +78,4 @@ const Category = () => {
     );
 };
 
-export default Category;
+export default Series;
