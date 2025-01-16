@@ -1,5 +1,5 @@
 export interface SwiperCreateReq {
-    ids: number[];
+    id: number;
 }
 
 export interface SwiperListReq {
@@ -12,7 +12,7 @@ export interface SwiperListReq {
 
 export interface SwiperItem {
     id: number;
-    aid: number;
+    anime_id: number;
     title: string;
     description: string;
     banner_url: string;

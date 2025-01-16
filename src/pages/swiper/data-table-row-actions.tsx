@@ -21,14 +21,14 @@ interface DataTableRowActionsProps {
     onRefresh: () => void;
 }
 
-export function DataTableRowActions({
-    row,
-    onRefresh
-}: DataTableRowActionsProps) {
-    const { anime_id } = row.original;
+interface DeleteDialogProps {
+    id: number;
+    onRefresh: () => void;
+}
+
+const DeleteDialog: React.FC<DeleteDialogProps> = ({ id, onRefresh }) => {
     const { t } = useTranslation();
     const [deleteOpen, setDeleteOpen] = useState(false);
-    const navigate = useNavigate();
 
     const { run: runDelete } = useRequest(swiperDelete, {
         manual: true,
@@ -46,8 +46,62 @@ export function DataTableRowActions({
     });
 
     const handleDelete = () => {
-        runDelete({ id: anime_id });
+        runDelete({ id });
     };
+
+    return (
+        <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+            <DialogTrigger asChild>
+                <Button variant="link" className={cn('h-8 p-0')}>
+                    {t('table.delete')}
+                </Button>
+            </DialogTrigger>
+            <DialogContent
+                aria-describedby={undefined}
+                className={cn(
+                    'flex flex-col gap-0 p-0 max-h-full sm:max-h-[36rem] sm:max-w-lg max-w-full [&>button:last-child]:top-[1.36rem] [&>button:last-child]:right-5'
+                )}
+            >
+                <DialogHeader>
+                    <DialogTitle className={cn('p-6 text-base')}>
+                        {t('table.delete')}
+                    </DialogTitle>
+                </DialogHeader>
+                <div className={cn('px-6 text-sm')}>
+                    {t('dialog.delete.content')}
+                </div>
+                <DialogFooter className={cn('p-6 pt-5 space-x-3')}>
+                    <DialogClose asChild>
+                        <Button
+                            size="sm"
+                            type="button"
+                            variant="outline"
+                            aria-label="Close"
+                        >
+                            {t('dialog.cancel')}
+                        </Button>
+                    </DialogClose>
+                    <Button
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                        onClick={handleDelete}
+                    >
+                        {t('dialog.confirm')}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({
+    row,
+    onRefresh
+}) => {
+    const { id, anime_id } = row.original;
+    const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const handleDetail = () => {
         navigate(`/video/detail/${anime_id}`);
@@ -62,41 +116,10 @@ export function DataTableRowActions({
             >
                 {t('table.detail')}
             </Button>
-            <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-                <DialogTrigger asChild>
-                    <Button variant="link" className={cn('h-8 p-0')}>
-                        {t('table.delete')}
-                    </Button>
-                </DialogTrigger>
-                <DialogContent aria-describedby={undefined}>
-                    <DialogHeader>
-                        <DialogTitle className={cn('text-base')}>
-                            {t('table.delete')}
-                        </DialogTitle>
-                    </DialogHeader>
-                    <div className={cn('text-sm')}>
-                        {t('dialog.delete.content')}
-                    </div>
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                aria-label="Close"
-                            >
-                                {t('dialog.cancel')}
-                            </Button>
-                        </DialogClose>
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={handleDelete}
-                        >
-                            {t('dialog.confirm')}
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+
+            <DeleteDialog id={id} onRefresh={onRefresh} />
         </div>
     );
-}
+};
+
+export default DataTableRowActions;

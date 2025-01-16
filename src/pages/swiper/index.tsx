@@ -9,6 +9,7 @@ import { getColumns } from '@/pages/swiper/columns';
 import { SortingState } from '@tanstack/react-table';
 import { DataTable } from '@/components/custom/data-table/data-table';
 import { SwiperItem } from '@/apis/models/swiper-model';
+import { getVideoList } from '@/apis/video';
 
 const Swiper = () => {
     const { t } = useTranslation();
@@ -20,6 +21,10 @@ const Swiper = () => {
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [keyword, setKeyword] = useState('');
+
+    const [animes, setAnimes] = useState<{ label: string; value: number }[]>(
+        []
+    );
 
     const { run, loading, refresh } = useRequest(getSwiperList, {
         defaultParams: [
@@ -43,6 +48,27 @@ const Swiper = () => {
         }
     });
 
+    const { refresh: refreshVideo } = useRequest(getVideoList, {
+        defaultParams: [
+            {
+                page: 1,
+                pageSize: 9999
+            }
+        ],
+        onSuccess(data) {
+            const { rows } = data.data;
+            const res = rows
+                .filter(item => !item.is_swiper)
+                .map(item => {
+                    return {
+                        label: item.name,
+                        value: item.id
+                    };
+                });
+            setAnimes(res);
+        }
+    });
+
     const columns = getColumns(t, () => {
         if (data.length === 1 && page > 1) {
             onPaginationChange({
@@ -50,9 +76,14 @@ const Swiper = () => {
                 pageSize: limit
             });
         } else {
-            refresh();
+            handleRefresh();
         }
     });
+
+    const handleRefresh = () => {
+        refreshVideo();
+        refresh();
+    };
 
     return (
         <Layout>
@@ -68,7 +99,9 @@ const Swiper = () => {
                 onSearch={setKeyword}
                 sorting={sorting}
                 onSortingChange={setSorting}
-                customTools={<CustomTools onRefresh={refresh} />}
+                customTools={
+                    <CustomTools onRefresh={handleRefresh} animes={animes} />
+                }
             />
         </Layout>
     );
